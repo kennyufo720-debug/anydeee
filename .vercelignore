@@ -1,0 +1,8 @@
+requirements.txt
+bot.py
+db.py
+social_uploader.py
+venv/
+queue/
+*.pyc
+__pycache__/
