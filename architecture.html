@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anydeee 系統架構圖</title>
+<style>
+  :root{
+    --bg:#0d0a08; --panel:#1a130e; --panel-2:#140e0a; --line:#2a1f17;
+    --text:#f5ede3; --muted:#a39487; --accent:#d97757; --accent-2:#bf5d3a;
+    --green:#22c55e; --red:#ef4444; --yellow:#f5b04a; --gold:#e89968;
+    --blue:#5b8cff; --purple:#a855f7;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Microsoft JhengHei",sans-serif;font-size:13px;line-height:1.5}
+
+  .page{max-width:1280px;margin:0 auto;padding:32px 24px 64px}
+
+  .header{text-align:center;margin-bottom:32px;padding:32px 0;background:linear-gradient(135deg,rgba(217,119,87,.10),rgba(124,92,255,.06));border-radius:16px}
+  .header .logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:10px}
+  .header .logo .dot{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:#1a0a02;font-weight:900;font-size:18px;box-shadow:0 4px 12px rgba(217,119,87,.4)}
+  .header h1{margin:0;font-size:28px;font-weight:800}
+  .header .sub{color:var(--muted);font-size:14px;margin-top:6px}
+  .header .meta{display:inline-flex;gap:8px;margin-top:14px;flex-wrap:wrap;justify-content:center}
+  .header .meta .pill{background:#241812;color:var(--muted);padding:4px 12px;border-radius:14px;font-size:11px;font-weight:600}
+
+  /* Section */
+  .section{margin-bottom:36px}
+  .section-h{display:flex;align-items:center;gap:10px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--line)}
+  .section-h .num{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#1a0a02;font-weight:900;font-size:15px}
+  .section-h h2{margin:0;font-size:20px}
+  .section-h .desc{color:var(--muted);font-size:12px;margin-left:auto}
+
+  /* Topology */
+  .topology{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:14px;position:relative;overflow:hidden}
+
+  .layer{display:grid;gap:10px;margin-bottom:18px;position:relative}
+  .layer:last-child{margin-bottom:0}
+  .layer-label{position:absolute;left:-22px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:center;font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;white-space:nowrap;font-weight:700}
+
+  .row{display:grid;gap:10px}
+  .row.cols-2{grid-template-columns:1fr 1fr}
+  .row.cols-3{grid-template-columns:1fr 1fr 1fr}
+  .row.cols-4{grid-template-columns:repeat(4,1fr)}
+  .row.cols-5{grid-template-columns:repeat(5,1fr)}
+
+  .node{background:linear-gradient(135deg,var(--panel-2),#1a130e);border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative;transition:transform .15s,border-color .15s}
+  .node:hover{transform:translateY(-2px);border-color:var(--accent)}
+  .node .ico{font-size:18px;margin-bottom:4px;display:block}
+  .node .nm{font-size:12px;font-weight:700;margin-bottom:2px}
+  .node .desc{font-size:10px;color:var(--muted);line-height:1.4}
+  .node .tag{display:inline-block;font-size:9px;padding:1px 6px;border-radius:3px;font-weight:700;margin-top:4px;letter-spacing:.5px}
+  .node.client{border-color:var(--accent)}
+  .node.client .ico{color:var(--accent)}
+  .node.admin{border-color:var(--red)}
+  .node.admin .ico{color:var(--red)}
+  .node.chain{border-color:var(--gold)}
+  .node.chain .ico{color:var(--gold)}
+  .node.support{border-color:var(--blue)}
+  .node.support .ico{color:var(--blue)}
+  .node.contract{border-color:var(--purple)}
+  .node.contract .ico{color:var(--purple)}
+
+  .tag.user{background:rgba(217,119,87,.18);color:var(--accent)}
+  .tag.admin{background:rgba(239,68,68,.18);color:var(--red)}
+  .tag.chain{background:rgba(232,153,104,.18);color:var(--gold)}
+  .tag.shared{background:rgba(91,140,255,.18);color:var(--blue)}
+  .tag.contract{background:rgba(168,85,247,.18);color:var(--purple)}
+
+  /* Big block (主要應用) */
+  .app-block{background:var(--panel);border:2px solid;border-radius:16px;padding:18px;position:relative}
+  .app-block.client{border-color:var(--accent);background:linear-gradient(135deg,var(--panel),rgba(217,119,87,.04))}
+  .app-block.admin{border-color:var(--red);background:linear-gradient(135deg,var(--panel),rgba(239,68,68,.04))}
+  .app-block .h{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .app-block .h .ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .app-block.client .h .ic{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff}
+  .app-block.admin .h .ic{background:linear-gradient(135deg,var(--red),#7f1d1d);color:#fff}
+  .app-block .h .ti{font-size:16px;font-weight:800}
+  .app-block .h .pa{font-family:"SF Mono",monospace;color:var(--muted);font-size:11px;margin-top:1px}
+
+  /* Connector */
+  .arrow{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:18px;padding:6px 0}
+  .arrow.h{flex-direction:row}
+  .arrow.v{flex-direction:column}
+
+  /* User flow */
+  .flow-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+  .flow-step{display:grid;grid-template-columns:36px 1fr;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+  .flow-step:last-child{border-bottom:none}
+  .flow-step .si{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+  .flow-step .sb .st{font-weight:700;font-size:13px}
+  .flow-step .sb .sd{font-size:11px;color:var(--muted);margin-top:2px}
+  .flow-step .sb .sc{display:inline-block;font-family:monospace;background:#100a07;padding:2px 6px;border-radius:4px;font-size:10px;color:var(--accent);margin-top:4px}
+
+  /* Tech stack list */
+  .stack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+  .stack-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
+  .stack-card .h{font-size:13px;font-weight:700;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .stack-card ul{margin:0;padding:0;list-style:none}
+  .stack-card li{padding:3px 0;font-size:11px;color:var(--muted)}
+  .stack-card li::before{content:"→ ";color:var(--accent);font-weight:700}
+
+  /* Files list */
+  .files-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .files-table th{text-align:left;padding:10px 14px;background:#100a07;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--line)}
+  .files-table td{padding:11px 14px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:top}
+  .files-table tr:last-child td{border-bottom:none}
+  .files-table .file{font-family:"SF Mono",monospace;color:var(--accent);font-weight:700}
+  .files-table .size{color:var(--muted);font-family:monospace}
+
+  /* Data flow */
+  .dataflow{background:#100a07;border:1px solid var(--line);border-radius:10px;padding:14px;font-family:"SF Mono",monospace;font-size:11px;line-height:1.7;color:var(--text);overflow-x:auto;white-space:pre}
+
+  .legend{display:flex;gap:14px;padding:12px;background:#100a07;border-radius:8px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:5px}
+  .legend .sw{width:12px;height:12px;border-radius:3px;border:1px solid}
+
+  @media (max-width:900px){
+    .row.cols-3,.row.cols-4,.row.cols-5{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ===== HEADER ===== -->
+  <div class="header">
+    <div class="logo">
+      <div class="dot">A</div>
+      <div style="text-align:left">
+        <div style="font-size:24px;font-weight:800">Anydeee</div>
+        <div style="font-size:10px;color:var(--accent);font-weight:700;letter-spacing:2px">RWA NFT EXCHANGE</div>
+      </div>
+    </div>
+    <h1>系統架構圖</h1>
+    <div class="sub">100 系列 × 30,000 編號 RWA NFT 交易平台 — 技術藍圖 v3.2.1</div>
+    <div class="meta">
+      <span class="pill">📅 2026-04-27</span>
+      <span class="pill">🌐 Polygon Mainnet</span>
+      <span class="pill">📦 ERC-721A</span>
+      <span class="pill">🛡 DFSA / VARA / MAS 牌照</span>
+    </div>
+  </div>
+
+  <!-- ===== 1. 系統總覽 ===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">1</div>
+      <h2>系統總覽 — 三層式架構</h2>
+      <div class="desc">前端 → 應用邏輯 → 區塊鏈</div>
+    </div>
+
+    <div class="topology">
+      <div class="row cols-2" style="margin-bottom:14px">
+        <div class="app-block client">
+          <div class="h">
+            <div class="ic">👤</div>
+            <div>
+              <div class="ti">用戶端</div>
+              <div class="pa">rwa-dex.html · 開放存取</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">
+            買家 / 賣家 / 持有者 / 論壇用戶<br/>
+            充值 · NFT 交易 · 質押 · 福利 · 論壇 · 站內信
+          </div>
+        </div>
+        <div class="app-block admin">
+          <div class="h">
+            <div class="ic">⚙</div>
+            <div>
+              <div class="ti">管理後台</div>
+              <div class="pa">admin.html · 密碼保護 (test01)</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.6">
+            鑄造 · 系列管理 · KYC · 提領審核 · 客服 · 稽核日誌 · 緊急停止
+          </div>
+        </div>
+      </div>
+
+      <div class="arrow v">↓ HTTPS · Web3 Provider · IPFS Gateway ↓</div>
+
+      <div class="app-block" style="border:2px solid var(--gold);background:linear-gradient(135deg,var(--panel),rgba(232,153,104,.04));margin-top:8px">
+        <div class="h">
+          <div class="ic" style="background:linear-gradient(135deg,var(--gold),#f59e0b);color:#000">⛓</div>
+          <div>
+            <div class="ti">區塊鏈基礎層</div>
+            <div class="pa">Polygon Mainnet · ERC-721A · ERC-3643 · IPFS / Arweave</div>
+          </div>
+        </div>
+        <div class="row cols-5" style="margin-top:10px">
+          <div class="node contract"><span class="ico">🏭</span><div class="nm">NFT Factory</div><div class="desc">0x4580..72f1d</div><span class="tag contract">CONTRACT</span></div>
+          <div class="node contract"><span class="ico">🛒</span><div class="nm">Marketplace</div><div class="desc">0x8a23..A4cD8</div><span class="tag contract">CONTRACT</span></div>
+          <div class="node contract"><span class="ico">🏛</span><div class="nm">Treasury</div><div class="desc">3/5 多簽</div><span class="tag contract">CONTRACT</span></div>
+          <div class="node contract"><span class="ico">🪪</span><div class="nm">KYC Identity</div><div class="desc">ERC-3643</div><span class="tag contract">CONTRACT</span></div>
+          <div class="node contract"><span class="ico">💰</span><div class="nm">USDC / USDT</div><div class="desc">穩定幣支付</div><span class="tag contract">TOKEN</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <span><span class="sw" style="border-color:var(--accent);background:rgba(217,119,87,.18)"></span>用戶端</span>
+      <span><span class="sw" style="border-color:var(--red);background:rgba(239,68,68,.18)"></span>管理員</span>
+      <span><span class="sw" style="border-color:var(--gold);background:rgba(232,153,104,.18)"></span>區塊鏈 / 合約</span>
+      <span><span class="sw" style="border-color:var(--purple);background:rgba(168,85,247,.18)"></span>智能合約</span>
+      <span><span class="sw" style="border-color:var(--blue);background:rgba(91,140,255,.18)"></span>外部服務</span>
+    </div>
+  </div>
+
+  <!-- ===== 2. 用戶端模組 ===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">2</div>
+      <h2>用戶端模組地圖 (rwa-dex.html)</h2>
+      <div class="desc">5 主分頁 + 7 次要頁 + 雙向訊息系統</div>
+    </div>
+
+    <div class="topology">
+      <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">🔝 主導覽（5）</div>
+      <div class="row cols-5">
+        <div class="node client"><span class="ico">💳</span><div class="nm">充值</div><div class="desc">信用卡 / 銀行 / C2C / 鏈上轉帳</div><span class="tag user">page-buy</span></div>
+        <div class="node client"><span class="ico">🚀</span><div class="nm">NFT 發行狀況</div><div class="desc">發行進度 + AI 預估 + 廣告位</div><span class="tag user">page-market</span></div>
+        <div class="node client"><span class="ico">💎</span><div class="nm">質押</div><div class="desc">活期 / 定期 / 雙幣 / LP 挖礦</div><span class="tag user">page-earn</span></div>
+        <div class="node client"><span class="ico">🛒</span><div class="nm">NFT 交易</div><div class="desc">二級市場 + 新上架</div><span class="tag user">page-nft</span></div>
+        <div class="node client"><span class="ico">🎁</span><div class="nm">福利中心</div><div class="desc">空投 + VIP + 代理福利 + 權益</div><span class="tag user">page-benefits</span></div>
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">🆕 新增分頁</div>
+      <div class="row cols-4">
+        <div class="node client"><span class="ico">💬</span><div class="nm">論壇</div><div class="desc">求購/出售/討論/求助</div><span class="tag user">page-forum</span></div>
+        <div class="node client"><span class="ico">✉️</span><div class="nm">站內訊息</div><div class="desc">即時聊天 + 對話列表</div><span class="tag user">page-messages</span></div>
+        <div class="node admin"><span class="ico">⚙</span><div class="nm">管理後台入口</div><div class="desc">深紅色按鈕，新分頁開啟</div><span class="tag admin">→ admin.html</span></div>
+        <div class="node support"><span class="ico">🔍</span><div class="nm">全站搜尋</div><div class="desc">⌘K 喚出，搜資產+頁面</div><span class="tag shared">overlay</span></div>
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">📂「更多」下拉（6）</div>
+      <div class="row cols-3">
+        <div class="node"><span class="ico">💼</span><div class="nm">投資組合</div><div class="desc">持倉 + 損益</div></div>
+        <div class="node"><span class="ico">🤝</span><div class="nm">代理區</div><div class="desc">推薦連結 + 4 級分潤</div></div>
+        <div class="node"><span class="ico">🏗</span><div class="nm">資產上鏈</div><div class="desc">提交實體資產代幣化</div></div>
+        <div class="node"><span class="ico">📜</span><div class="nm">歷史紀錄</div><div class="desc">所有 Tx Hash</div></div>
+        <div class="node"><span class="ico">📚</span><div class="nm">學習中心</div><div class="desc">8 篇 RWA 教學</div></div>
+        <div class="node"><span class="ico">📢</span><div class="nm">公告中心</div><div class="desc">系統 / 上架 / 活動</div></div>
+      </div>
+
+      <div style="font-size:11px;color:var(--muted);margin:14px 0 8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">🛒 NFT 交易頁子模組</div>
+      <div class="row cols-2">
+        <div class="node client" style="background:rgba(217,119,87,.04)">
+          <div class="nm" style="font-size:13px">🛒 二級市場</div>
+          <div class="desc" style="margin-top:6px">系列瀏覽器（100 個系列卡）→ 單系列頁（編號/年份/稀有度/價格篩選 + 我的持倉/掛單/市場動態）→ NFT 詳情 modal（買 / 掛賣 / 出價）</div>
+        </div>
+        <div class="node client" style="background:rgba(217,119,87,.04)">
+          <div class="nm" style="font-size:13px">✨ 新上架</div>
+          <div class="desc" style="margin-top:6px">5 子分類：全部新品 / 近 7 天 / 近 30 天 / 預售中 / 熱門新品。點任一系列進入完整詳情頁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 3. 管理後台模組 ===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">3</div>
+      <h2>管理後台模組地圖 (admin.html)</h2>
+      <div class="desc">14 模組 · 6 業務分類</div>
+    </div>
+
+    <div class="topology">
+      <div class="row cols-3">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">📊 總覽</div>
+          <div class="node admin"><span class="ico">📊</span><div class="nm">儀表板</div><div class="desc">8 統計卡 + 警報 + 24h 活動</div></div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">✨ NFT（核心）</div>
+          <div style="display:grid;gap:6px">
+            <div class="node admin" style="background:rgba(239,68,68,.06)"><span class="ico">⛏</span><div class="nm">NFT 鑄造（上鏈）</div><div class="desc">單枚 / 批量 / 部署系列 / 紀錄 — 真實 ERC-721A 流程</div></div>
+            <div class="node admin"><span class="ico">📦</span><div class="nm">系列管理</div><div class="desc">100 系列編輯 + 凍結</div></div>
+            <div class="node admin"><span class="ico">🏷️</span><div class="nm">掛單管理</div><div class="desc">可疑掛單高亮 + 強制取消</div></div>
+            <div class="node admin"><span class="ico">🎁</span><div class="nm">空投管理</div><div class="desc">建立 / 暫停 / 啟動活動</div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">👥 用戶</div>
+          <div style="display:grid;gap:6px">
+            <div class="node admin"><span class="ico">👥</span><div class="nm">用戶管理</div><div class="desc">搜尋 / VIP 調整 / 封鎖</div></div>
+            <div class="node admin"><span class="ico">🪪</span><div class="nm">KYC 審核</div><div class="desc">SLA 倒數 + 批准/拒絕</div></div>
+            <div class="node admin"><span class="ico">🤝</span><div class="nm">代理管理</div><div class="desc">4 級配置 + 頂級代理排行</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row cols-3" style="margin-top:14px">
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">💰 財務</div>
+          <div style="display:grid;gap:6px">
+            <div class="node admin"><span class="ico">💰</span><div class="nm">財務管理</div><div class="desc">收入 / 金庫 / PoR 儲備</div></div>
+            <div class="node admin"><span class="ico">💸</span><div class="nm">提領審核</div><div class="desc">大額風險評分 + 批准</div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">📝 內容 / 客服</div>
+          <div style="display:grid;gap:6px">
+            <div class="node admin"><span class="ico">💬</span><div class="nm">論壇管理</div><div class="desc">置頂 / 鎖定 / 刪除 / 檢舉</div></div>
+            <div class="node admin"><span class="ico">📢</span><div class="nm">公告管理</div><div class="desc">CRUD 系統公告</div></div>
+            <div class="node admin"><span class="ico">🎫</span><div class="nm">客服中心</div><div class="desc">票券優先級 + 指派</div></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;font-weight:700">🔧 系統</div>
+          <div style="display:grid;gap:6px">
+            <div class="node admin"><span class="ico">📜</span><div class="nm">稽核日誌</div><div class="desc">所有操作自動寫入</div></div>
+            <div class="node admin"><span class="ico">⚙</span><div class="nm">系統設定</div><div class="desc">手續費 + Kill Switch + 多簽</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 4. NFT 鑄造流程 ===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">4</div>
+      <h2>NFT 上鏈鑄造流程</h2>
+      <div class="desc">從 Admin 點擊到鏈上確認，7 個階段</div>
+    </div>
+
+    <div class="flow-card">
+      <div class="flow-step">
+        <div class="si">1</div>
+        <div class="sb">
+          <div class="st">Admin 填寫鑄造表單</div>
+          <div class="sd">系列 / 編號 / 年份 / 稀有度 / 接收地址 / 屬性 Traits</div>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="si">2</div>
+        <div class="sb">
+          <div class="st">構建 ERC-721 Metadata JSON</div>
+          <div class="sd">符合 OpenSea Metadata Standard，包含 image / attributes / properties</div>
+          <span class="sc">{ "name": "RTEAK #18421", "attributes": [...] }</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="si">3</div>
+        <div class="sb">
+          <div class="st">上傳至 IPFS / Arweave</div>
+          <div class="sd">Pinata 服務固定 metadata，獲取 CID</div>
+          <span class="sc">ipfs://QmYwAPJzv5...18421.json</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="si">4</div>
+        <div class="sb">
+          <div class="st">建立鏈上交易</div>
+          <div class="sd">呼叫 NFT Factory 合約的 safeMint 方法</div>
+          <span class="sc">safeMint(address to, uint256 tokenId, string uri)</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="si">5</div>
+        <div class="sb">
+          <div class="st">多簽簽名 (3/5)</div>
+          <div class="sd">關鍵操作需要至少 3 位管理員多簽通過</div>
+          <span class="sc">Multisig 0xMu1tiSig...A4d2C0</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="si">6</div>
+        <div class="sb">
+          <div class="st">廣播至 Polygon RPC</div>
+          <div class="sd">Submit raw transaction，等待礦工打包</div>
+          <span class="sc">Gas: 0.0142 MATIC · Block time ~2.5s</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="si">7</div>
+        <div class="sb">
+          <div class="st">區塊確認 + 寫入稽核日誌</div>
+          <div class="sd">通知接收者 + 同步到用戶端二級市場 + 寫入論壇公告</div>
+          <span class="sc">✓ Tx: 0xa1b2..f3e4 · Block #52,840,193</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 5. 資料流 ===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">5</div>
+      <h2>核心資料流</h2>
+      <div class="desc">用戶 ↔ 平台 ↔ 鏈上的完整路徑</div>
+    </div>
+
+    <div class="row cols-2">
+      <div class="flow-card">
+        <h3 style="margin:0 0 14px;font-size:14px;color:var(--accent)">📥 充值入金流程</h3>
+        <div class="dataflow">用戶 → [信用卡 / 銀行 / C2C]
+   ↓
+法幣支付閘道（Stripe / MoonPay）
+   ↓
+USDC / USDT 鑄造 → 平台金庫
+   ↓
+寫入用戶錢包餘額
+   ↓
+通知 + Toast 提示</div>
+      </div>
+
+      <div class="flow-card">
+        <h3 style="margin:0 0 14px;font-size:14px;color:var(--accent)">🛒 NFT 二級市場交易</h3>
+        <div class="dataflow">買家點擊「立即購買」
+   ↓
+Marketplace 合約 buyNow(tokenId)
+   ↓
+USDC 從買家轉賣家（扣 2% 手續費）
+   ↓
+NFT ownerOf 變更 + 觸發 Transfer 事件
+   ↓
+Indexer 同步至前端
+   ↓
+更新雙方持倉 + 寫入活動 feed</div>
+      </div>
+
+      <div class="flow-card">
+        <h3 style="margin:0 0 14px;font-size:14px;color:var(--accent)">💰 提領出金流程</h3>
+        <div class="dataflow">用戶提交提領申請
+   ↓
+風險評分（地址新舊 / 金額 / 行為）
+   ↓
+&gt; $10K → Admin 審核佇列
+   ↓
+管理員批准（多簽）
+   ↓
+合約 transfer 至用戶外部錢包
+   ↓
+寫入稽核日誌 + 通知</div>
+      </div>
+
+      <div class="flow-card">
+        <h3 style="margin:0 0 14px;font-size:14px;color:var(--accent)">💬 論壇 ↔ 站內信聯動</h3>
+        <div class="dataflow">用戶發布求購貼文
+   ↓
+其他用戶點「✉️ 私訊作者」
+   ↓
+自動建立對話 + 跳轉 page-messages
+   ↓
+即時聊天（每則訊息 1.5–4s 對方自動回覆）
+   ↓
+未讀數同步至 Header 紅點
+   ↓
+達成交易後可進入合約託管</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 6. 技術棧 ===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">6</div>
+      <h2>技術棧</h2>
+      <div class="desc">當前實作 + 未來生產環境建議</div>
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="h">🎨 前端</div>
+        <ul>
+          <li>HTML5 + CSS3 (variables)</li>
+          <li>Vanilla JavaScript (ES2020+)</li>
+          <li>Lightweight Charts (K 線圖)</li>
+          <li>Ethers.js v5.7 (Web3)</li>
+          <li>SVG (sparkline / 圖表)</li>
+        </ul>
+      </div>
+      <div class="stack-card">
+        <div class="h">⛓ 區塊鏈</div>
+        <ul>
+          <li>Polygon Mainnet (EVM)</li>
+          <li>ERC-721A (gas-優化批量)</li>
+          <li>ERC-3643 (合規 NFT)</li>
+          <li>ERC-2981 (版稅標準)</li>
+          <li>Multisig 3/5 (Gnosis Safe)</li>
+        </ul>
+      </div>
+      <div class="stack-card">
+        <div class="h">📦 儲存</div>
+        <ul>
+          <li>IPFS / Pinata (metadata)</li>
+          <li>Arweave (永久存檔)</li>
+          <li>SubGraph (鏈上索引)</li>
+          <li>PostgreSQL (應用資料)</li>
+          <li>Redis (快取 / 即時數據)</li>
+        </ul>
+      </div>
+      <div class="stack-card">
+        <div class="h">💸 支付</div>
+        <ul>
+          <li>USDC / USDT 主結算</li>
+          <li>Stripe (信用卡)</li>
+          <li>MoonPay (法幣 → 加密)</li>
+          <li>Apple Pay / Google Pay</li>
+          <li>SWIFT 銀行匯款</li>
+        </ul>
+      </div>
+      <div class="stack-card">
+        <div class="h">🔐 安全</div>
+        <ul>
+          <li>3/5 多簽控制關鍵合約</li>
+          <li>Kill Switch 緊急停止</li>
+          <li>稽核日誌全紀錄</li>
+          <li>地址風險評分系統</li>
+          <li>內網 IP 限制 + 2FA</li>
+        </ul>
+      </div>
+      <div class="stack-card">
+        <div class="h">🛡 合規</div>
+        <ul>
+          <li>DFSA 牌照（杜拜）</li>
+          <li>VARA 牌照（杜拜）</li>
+          <li>MAS 牌照（新加坡）</li>
+          <li>KYC L1/L2/L3 分級</li>
+          <li>合規託管：Anchorage / Sygnum / BitGo</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 7. 檔案清單 ===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">7</div>
+      <h2>專案檔案清單</h2>
+      <div class="desc">當前 demo 實作</div>
+    </div>
+
+    <table class="files-table">
+      <thead>
+        <tr><th>檔案</th><th>角色</th><th>內容</th><th>大小</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="file">rwa-dex.html</span></td>
+          <td><span class="tag user">用戶端</span></td>
+          <td>5 主分頁 + 7 次要頁 + 論壇 + 站內信，含 100 系列 NFT 二級市場、質押、充值、福利、代理</td>
+          <td class="size">~6,500 行</td>
+        </tr>
+        <tr>
+          <td><span class="file">admin.html</span></td>
+          <td><span class="tag admin">管理後台</span></td>
+          <td>14 模組，含 NFT 鑄造（上鏈）核心功能、批量鑄造、合約部署、KYC、提領審核、稽核日誌、密碼保護 (test01)</td>
+          <td class="size">~900 行</td>
+        </tr>
+        <tr>
+          <td><span class="file">architecture.html</span></td>
+          <td><span class="tag shared">架構圖</span></td>
+          <td>本檔案 — 系統技術藍圖、模組地圖、流程圖、技術棧</td>
+          <td class="size">本頁</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== 8. 部署架構（生產環境建議）===== -->
+  <div class="section">
+    <div class="section-h">
+      <div class="num">8</div>
+      <h2>生產環境部署架構（建議）</h2>
+      <div class="desc">當前為單檔 demo，正式上線需擴展</div>
+    </div>
+
+    <div class="topology">
+      <div class="row cols-4">
+        <div class="node support"><span class="ico">🌐</span><div class="nm">CDN</div><div class="desc">Cloudflare / AWS CloudFront</div><span class="tag shared">EDGE</span></div>
+        <div class="node support"><span class="ico">⚖</span><div class="nm">Load Balancer</div><div class="desc">ALB + Auto Scaling</div><span class="tag shared">L7</span></div>
+        <div class="node support"><span class="ico">🖥</span><div class="nm">Web Servers</div><div class="desc">Next.js + Vercel/AWS</div><span class="tag shared">SSR</span></div>
+        <div class="node support"><span class="ico">🔌</span><div class="nm">API Gateway</div><div class="desc">Kong / AWS API GW</div><span class="tag shared">RATE</span></div>
+      </div>
+      <div class="arrow v">↓</div>
+      <div class="row cols-4">
+        <div class="node support"><span class="ico">⚙</span><div class="nm">Backend Services</div><div class="desc">Node.js / Go microservices</div><span class="tag shared">API</span></div>
+        <div class="node support"><span class="ico">🗄</span><div class="nm">PostgreSQL</div><div class="desc">主資料 + 讀副本</div><span class="tag shared">DB</span></div>
+        <div class="node support"><span class="ico">⚡</span><div class="nm">Redis</div><div class="desc">快取 + 即時排行</div><span class="tag shared">CACHE</span></div>
+        <div class="node support"><span class="ico">📊</span><div class="nm">SubGraph</div><div class="desc">鏈上事件索引</div><span class="tag shared">INDEX</span></div>
+      </div>
+      <div class="arrow v">↓</div>
+      <div class="row cols-4">
+        <div class="node chain"><span class="ico">⛓</span><div class="nm">Polygon RPC</div><div class="desc">Alchemy / Infura / 自架節點</div><span class="tag chain">NODE</span></div>
+        <div class="node chain"><span class="ico">📦</span><div class="nm">IPFS Pinata</div><div class="desc">metadata 永久存儲</div><span class="tag chain">IPFS</span></div>
+        <div class="node chain"><span class="ico">🔐</span><div class="nm">Gnosis Safe</div><div class="desc">3/5 多簽錢包</div><span class="tag chain">SIGN</span></div>
+        <div class="node chain"><span class="ico">📡</span><div class="nm">監控 / 告警</div><div class="desc">Datadog / PagerDuty / Grafana</div><span class="tag shared">OBS</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="margin-top:40px;padding-top:20px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:11px">
+    Anydeee 技術架構圖 · v3.2.1 · 2026-04-27 ·
+    <a href="rwa-dex.html" style="color:var(--accent);margin:0 6px">用戶端</a> ·
+    <a href="admin.html" style="color:var(--red);margin:0 6px">管理後台</a>
+  </div>
+
+</div>
+
+</body>
+</html>

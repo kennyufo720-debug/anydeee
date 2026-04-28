@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anydeee — Real World Asset Exchange</title>
+<style>
+/* ── Reset & Base ────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --gold:     #c9a84c;
+  --gold-lt:  #e8cc7a;
+  --gold-dim: rgba(201,168,76,0.15);
+  --bg:       #080a0f;
+  --bg2:      #0d1018;
+  --bg3:      #111620;
+  --card:     rgba(13,16,24,0.8);
+  --border:   rgba(255,255,255,0.06);
+  --border2:  rgba(201,168,76,0.18);
+  --text:     #f0f4f8;
+  --muted:    #64748b;
+  --muted2:   #94a3b8;
+  --r:        14px;
+  --amber:    #f59e0b;
+  --blue:     #60a5fa;
+  --green:    #34d399;
+  --purple:   #c084fc;
+  --orange:   #fb923c;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', 'Inter', -apple-system, system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { text-decoration: none; color: inherit; }
+button { cursor: pointer; font: inherit; border: none; }
+
+/* ── Utility ─────────────────────────────────────── */
+.mono { font-family: 'SF Mono', 'Fira Code', monospace; }
+.gold { color: var(--gold); }
+.muted { color: var(--muted); }
+.label {
+  font-size: 10px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--muted);
+}
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 99px;
+  border: 1px solid var(--border2); color: var(--gold);
+  background: var(--gold-dim);
+}
+
+/* ── Noise texture overlay ───────────────────────── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ── Gradient orbs ───────────────────────────────── */
+.orb {
+  position: absolute; border-radius: 50%;
+  filter: blur(120px); pointer-events: none; z-index: 0;
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 64px;
+  display: flex; align-items: center;
+  padding: 0 48px;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s, border-color 0.4s, backdrop-filter 0.4s;
+}
+nav.scrolled {
+  background: rgba(8,10,15,0.88);
+  border-color: var(--border);
+  backdrop-filter: blur(20px);
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.nav-logo-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: linear-gradient(135deg, #c9a84c, #8a6820);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 900; color: #1c1917;
+  box-shadow: 0 0 24px rgba(201,168,76,0.3);
+}
+.nav-brand {
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: #f8fafc;
+}
+.nav-badge {
+  font-size: 8px; color: var(--muted);
+  border: 1px solid #1e293b; padding: 2px 7px; border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+.nav-links {
+  display: flex; gap: 32px; margin-left: 48px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px; color: var(--muted);
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.btn-ghost {
+  font-size: 13px; color: var(--muted2); padding: 8px 18px;
+  border-radius: 8px; transition: color 0.2s;
+}
+.btn-ghost:hover { color: var(--text); }
+.btn-gold {
+  font-size: 13px; font-weight: 600; padding: 9px 22px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #c9a84c 0%, #a07828 100%);
+  color: #1c1917;
+  box-shadow: 0 0 20px rgba(201,168,76,0.2);
+  transition: all 0.2s;
+}
+.btn-gold:hover {
+  box-shadow: 0 0 32px rgba(201,168,76,0.4);
+  transform: translateY(-1px);
+}
+
+/* ── HERO ────────────────────────────────────────── */
+.hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center;
+  padding: 120px 48px 80px;
+  overflow: hidden;
+}
+.hero-content {
+  position: relative; z-index: 2; max-width: 680px;
+}
+.hero-eyebrow {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 28px;
+}
+.hero-eyebrow-line {
+  width: 32px; height: 1px; background: var(--gold); opacity: 0.6;
+}
+.hero-eyebrow-text {
+  font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--gold);
+}
+.hero-heading {
+  font-size: clamp(40px, 5vw, 68px);
+  font-weight: 700; line-height: 1.08;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+  margin-bottom: 24px;
+}
+.hero-heading em {
+  font-style: normal;
+  background: linear-gradient(135deg, #e8cc7a, #c9a84c, #8a6820);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.hero-sub {
+  font-size: 17px; color: var(--muted2); line-height: 1.7;
+  max-width: 500px; margin-bottom: 40px;
+}
+.hero-cta {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px; font-weight: 600; padding: 14px 28px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #c9a84c 0%, #a07828 100%);
+  color: #1c1917;
+  box-shadow: 0 4px 32px rgba(201,168,76,0.25);
+  transition: all 0.25s;
+}
+.btn-primary:hover {
+  box-shadow: 0 8px 48px rgba(201,168,76,0.45);
+  transform: translateY(-2px);
+}
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--muted2); padding: 14px 28px;
+  border-radius: 10px; border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.btn-outline:hover {
+  border-color: rgba(255,255,255,0.15); color: var(--text);
+}
+.hero-trust {
+  display: flex; align-items: center; gap: 24px;
+  margin-top: 40px; padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.trust-item {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted);
+}
+.trust-icon { font-size: 14px; }
+
+/* Hero right — floating cards */
+.hero-visual {
+  position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+  width: 560px; height: 600px; z-index: 1;
+}
+.float-card {
+  position: absolute;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  backdrop-filter: blur(20px);
+  animation: float 6s ease-in-out infinite;
+  min-width: 220px;
+}
+.float-card:nth-child(1) { top: 60px;  left: 80px;  animation-delay: 0s; }
+.float-card:nth-child(2) { top: 220px; left: 20px;  animation-delay: -2s; border-color: var(--border2); }
+.float-card:nth-child(3) { top: 380px; left: 100px; animation-delay: -4s; }
+.float-card:nth-child(4) { top: 100px; right: 0;    animation-delay: -1s; }
+.float-card:nth-child(5) { top: 300px; right: 20px; animation-delay: -3s; }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+.fc-cat {
+  font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.fc-name { font-size: 13px; font-weight: 600; color: #f1f5f9; margin-bottom: 4px; }
+.fc-loc  { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+.fc-row  { display: flex; justify-content: space-between; gap: 12px; }
+.fc-stat-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.fc-stat-value { font-size: 14px; font-weight: 700; font-family: monospace; }
+
+/* Gradient mesh bg for hero */
+.hero-mesh {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(96,165,250,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 90% 10%, rgba(201,168,76,0.04) 0%, transparent 60%);
+}
+.hero-grid-lines {
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  opacity: 0.03;
+  background-image:
+    linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+/* ── STATS TICKER ────────────────────────────────── */
+.stats-bar {
+  position: relative; z-index: 2;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg2);
+  overflow: hidden;
+  height: 48px; display: flex; align-items: center;
+}
+.stats-scroll {
+  display: flex; gap: 60px; white-space: nowrap;
+  animation: scroll-left 30s linear infinite;
+}
+@keyframes scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.stat-item {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px;
+}
+.stat-sep { width: 1px; height: 20px; background: var(--border); }
+.stat-label-sm { color: var(--muted); }
+.stat-val-sm { font-family: monospace; font-weight: 600; color: var(--text); }
+.stat-green { color: var(--green); }
+
+/* ── SECTION SHARED ──────────────────────────────── */
+section { position: relative; z-index: 1; }
+.section-inner { max-width: 1200px; margin: 0 auto; padding: 100px 48px; }
+.section-header { text-align: center; margin-bottom: 64px; }
+.section-title {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 700; letter-spacing: -0.02em;
+  color: #f8fafc; line-height: 1.12;
+  margin-top: 14px;
+}
+.section-desc {
+  font-size: 16px; color: var(--muted2);
+  max-width: 520px; margin: 16px auto 0;
+  line-height: 1.7;
+}
+
+/* ── FEATURES ────────────────────────────────────── */
+.features { background: var(--bg); }
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+}
+.feature-cell {
+  padding: 40px 36px;
+  background: var(--bg2);
+  transition: background 0.3s;
+  position: relative; overflow: hidden;
+}
+.feature-cell:hover { background: var(--bg3); }
+.feature-cell::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.05) 0%, transparent 60%);
+  opacity: 0; transition: opacity 0.3s;
+}
+.feature-cell:hover::after { opacity: 1; }
+.feature-icon {
+  width: 48px; height: 48px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
+}
+.feature-title {
+  font-size: 16px; font-weight: 600; color: #f1f5f9;
+  margin-bottom: 10px;
+}
+.feature-desc {
+  font-size: 13px; color: var(--muted); line-height: 1.65;
+}
+
+/* ── ASSET SHOWCASE ──────────────────────────────── */
+.assets-section { background: var(--bg); }
+.asset-tabs {
+  display: flex; gap: 2px; justify-content: center;
+  margin-bottom: 48px;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 4px; width: fit-content; margin: 0 auto 48px;
+}
+.asset-tab {
+  font-size: 12px; padding: 8px 20px; border-radius: 8px;
+  color: var(--muted); transition: all 0.2s;
+  display: flex; align-items: center; gap: 6px;
+}
+.asset-tab.active {
+  background: rgba(201,168,76,0.12);
+  color: var(--gold);
+  border: 1px solid var(--border2);
+}
+.asset-tab:hover:not(.active) { color: var(--text); }
+.tab-dot { width: 6px; height: 6px; border-radius: 50%; }
+
+.assets-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.asset-card {
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  overflow: hidden;
+  transition: all 0.3s; cursor: pointer;
+  backdrop-filter: blur(20px);
+}
+.asset-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,168,76,0.1);
+}
+.ac-header {
+  padding: 22px 22px 16px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+}
+.ac-icon { font-size: 28px; margin-right: 12px; }
+.ac-info { flex: 1; }
+.ac-name { font-size: 14px; font-weight: 600; color: #f1f5f9; line-height: 1.3; }
+.ac-loc  { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.ac-badge {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 3px 9px; border-radius: 99px; border: 1px solid; flex-shrink: 0;
+}
+.ac-chart { padding: 0 22px 8px; }
+.ac-stats {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  padding: 12px 22px 20px; gap: 4px;
+}
+.ac-stat-label { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+.ac-stat-value { font-size: 14px; font-weight: 700; font-family: monospace; }
+
+/* ── HOW IT WORKS ────────────────────────────────── */
+.how { background: var(--bg2); }
+.steps {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 0; position: relative;
+}
+.steps::before {
+  content: '';
+  position: absolute; top: 48px; left: calc(16.7% + 24px); right: calc(16.7% + 24px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+}
+.step { padding: 0 32px; text-align: center; }
+.step-num {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 1px solid var(--border2);
+  background: var(--gold-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--gold);
+  margin: 0 auto 24px; position: relative; z-index: 1;
+}
+.step-title { font-size: 18px; font-weight: 600; color: #f1f5f9; margin-bottom: 12px; }
+.step-desc  { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+/* ── METRICS ─────────────────────────────────────── */
+.metrics { background: var(--bg); }
+.metrics-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; border: 1px solid var(--border);
+  border-radius: 20px; overflow: hidden;
+}
+.metric-cell {
+  background: var(--bg2); padding: 48px 36px; text-align: center;
+}
+.metric-value {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 800; font-family: monospace;
+  background: linear-gradient(135deg, #e8cc7a, #c9a84c);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  line-height: 1; margin-bottom: 8px;
+}
+.metric-label { font-size: 13px; color: var(--muted); }
+.metric-sub   { font-size: 11px; color: var(--muted); margin-top: 6px; opacity: 0.7; }
+
+/* ── COMPLIANCE ──────────────────────────────────── */
+.compliance { background: var(--bg2); }
+.compliance-inner { max-width: 1200px; margin: 0 auto; padding: 100px 48px; }
+.compliance-grid {
+  display: grid; grid-template-columns: 1fr 1.4fr;
+  gap: 80px; align-items: center;
+}
+.compliance-left {}
+.compliance-badges {
+  display: grid; grid-template-columns: repeat(2,1fr);
+  gap: 12px; margin-top: 40px;
+}
+.comp-badge {
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px 20px; background: var(--card);
+  display: flex; align-items: center; gap: 14px;
+}
+.comp-badge-icon { font-size: 22px; flex-shrink: 0; }
+.comp-badge-title { font-size: 13px; font-weight: 600; color: #f1f5f9; }
+.comp-badge-sub   { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.compliance-right {}
+.compliance-title {
+  font-size: clamp(24px, 2.8vw, 38px); font-weight: 700;
+  letter-spacing: -0.02em; color: #f8fafc; line-height: 1.15;
+  margin-top: 14px; margin-bottom: 20px;
+}
+.compliance-desc {
+  font-size: 15px; color: var(--muted2); line-height: 1.75;
+  margin-bottom: 32px;
+}
+.compliance-list {
+  display: flex; flex-direction: column; gap: 14px;
+  list-style: none;
+}
+.compliance-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 14px; color: var(--muted2); line-height: 1.5;
+}
+.check {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.3);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green); font-size: 11px; flex-shrink: 0; margin-top: 2px;
+}
+
+/* ── TESTIMONIALS ────────────────────────────────── */
+.testi { background: var(--bg); }
+.testi-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 20px;
+}
+.testi-card {
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 28px; background: var(--bg2);
+}
+.testi-stars { color: var(--gold); font-size: 13px; margin-bottom: 16px; }
+.testi-text {
+  font-size: 14px; color: var(--muted2); line-height: 1.7;
+  margin-bottom: 20px; padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; border: 1px solid var(--border);
+}
+.testi-name { font-size: 13px; font-weight: 600; color: #f1f5f9; }
+.testi-role { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+/* ── CTA BANNER ──────────────────────────────────── */
+.cta-banner { background: var(--bg2); }
+.cta-inner {
+  max-width: 1200px; margin: 0 auto; padding: 80px 48px;
+}
+.cta-box {
+  border-radius: 24px; padding: 64px;
+  border: 1px solid var(--border2);
+  background: linear-gradient(135deg, rgba(201,168,76,0.07) 0%, rgba(13,16,24,0.9) 60%);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-box::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 60%);
+}
+.cta-heading {
+  font-size: clamp(28px, 3.5vw, 48px); font-weight: 700;
+  letter-spacing: -0.02em; color: #f8fafc; line-height: 1.1;
+  position: relative; margin-bottom: 18px;
+}
+.cta-sub {
+  font-size: 16px; color: var(--muted2); max-width: 480px;
+  margin: 0 auto 36px; position: relative; line-height: 1.65;
+}
+.cta-actions {
+  display: flex; align-items: center; justify-content: center;
+  gap: 16px; position: relative; flex-wrap: wrap;
+}
+.cta-note { font-size: 12px; color: var(--muted); margin-top: 20px; position: relative; }
+
+/* ── FOOTER ──────────────────────────────────────── */
+footer {
+  background: var(--bg); border-top: 1px solid var(--border);
+  padding: 64px 48px 40px;
+}
+.footer-inner { max-width: 1200px; margin: 0 auto; }
+.footer-top {
+  display: grid; grid-template-columns: 1.5fr repeat(4,1fr);
+  gap: 48px; margin-bottom: 48px;
+}
+.footer-brand-desc {
+  font-size: 13px; color: var(--muted); line-height: 1.7; margin-top: 16px;
+  max-width: 260px;
+}
+.footer-col-title {
+  font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 20px;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+.footer-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
+.footer-links a:hover { color: var(--text); }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  border-top: 1px solid var(--border); padding-top: 32px;
+  font-size: 12px; color: var(--muted);
+}
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { color: var(--muted); transition: color 0.2s; }
+.footer-legal a:hover { color: var(--text); }
+
+/* ── SCROLL ANIM ─────────────────────────────────── */
+.reveal {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 1024px) {
+  .hero-visual { display: none; }
+  .features-grid { grid-template-columns: repeat(2,1fr); }
+  .assets-grid { grid-template-columns: repeat(2,1fr); }
+  .metrics-grid { grid-template-columns: repeat(2,1fr); }
+  .compliance-grid { grid-template-columns: 1fr; gap: 40px; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+}
+@media (max-width: 768px) {
+  nav { padding: 0 24px; }
+  .nav-links, .btn-ghost { display: none; }
+  .hero { padding: 100px 24px 60px; }
+  .section-inner { padding: 70px 24px; }
+  .features-grid { grid-template-columns: 1fr; }
+  .assets-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; gap: 32px; }
+  .steps::before { display: none; }
+  .metrics-grid { grid-template-columns: repeat(2,1fr); }
+  .testi-grid { grid-template-columns: 1fr; }
+  .cta-box { padding: 40px 24px; }
+  .footer-top { grid-template-columns: 1fr; }
+  footer { padding: 48px 24px 32px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-mark">A</div>
+    <span class="nav-brand">Anydeee</span>
+    <span class="nav-badge">PRIVATE</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#features">Platform</a></li>
+    <li><a href="#assets">Assets</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#compliance">Compliance</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-ghost">Sign In</button>
+    <button class="btn-gold">Open Account</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-grid-lines"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="hero-eyebrow-text">Real World Asset Exchange</span>
+    </div>
+
+    <h1 class="hero-heading">
+      Fan Co-Creation<br><em>Economy.</em>
+    </h1>
+
+    <p class="hero-sub">
+      Invest in tokenized real estate, sovereign bonds, commodities, and fine art through a single institutional-grade platform. Starting from $50.
+    </p>
+
+    <div class="hero-cta">
+      <a href="rwa-exchange.html" class="btn-primary">
+        Launch Exchange
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+      <button class="btn-outline">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/>
+        </svg>
+        Watch Demo
+      </button>
+    </div>
+
+    <div class="hero-trust">
+      <div class="trust-item">
+        <span class="trust-icon">🛡️</span>
+        <span>SEC Regulated</span>
+      </div>
+      <div class="trust-item" style="color: #334155">|</div>
+      <div class="trust-item">
+        <span class="trust-icon">🔒</span>
+        <span>Bank-Grade Custody</span>
+      </div>
+      <div class="trust-item" style="color: #334155">|</div>
+      <div class="trust-item">
+        <span class="trust-icon">✓</span>
+        <span>SOC 2 Type II</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating asset cards -->
+  <div class="hero-visual">
+    <!-- Card 1 -->
+    <div class="float-card">
+      <div class="fc-cat" style="color:#f59e0b">● Real Estate</div>
+      <div class="fc-name">Central Plaza Office</div>
+      <div class="fc-loc">Hong Kong, HK</div>
+      <div class="fc-row">
+        <div>
+          <div class="fc-stat-label">Price</div>
+          <div class="fc-stat-value" style="color:#f1f5f9">$1,248.50</div>
+        </div>
+        <div>
+          <div class="fc-stat-label">Yield</div>
+          <div class="fc-stat-value" style="color:#34d399">5.4%</div>
+        </div>
+        <div>
+          <div class="fc-stat-label">24h</div>
+          <div class="fc-stat-value" style="color:#f59e0b">+0.82%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="float-card" style="border-color: rgba(201,168,76,0.25); box-shadow: 0 0 40px rgba(201,168,76,0.08);">
+      <div class="fc-cat" style="color:#c084fc">● Art & Collectibles</div>
+      <div class="fc-name">Blue Chip Art Fund I</div>
+      <div class="fc-loc">Geneva, Switzerland</div>
+      <div class="fc-row">
+        <div>
+          <div class="fc-stat-label">Price</div>
+          <div class="fc-stat-value" style="color:#f1f5f9">$8,750.00</div>
+        </div>
+        <div>
+          <div class="fc-stat-label">AUM</div>
+          <div class="fc-stat-value" style="color:#f1f5f9">$320M</div>
+        </div>
+        <div>
+          <div class="fc-stat-label">24h</div>
+          <div class="fc-stat-value" style="color:#f59e0b">+2.15%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="float-card">
+      <div class="fc-cat" style="color:#60a5fa">● Fixed Income</div>
+      <div class="fc-name">US Treasury Bond 2030</div>
+      <div class="fc-loc">United States</div>
+      <div class="fc-row">
+        <div>
+          <div class="fc-stat-label">Price</div>
+          <div class="fc-stat-value" style="color:#f1f5f9">$987.20</div>
+        </div>
+        <div>
+          <div class="fc-stat-label">Yield</div>
+          <div class="fc-stat-value" style="color:#34d399">4.28%</div>
+        </div>
+        <div>
+          <div class="fc-stat-label">Liq.</div>
+          <div class="fc-stat-value" style="color:#f1f5f9">99%</div>
+        </div>
+      </div>
+    </div>
+    <!-- Card 4 – mini portfolio snapshot -->
+    <div class="float-card" style="min-width:180px; padding:14px 16px;">
+      <div class="fc-cat" style="color:#34d399; margin-bottom:8px;">● Portfolio</div>
+      <div style="font-size:20px;font-weight:800;font-family:monospace;color:#f8fafc;margin-bottom:2px;">$248,740</div>
+      <div style="font-size:11px;color:#34d399;margin-bottom:14px;">▲ +3.24% this month</div>
+      <div style="height:3px;border-radius:99px;overflow:hidden;display:flex;gap:1px;margin-bottom:12px;">
+        <div style="background:#f59e0b;width:42%"></div>
+        <div style="background:#60a5fa;width:28%"></div>
+        <div style="background:#34d399;width:15%"></div>
+        <div style="background:#c084fc;width:10%"></div>
+        <div style="background:#fb923c;width:5%"></div>
+      </div>
+      <div style="font-size:10px;color:#475569">7 assets · 5 classes</div>
+    </div>
+    <!-- Card 5 – live tick -->
+    <div class="float-card" style="min-width:180px; padding:14px 16px;">
+      <div class="fc-cat" style="margin-bottom:10px;">Live Markets</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;">
+          <span style="color:#64748b;font-family:monospace">XAUGLD</span>
+          <span style="color:#f1f5f9;font-family:monospace">$3,340.80</span>
+          <span style="color:#f59e0b">▲1.24%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;">
+          <span style="color:#64748b;font-family:monospace">SGREIT</span>
+          <span style="color:#f1f5f9;font-family:monospace">$542.30</span>
+          <span style="color:#64748b">▼0.31%</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;">
+          <span style="color:#64748b;font-family:monospace">EURAIL</span>
+          <span style="color:#f1f5f9;font-family:monospace">$2,105.60</span>
+          <span style="color:#f59e0b">▲0.45%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STATS TICKER ── -->
+<div class="stats-bar">
+  <div class="stats-scroll">
+    <!-- duplicated for infinite scroll -->
+    <div class="stat-item"><span class="stat-label-sm">Total Assets Tokenized</span><span class="stat-val-sm">$2.4T</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Registered Investors</span><span class="stat-val-sm">142,000+</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Assets Listed</span><span class="stat-val-sm">184</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Avg. Liquidity</span><span class="stat-green">94.2%</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Settlement Time</span><span class="stat-val-sm">T+0</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Countries Supported</span><span class="stat-val-sm">68</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">24h Volume</span><span class="stat-val-sm">$1.2B</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Total Assets Tokenized</span><span class="stat-val-sm">$2.4T</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Registered Investors</span><span class="stat-val-sm">142,000+</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Assets Listed</span><span class="stat-val-sm">184</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Avg. Liquidity</span><span class="stat-green">94.2%</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Settlement Time</span><span class="stat-val-sm">T+0</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">Countries Supported</span><span class="stat-val-sm">68</span></div>
+    <div class="stat-sep"></div>
+    <div class="stat-item"><span class="stat-label-sm">24h Volume</span><span class="stat-val-sm">$1.2B</span></div>
+  </div>
+</div>
+
+<!-- ── FEATURES ── -->
+<section class="features" id="features">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="tag">Platform</div>
+      <h2 class="section-title">Built for serious investors,<br>not speculators.</h2>
+      <p class="section-desc">Every feature is designed around institutional-grade reliability, transparency, and access to assets that were previously out of reach.</p>
+    </div>
+    <div class="features-grid reveal">
+      <div class="feature-cell">
+        <div class="feature-icon">🏛️</div>
+        <div class="feature-title">Institutional Custody</div>
+        <div class="feature-desc">All assets are held in segregated accounts with licensed custodians. Bank-grade security with full insurance coverage up to $500M.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Real-Time Settlement</div>
+        <div class="feature-desc">T+0 atomic settlement on-chain. No more waiting 3 business days — transactions confirm in seconds with full transparency.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">🌍</div>
+        <div class="feature-title">Global Asset Access</div>
+        <div class="feature-desc">Access prime real estate in Hong Kong, bonds from Tokyo, gold from Zurich, and art from Geneva — all through one account.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Portfolio Analytics</div>
+        <div class="feature-desc">Real-time yield tracking, correlation analysis, and risk attribution across your entire RWA portfolio with export-ready reports.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">🔑</div>
+        <div class="feature-title">Fractional Ownership</div>
+        <div class="feature-desc">Own a fraction of a $2.8B office tower or a Basquiat masterwork from as little as $50. Genuine co-ownership, not a derivative.</div>
+      </div>
+      <div class="feature-cell">
+        <div class="feature-icon">🤝</div>
+        <div class="feature-title">Dedicated Relationship</div>
+        <div class="feature-desc">Every client above $50K AUM receives a dedicated relationship manager and access to exclusive pre-IPO asset offerings.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ASSET SHOWCASE ── -->
+<section class="assets-section" id="assets">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="tag">Asset Classes</div>
+      <h2 class="section-title">Real assets. Real returns.</h2>
+      <p class="section-desc">Five distinct asset classes, each independently tokenized, audited, and backed by physical ownership documentation.</p>
+    </div>
+
+    <div class="asset-tabs reveal">
+      <button class="asset-tab active" onclick="filterAssets('all', this)">
+        <span class="tab-dot" style="background:#94a3b8"></span> All Assets
+      </button>
+      <button class="asset-tab" onclick="filterAssets('re', this)">
+        <span class="tab-dot" style="background:#f59e0b"></span> Real Estate
+      </button>
+      <button class="asset-tab" onclick="filterAssets('fi', this)">
+        <span class="tab-dot" style="background:#60a5fa"></span> Fixed Income
+      </button>
+      <button class="asset-tab" onclick="filterAssets('co', this)">
+        <span class="tab-dot" style="background:#34d399"></span> Commodities
+      </button>
+    </div>
+
+    <div class="assets-grid" id="assets-grid">
+      <!-- Real Estate -->
+      <div class="asset-card" data-cat="re">
+        <div class="ac-header">
+          <span class="ac-icon">🏢</span>
+          <div class="ac-info">
+            <div class="ac-name">Central Plaza Office Tower</div>
+            <div class="ac-loc">Hong Kong, HK · Grade-A Commercial</div>
+          </div>
+          <span class="ac-badge" style="color:#f59e0b;border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08)">Real Estate</span>
+        </div>
+        <div class="ac-chart">
+          <svg viewBox="0 0 300 50" style="width:100%;height:44px" preserveAspectRatio="none">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.2"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 35 L15 30 L30 32 L45 25 L60 28 L75 20 L90 22 L105 16 L120 18 L135 12 L150 15 L165 10 L180 13 L195 8 L210 11 L225 6 L240 9 L255 5 L270 8 L285 4 L300 6 L300 50 L0 50 Z" fill="url(#g1)"/>
+            <path d="M0 35 L15 30 L30 32 L45 25 L60 28 L75 20 L90 22 L105 16 L120 18 L135 12 L150 15 L165 10 L180 13 L195 8 L210 11 L225 6 L240 9 L255 5 L270 8 L285 4 L300 6" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="ac-stats">
+          <div><div class="ac-stat-label">Token Price</div><div class="ac-stat-value" style="color:#f1f5f9">$1,248.50</div></div>
+          <div><div class="ac-stat-label">Yield / yr</div><div class="ac-stat-value" style="color:#34d399">5.40%</div></div>
+          <div><div class="ac-stat-label">24h</div><div class="ac-stat-value" style="color:#f59e0b">+0.82%</div></div>
+        </div>
+      </div>
+
+      <!-- Art -->
+      <div class="asset-card" data-cat="art">
+        <div class="ac-header">
+          <span class="ac-icon">🎨</span>
+          <div class="ac-info">
+            <div class="ac-name">Blue Chip Art Fund I</div>
+            <div class="ac-loc">Geneva, Switzerland · Post-War Masters</div>
+          </div>
+          <span class="ac-badge" style="color:#c084fc;border-color:rgba(192,132,252,0.3);background:rgba(192,132,252,0.08)">Art</span>
+        </div>
+        <div class="ac-chart">
+          <svg viewBox="0 0 300 50" style="width:100%;height:44px" preserveAspectRatio="none">
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c084fc" stop-opacity="0.2"/><stop offset="100%" stop-color="#c084fc" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 40 L15 38 L30 36 L45 34 L60 38 L75 30 L90 32 L105 25 L120 28 L135 20 L150 22 L165 15 L180 18 L195 10 L210 14 L225 8 L240 12 L255 6 L270 9 L285 4 L300 7 L300 50 L0 50 Z" fill="url(#g2)"/>
+            <path d="M0 40 L15 38 L30 36 L45 34 L60 38 L75 30 L90 32 L105 25 L120 28 L135 20 L150 22 L165 15 L180 18 L195 10 L210 14 L225 8 L240 12 L255 6 L270 9 L285 4 L300 7" fill="none" stroke="#c084fc" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="ac-stats">
+          <div><div class="ac-stat-label">Token Price</div><div class="ac-stat-value" style="color:#f1f5f9">$8,750.00</div></div>
+          <div><div class="ac-stat-label">Total AUM</div><div class="ac-stat-value" style="color:#f1f5f9">$320M</div></div>
+          <div><div class="ac-stat-label">24h</div><div class="ac-stat-value" style="color:#f59e0b">+2.15%</div></div>
+        </div>
+      </div>
+
+      <!-- Gold -->
+      <div class="asset-card" data-cat="co">
+        <div class="ac-header">
+          <span class="ac-icon">⚜️</span>
+          <div class="ac-info">
+            <div class="ac-name">Physical Gold Reserve</div>
+            <div class="ac-loc">Zurich, Switzerland · Allocated Bars</div>
+          </div>
+          <span class="ac-badge" style="color:#34d399;border-color:rgba(52,211,153,0.3);background:rgba(52,211,153,0.08)">Commodities</span>
+        </div>
+        <div class="ac-chart">
+          <svg viewBox="0 0 300 50" style="width:100%;height:44px" preserveAspectRatio="none">
+            <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.2"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 32 L15 35 L30 28 L45 30 L60 22 L75 26 L90 18 L105 22 L120 15 L135 19 L150 12 L165 16 L180 10 L195 14 L210 8 L225 12 L240 7 L255 11 L270 5 L285 8 L300 4 L300 50 L0 50 Z" fill="url(#g3)"/>
+            <path d="M0 32 L15 35 L30 28 L45 30 L60 22 L75 26 L90 18 L105 22 L120 15 L135 19 L150 12 L165 16 L180 10 L195 14 L210 8 L225 12 L240 7 L255 11 L270 5 L285 8 L300 4" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="ac-stats">
+          <div><div class="ac-stat-label">Token Price</div><div class="ac-stat-value" style="color:#f1f5f9">$3,340.80</div></div>
+          <div><div class="ac-stat-label">Liquidity</div><div class="ac-stat-value" style="color:#f1f5f9">97%</div></div>
+          <div><div class="ac-stat-label">24h</div><div class="ac-stat-value" style="color:#f59e0b">+1.24%</div></div>
+        </div>
+      </div>
+
+      <!-- Treasury -->
+      <div class="asset-card" data-cat="fi">
+        <div class="ac-header">
+          <span class="ac-icon">📜</span>
+          <div class="ac-info">
+            <div class="ac-name">US Treasury Bond 2030</div>
+            <div class="ac-loc">United States · 10-Year Sovereign</div>
+          </div>
+          <span class="ac-badge" style="color:#60a5fa;border-color:rgba(96,165,250,0.3);background:rgba(96,165,250,0.08)">Fixed Income</span>
+        </div>
+        <div class="ac-chart">
+          <svg viewBox="0 0 300 50" style="width:100%;height:44px" preserveAspectRatio="none">
+            <defs><linearGradient id="g4" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#60a5fa" stop-opacity="0.15"/><stop offset="100%" stop-color="#60a5fa" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 28 L30 26 L60 24 L90 27 L120 23 L150 22 L180 20 L210 21 L240 19 L270 18 L300 17 L300 50 L0 50 Z" fill="url(#g4)"/>
+            <path d="M0 28 L30 26 L60 24 L90 27 L120 23 L150 22 L180 20 L210 21 L240 19 L270 18 L300 17" fill="none" stroke="#60a5fa" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="ac-stats">
+          <div><div class="ac-stat-label">Token Price</div><div class="ac-stat-value" style="color:#f1f5f9">$987.20</div></div>
+          <div><div class="ac-stat-label">Yield / yr</div><div class="ac-stat-value" style="color:#34d399">4.28%</div></div>
+          <div><div class="ac-stat-label">Liquidity</div><div class="ac-stat-value" style="color:#f1f5f9">99%</div></div>
+        </div>
+      </div>
+
+      <!-- Singapore REIT -->
+      <div class="asset-card" data-cat="re">
+        <div class="ac-header">
+          <span class="ac-icon">🏙️</span>
+          <div class="ac-info">
+            <div class="ac-name">Singapore Marina REIT</div>
+            <div class="ac-loc">Singapore · 12 Prime Properties</div>
+          </div>
+          <span class="ac-badge" style="color:#f59e0b;border-color:rgba(245,158,11,0.3);background:rgba(245,158,11,0.08)">Real Estate</span>
+        </div>
+        <div class="ac-chart">
+          <svg viewBox="0 0 300 50" style="width:100%;height:44px" preserveAspectRatio="none">
+            <defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f59e0b" stop-opacity="0.15"/><stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 20 L30 22 L60 25 L90 20 L120 28 L150 24 L180 30 L210 26 L240 32 L270 28 L300 35 L300 50 L0 50 Z" fill="url(#g5)"/>
+            <path d="M0 20 L30 22 L60 25 L90 20 L120 28 L150 24 L180 30 L210 26 L240 32 L270 28 L300 35" fill="none" stroke="#64748b" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="ac-stats">
+          <div><div class="ac-stat-label">Token Price</div><div class="ac-stat-value" style="color:#f1f5f9">$542.30</div></div>
+          <div><div class="ac-stat-label">Yield / yr</div><div class="ac-stat-value" style="color:#34d399">6.80%</div></div>
+          <div><div class="ac-stat-label">24h</div><div class="ac-stat-value" style="color:#64748b">−0.31%</div></div>
+        </div>
+      </div>
+
+      <!-- Infra -->
+      <div class="asset-card" data-cat="infra">
+        <div class="ac-header">
+          <span class="ac-icon">🚄</span>
+          <div class="ac-info">
+            <div class="ac-name">European Rail Network</div>
+            <div class="ac-loc">Germany / France · 35-yr Concession</div>
+          </div>
+          <span class="ac-badge" style="color:#fb923c;border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.08)">Infrastructure</span>
+        </div>
+        <div class="ac-chart">
+          <svg viewBox="0 0 300 50" style="width:100%;height:44px" preserveAspectRatio="none">
+            <defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fb923c" stop-opacity="0.15"/><stop offset="100%" stop-color="#fb923c" stop-opacity="0"/></linearGradient></defs>
+            <path d="M0 36 L30 32 L60 34 L90 28 L120 30 L150 22 L180 25 L210 18 L240 20 L270 14 L300 12 L300 50 L0 50 Z" fill="url(#g6)"/>
+            <path d="M0 36 L30 32 L60 34 L90 28 L120 30 L150 22 L180 25 L210 18 L240 20 L270 14 L300 12" fill="none" stroke="#fb923c" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="ac-stats">
+          <div><div class="ac-stat-label">Token Price</div><div class="ac-stat-value" style="color:#f1f5f9">$2,105.60</div></div>
+          <div><div class="ac-stat-label">Yield / yr</div><div class="ac-stat-value" style="color:#34d399">5.90%</div></div>
+          <div><div class="ac-stat-label">24h</div><div class="ac-stat-value" style="color:#f59e0b">+0.45%</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px;" class="reveal">
+      <a href="rwa-exchange.html" class="btn-outline">
+        View All 184 Assets
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ── -->
+<section class="how" id="how">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="tag">Process</div>
+      <h2 class="section-title">From signup to ownership<br>in under 24 hours.</h2>
+    </div>
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Create & Verify</div>
+        <div class="step-desc">Open your account with a government ID and proof of address. KYC verification completes in minutes via our AI-assisted onboarding flow.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Browse & Select</div>
+        <div class="step-desc">Explore our curated catalogue of 184 tokenized real-world assets. Filter by yield, liquidity, geography, and asset class to match your strategy.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Invest & Earn</div>
+        <div class="step-desc">Fund your account via bank transfer, stablecoin, or crypto. Positions settle T+0 on-chain. Yields distributed automatically to your wallet.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── METRICS ── -->
+<section class="metrics">
+  <div class="section-inner" style="padding-top:60px;padding-bottom:100px;">
+    <div class="metrics-grid reveal">
+      <div class="metric-cell">
+        <div class="metric-value">$2.4T</div>
+        <div class="metric-label">Assets Under Tokenization</div>
+        <div class="metric-sub">Across 5 asset classes</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-value">142K+</div>
+        <div class="metric-label">Verified Investors</div>
+        <div class="metric-sub">In 68 countries</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-value">$1.2B</div>
+        <div class="metric-label">Daily Trading Volume</div>
+        <div class="metric-sub">30-day rolling average</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-value">T+0</div>
+        <div class="metric-label">Settlement Speed</div>
+        <div class="metric-sub">Real-time, 24/7/365</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── COMPLIANCE ── -->
+<section class="compliance" id="compliance">
+  <div class="compliance-inner">
+    <div class="compliance-grid">
+      <div class="compliance-left reveal">
+        <div class="tag">Trust & Safety</div>
+        <h2 class="compliance-title">Regulated. Audited. Insured.</h2>
+        <p class="compliance-desc">We operate under the strictest regulatory frameworks across multiple jurisdictions, with full transparency into every asset's legal structure and custody arrangement.</p>
+        <ul class="compliance-list">
+          <li><div class="check">✓</div><span>All assets held in <strong style="color:#f1f5f9">legally isolated SPVs</strong> — your holdings are protected even if Anydeee ceases to operate.</span></li>
+          <li><div class="check">✓</div><span>Every asset undergoes <strong style="color:#f1f5f9">quarterly third-party audits</strong> by Big Four firms verifying physical backing.</span></li>
+          <li><div class="check">✓</div><span>Investor funds are <strong style="color:#f1f5f9">insured up to $500M</strong> through Lloyd's of London and Swiss Re.</span></li>
+          <li><div class="check">✓</div><span>Full on-chain transparency — every transaction is verifiable on public blockchain, forever.</span></li>
+        </ul>
+      </div>
+      <div class="compliance-right reveal">
+        <div class="compliance-badges">
+          <div class="comp-badge">
+            <span class="comp-badge-icon">🛡️</span>
+            <div>
+              <div class="comp-badge-title">SEC Registered</div>
+              <div class="comp-badge-sub">Investment Adviser · #801-XXXXX</div>
+            </div>
+          </div>
+          <div class="comp-badge">
+            <span class="comp-badge-icon">🏦</span>
+            <div>
+              <div class="comp-badge-title">MAS Licensed</div>
+              <div class="comp-badge-sub">Singapore · Capital Markets</div>
+            </div>
+          </div>
+          <div class="comp-badge">
+            <span class="comp-badge-icon">🔒</span>
+            <div>
+              <div class="comp-badge-title">SOC 2 Type II</div>
+              <div class="comp-badge-sub">Annual KPMG Attestation</div>
+            </div>
+          </div>
+          <div class="comp-badge">
+            <span class="comp-badge-icon">✅</span>
+            <div>
+              <div class="comp-badge-title">ISO 27001</div>
+              <div class="comp-badge-sub">Information Security Certified</div>
+            </div>
+          </div>
+          <div class="comp-badge">
+            <span class="comp-badge-icon">🌐</span>
+            <div>
+              <div class="comp-badge-title">FATF Compliant</div>
+              <div class="comp-badge-sub">AML/KYC Travel Rule</div>
+            </div>
+          </div>
+          <div class="comp-badge">
+            <span class="comp-badge-icon">🏛️</span>
+            <div>
+              <div class="comp-badge-title">FCA Authorised</div>
+              <div class="comp-badge-sub">UK · Financial Services</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testi">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <div class="tag">Investors</div>
+      <h2 class="section-title">Trusted by leading investors.</h2>
+    </div>
+    <div class="testi-grid reveal">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"Finally a platform that lets me access Hong Kong commercial real estate without setting up a foreign entity. The yield is real and the settlement is instant."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(245,158,11,0.1);">👨‍💼</div>
+          <div>
+            <div class="testi-name">Marcus H.</div>
+            <div class="testi-role">Family Office · Zurich</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"The compliance framework gave our investment committee confidence. We've allocated $12M across real estate and infrastructure on Anydeee. The reporting is exceptional."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(96,165,250,0.1);">👩‍💼</div>
+          <div>
+            <div class="testi-name">Priya N.</div>
+            <div class="testi-role">CIO, Sovereign Fund · Singapore</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-text">"I started with $500 in the Gold Reserve token. 18 months later I have a diversified portfolio across 6 asset classes. The fractional ownership model is brilliant."</div>
+        <div class="testi-author">
+          <div class="testi-avatar" style="background:rgba(52,211,153,0.1);">👨‍💻</div>
+          <div>
+            <div class="testi-name">David K.</div>
+            <div class="testi-role">Individual Investor · London</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA ── -->
+<section class="cta-banner">
+  <div class="cta-inner">
+    <div class="cta-box reveal">
+      <div class="cta-heading">
+        Your portfolio.<br>The whole world.
+      </div>
+      <p class="cta-sub">Join 142,000 investors already diversified into real-world assets on Anydeee. Open your account in minutes.</p>
+      <div class="cta-actions">
+        <a href="rwa-exchange.html" class="btn-primary" style="font-size:15px;padding:16px 36px;">
+          Start Investing
+          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+          </svg>
+        </a>
+        <button class="btn-outline" style="font-size:15px;padding:16px 32px;">Talk to an Advisor</button>
+      </div>
+      <p class="cta-note">No minimum investment · Regulated in 6 jurisdictions · Cancel anytime</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div>
+        <div class="nav-logo" style="margin-bottom:0">
+          <div class="nav-logo-mark">A</div>
+          <span class="nav-brand">Anydeee</span>
+        </div>
+        <p class="footer-brand-desc">The institutional-grade platform for tokenized real world assets. Own more. Risk less.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="rwa-exchange.html">Exchange</a></li>
+          <li><a href="#">Portfolio</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Custody</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Assets</div>
+        <ul class="footer-links">
+          <li><a href="#">Real Estate</a></li>
+          <li><a href="#">Fixed Income</a></li>
+          <li><a href="#">Commodities</a></li>
+          <li><a href="#">Art & Collectibles</a></li>
+          <li><a href="#">Infrastructure</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Risk Disclosure</a></li>
+          <li><a href="#">Regulatory</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Anydeee Pte. Ltd. · All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Scroll nav ──
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+// ── Scroll reveal ──
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), 80);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+reveals.forEach(el => observer.observe(el));
+
+// ── Asset tab filter ──
+function filterAssets(cat, btn) {
+  document.querySelectorAll('.asset-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.asset-card').forEach(card => {
+    const match = cat === 'all' || card.dataset.cat === cat;
+    card.style.display = match ? '' : 'none';
+  });
+}
+
+// ── Smooth scroll ──
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>

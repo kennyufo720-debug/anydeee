@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "treegen",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "/Users/Alan.Yo/Desktop/soul", "-l", "5500", "--no-clipboard"],
+      "port": 5500
+    },
+    {
+      "name": "ticketing",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "/Users/Alan.Yo/Desktop/ticketing", "run", "dev"],
+      "port": 3001
+    },
+    {
+      "name": "rwa-exchange",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["serve", "-s", "/Users/Alan.Yo/Library/Application Support/Claude/local-agent-mode-sessions/skills-plugin/68b6a3c6-f027-4a6c-9522-266ff6ecbc56/4179abc6-7c81-450a-adb5-6f5890a5f561/skills/web-artifacts-builder/rwa-exchange", "-l", "4200", "--no-clipboard"],
+      "port": 4200
+    }
+  ]
+}
