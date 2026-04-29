@@ -3050,10 +3050,12 @@
   </div>
   <div class="sweep-bar-actions">
     <div class="sweep-quick-btns">
-      <span style="font-size:11px;color:#93c5fd;margin-right:2px">快速選:</span>
-      <button class="sweep-quick-btn" onclick="sweepFloor(20)">批量 20</button>
-      <button class="sweep-quick-btn" onclick="sweepFloor(50)">批量 50</button>
-      <button class="sweep-quick-btn" onclick="sweepFloor(100)">批量 100</button>
+      <span style="font-size:11px;color:#93c5fd;margin-right:4px">數量:</span>
+      <input id="sweepQtyInput" type="number" min="1" max="1000" placeholder="1–1000"
+        style="width:80px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:6px;padding:4px 8px;color:#fff;font-size:12px;outline:none;text-align:center"
+        oninput="this.value=Math.min(1000,Math.max(1,parseInt(this.value)||1))"
+        onkeydown="if(event.key==='Enter')sweepFloor(parseInt(this.value)||1)" />
+      <button class="sweep-quick-btn" onclick="sweepFloor(parseInt(document.getElementById('sweepQtyInput').value)||1)">套用</button>
       <button class="sweep-quick-btn" onclick="sweepClearCart()">清除</button>
     </div>
     <button class="btn-sweep-cancel" onclick="toggleSweepMode()">取消</button>
