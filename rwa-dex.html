@@ -473,23 +473,36 @@
   .pnl-spark{height:36px;background:#15100b;border-radius:6px;margin-bottom:10px;position:relative;overflow:hidden}
   .pnl-spark svg{width:100%;height:100%}
 
-  /* EARN (賺幣) */
-  .earn-hero{padding:32px 20px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(217,119,87,.08),rgba(34,197,94,.06))}
-  .earn-hero h1{margin:0 0 6px;font-size:24px}
-  .earn-hero p{margin:0;color:var(--muted)}
-  .earn-tabs{display:flex;gap:0;padding:0 20px;border-bottom:1px solid var(--line);background:var(--panel-2);overflow-x:auto}
-  .earn-tabs .et{padding:14px 18px;font-size:13px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;font-weight:600;background:transparent;white-space:nowrap}
-  .earn-tabs .et.active{color:var(--text);border-bottom-color:var(--accent)}
-  .earn-section{display:none;padding:20px}
-  .earn-section.active{display:block}
-  .earn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
-  .earn-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;position:relative;overflow:hidden}
-  .earn-card.featured{border-color:var(--accent);background:linear-gradient(135deg,var(--panel),rgba(217,119,87,.04))}
-  .earn-card.featured::before{content:"🔥 推薦";position:absolute;top:8px;right:8px;background:var(--accent);color:#1a0a02;font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px}
-  .earn-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .earn-head .icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:14px}
-  .earn-name{font-weight:700;font-size:15px}
-  .earn-type{color:var(--muted);font-size:11px}
+  /* PLEDGE (質押借款) */
+  .pledge-hero{padding:28px 20px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(34,197,94,.07),rgba(217,119,87,.05))}
+  .pledge-hero h1{margin:0 0 6px;font-size:24px}
+  .pledge-hero p{margin:0 0 16px;color:var(--muted);max-width:600px}
+  .pledge-hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+  .pledge-body{padding:20px;max-width:820px}
+  .pledge-step-wrap{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px}
+  .pledge-step-head{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:700;margin-bottom:16px}
+  .step-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+  .pledge-asset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .pledge-asset-card{border:2px solid var(--line);border-radius:10px;padding:16px;cursor:pointer;transition:all .15s;position:relative;background:var(--panel-2)}
+  .pledge-asset-card:hover{border-color:var(--accent);background:rgba(217,119,87,.04)}
+  .pledge-asset-card.selected{border-color:var(--green)!important;background:rgba(34,197,94,.06)!important}
+  .pledge-asset-card.locked{cursor:not-allowed;border-color:#facc15!important;background:rgba(250,204,21,.04)!important}
+  .pledge-asset-card.locked::after{content:"🔒 鎖倉中";position:absolute;top:8px;right:8px;font-size:10px;background:#facc15;color:#000;padding:2px 7px;border-radius:4px;font-weight:700}
+  .pac-check{position:absolute;top:10px;right:10px;width:20px;height:20px;border-radius:50%;border:2px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:11px;background:transparent}
+  .pledge-asset-card.selected .pac-check{background:var(--green);border-color:var(--green);color:#fff}
+  .pac-icon{font-size:32px;margin-bottom:8px}
+  .pac-name{font-size:14px;font-weight:700;margin-bottom:3px}
+  .pac-count{font-size:11px;color:var(--muted);margin-bottom:8px}
+  .pac-val{font-size:20px;font-weight:700}
+  .pac-unit{font-size:10px;color:var(--muted);margin-top:1px}
+  .pledge-collateral-box{background:#15100b;border-radius:8px;padding:14px;margin-bottom:16px}
+  .pcb-row{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid var(--line)}
+  .pcb-row:last-child{border-bottom:none}
+  .pcb-row.total{font-size:14px;font-weight:700;padding-top:10px;margin-top:4px}
+  .pledge-loan-row{display:flex;align-items:center;gap:12px;padding:14px;background:#15100b;border-radius:10px;margin-bottom:8px;border:1px solid var(--line)}
+  .plr-info{flex:1}
+  .plr-amount{font-size:16px;font-weight:700;color:var(--accent);margin-bottom:3px}
+  .plr-meta{font-size:11px;color:var(--muted);line-height:1.6}
   .apy-display{font-size:30px;font-weight:800;color:var(--green);font-family:"SF Mono",monospace;margin:8px 0;letter-spacing:-1px}
   .apy-display .pct{font-size:18px}
   .apy-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;margin-top:-4px}
@@ -1982,32 +1995,62 @@
   <div class="traders-grid" id="tradersGrid"></div>
 </div>
 
-<!-- ===== EARN (賺幣) ===== -->
+<!-- ===== EARN (質押借款) ===== -->
 <div class="page" id="page-earn">
-  <div class="earn-hero">
-    <h1>質押中心 — 讓你的資產為你工作</h1>
-    <p>活期質押、定期質押、雙幣質押、結構化產品、流動性質押挖礦。一鍵存入，每日結算收益直接進錢包。</p>
-    <div class="stats-row" style="margin-top:16px">
-      <div class="stat"><div class="lab">理財總鎖倉</div><div class="val num">$1.42B</div><div class="delta up">+8.2% (30d)</div></div>
-      <div class="stat"><div class="lab">最高 APY</div><div class="val num up">128.4%</div><div class="delta">CARB 流動性挖礦</div></div>
-      <div class="stat"><div class="lab">已支付收益</div><div class="val num">$48.2M</div><div class="delta">累計</div></div>
-      <div class="stat"><div class="lab">活躍理財用戶</div><div class="val num">28,420</div><div class="delta up">+482 (7d)</div></div>
+  <div class="pledge-hero">
+    <h1>質押借款</h1>
+    <p>用你的 RWA 資產作為抵押，一鍵借出 ANYU。最高可借資產估值的 50%，年化利率 8.5%，隨時可還款解鎖。</p>
+    <div class="pledge-hero-stats">
+      <div class="stat"><div class="lab">我的 RWA 總估值</div><div class="val num" id="pledgeTotalVal">—</div></div>
+      <div class="stat"><div class="lab">最大可借</div><div class="val num up" id="pledgeMaxBorrow">—</div></div>
+      <div class="stat"><div class="lab">已借款</div><div class="val num" id="pledgeBorrowed">0 ANYU</div></div>
+      <div class="stat"><div class="lab">鎖倉中資產</div><div class="val num" id="pledgeLockedCount">0 件</div></div>
     </div>
   </div>
-  <div class="earn-tabs">
-    <button class="et active" data-earn="simple">活期賺幣</button>
-    <button class="et" data-earn="staking">質押挖礦</button>
-    <button class="et" data-earn="dual">雙幣投資</button>
-    <button class="et" data-earn="structured">結構化產品</button>
-    <button class="et" data-earn="loan">借貸</button>
-    <button class="et" data-earn="liquidity">流動性挖礦</button>
+  <div class="pledge-body">
+
+    <!-- Step 1: 選擇質押資產 -->
+    <div class="pledge-step-wrap">
+      <div class="pledge-step-head"><span class="step-num">1</span>選擇質押資產</div>
+      <div class="pledge-asset-grid" id="pledgeAssetGrid"></div>
+    </div>
+
+    <!-- Step 2: 借款金額 -->
+    <div class="pledge-step-wrap" id="pledgeStep2" style="display:none">
+      <div class="pledge-step-head"><span class="step-num">2</span>輸入借款金額</div>
+      <div class="pledge-collateral-box">
+        <div class="pcb-row"><span style="color:var(--muted)">選定資產估值</span><span id="pcbSelected" class="num">0 ANYU</span></div>
+        <div class="pcb-row"><span style="color:var(--muted)">抵押率</span><span>50%</span></div>
+        <div class="pcb-row total"><span>最大可借</span><span id="pcbMax" class="num" style="color:var(--green)">0 ANYU</span></div>
+      </div>
+      <div>
+        <label style="font-size:12px;color:var(--muted)">借款金額 (ANYU)</label>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+          <div class="field" style="flex:1;margin:0">
+            <div class="input">
+              <input type="number" id="pledgeBorrowAmt" placeholder="輸入借款金額" min="1" oninput="updatePledgeEst()" />
+              <span class="suffix">ANYU</span>
+            </div>
+          </div>
+          <button class="btn-ghost" onclick="pledgeSetMax()">最大值</button>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--muted)">年化借款利率 <strong style="color:var(--text)">8.5%</strong>，隨時可還款解鎖資產</div>
+        <div id="pledgeBorrowEst" style="margin-top:14px;background:#15100b;border-radius:8px;padding:12px;display:none">
+          <div class="pcb-row"><span style="color:var(--muted)">借款金額</span><span id="pbeAmt" class="num">0 ANYU</span></div>
+          <div class="pcb-row"><span style="color:var(--muted)">鎖倉資產</span><span id="pbeLocked" style="color:var(--yellow)">—</span></div>
+          <div class="pcb-row"><span style="color:var(--muted)">LTV 比例</span><span id="pbeLTV" class="num">—</span></div>
+        </div>
+        <button class="auth-btn" id="pledgeExecBtn" onclick="confirmPledgeBorrow()" style="margin-top:16px;width:100%;padding:13px;font-size:14px" disabled>確認借款</button>
+      </div>
+    </div>
+
+    <!-- 借款紀錄 -->
+    <div class="pledge-step-wrap" id="pledgeLoansWrap" style="display:none">
+      <div class="pledge-step-head"><span class="step-num" style="background:var(--panel);border:1px solid var(--line);color:var(--muted);font-size:16px">📋</span>借款紀錄</div>
+      <div id="pledgeLoansList"></div>
+    </div>
+
   </div>
-  <div class="earn-section active" id="earn-simple"><div class="earn-grid" id="earnSimpleGrid"></div></div>
-  <div class="earn-section" id="earn-staking"><div class="earn-grid" id="earnStakingGrid"></div></div>
-  <div class="earn-section" id="earn-dual"><div class="earn-grid" id="earnDualGrid"></div></div>
-  <div class="earn-section" id="earn-structured"><div class="earn-grid" id="earnStructGrid"></div></div>
-  <div class="earn-section" id="earn-loan"><div class="earn-grid" id="earnLoanGrid"></div></div>
-  <div class="earn-section" id="earn-liquidity"><div class="earn-grid" id="earnLiqGrid"></div></div>
 </div>
 
 <!-- ===== NFT 專區（二級市場）===== -->
@@ -4932,77 +4975,168 @@ function copyTrader(i){
   renderTraders();
 }
 
-/* ===== EARN (賺幣) ===== */
-const earnSimple = [
-  {n:'USDC 活期', t:'活期理財・隨存隨取', apy:8.42, c:'#2775CA', ic:'$', min:1, dur:'活期', cap:'$120M / $200M', featured:true},
-  {n:'USDT 活期', t:'活期理財・隨存隨取', apy:7.84, c:'#26A17B', ic:'$', min:1, dur:'活期', cap:'$84M / $150M'},
-  {n:'PAXG 活期', t:'黃金活期理財', apy:4.20, c:'#d4a945', ic:'AU', min:0.01, dur:'活期', cap:'$42M / $80M'},
-  {n:'CARB 活期', t:'碳權活期理財', apy:12.40, c:'#06b6d4', ic:'CO₂', min:1, dur:'活期', cap:'$18M / $30M'},
-];
-const earnStaking = [
-  {n:'ANYU 質押 (90d)', t:'平台代幣質押', apy:24.8, c:'#d97757', ic:'A', min:100, dur:'90 天', cap:'$8M / $20M', featured:true},
-  {n:'ANYU 質押 (30d)', t:'平台代幣質押', apy:14.2, c:'#d97757', ic:'A', min:100, dur:'30 天', cap:'$12M / $20M'},
-  {n:'UST-1Y 質押', t:'美債代幣質押', apy:5.42, c:'#22c55e', ic:'UST', min:100, dur:'365 天', cap:'$240M / $500M'},
-  {n:'PAXG 質押 (180d)', t:'黃金代幣質押', apy:6.80, c:'#d4a945', ic:'AU', min:0.1, dur:'180 天', cap:'$28M / $50M'},
-];
-const earnDual = [
-  {n:'USDC ↔ PAXG', t:'雙幣低買高賣', apy:42.0, c:'#d4a945', ic:'AU', min:100, dur:'7 天', cap:'本期額度 $4.2M', featured:true},
-  {n:'USDC ↔ CARB', t:'雙幣低買高賣', apy:84.0, c:'#06b6d4', ic:'CO₂', min:100, dur:'14 天', cap:'本期額度 $1.8M'},
-  {n:'USDC ↔ TPE-101', t:'雙幣低買高賣', apy:28.0, c:'#5b8cff', ic:'TPE', min:100, dur:'30 天', cap:'本期額度 $2.4M'},
-];
-const earnStruct = [
-  {n:'鯊魚鰭 PAXG', t:'結構化產品 / 區間累計', apy:38.0, c:'#d4a945', ic:'AU', min:500, dur:'30 天', cap:'$8.4M / $20M', featured:true},
-  {n:'雪球 UST-1Y', t:'結構化產品 / 雪球', apy:18.4, c:'#22c55e', ic:'UST', min:1000, dur:'90 天', cap:'$12M / $30M'},
-  {n:'區間累計 CARB', t:'結構化產品', apy:62.0, c:'#06b6d4', ic:'CO₂', min:200, dur:'14 天', cap:'$2.4M / $5M'},
-];
-const earnLoan = [
-  {n:'USDC 借出', t:'借貸出借賺利息', apy:18.4, c:'#2775CA', ic:'$', min:100, dur:'活期', cap:'借出量 $42M', featured:true},
-  {n:'抵押 PAXG 借 USDC', t:'抵押借款 (LTV 75%)', apy:6.20, c:'#d4a945', ic:'AU', min:0.1, dur:'活期', cap:'借款利率', featured:false},
-  {n:'閃電貸', t:'單筆原子借貸 / 套利', apy:0.05, c:'#7c5cff', ic:'⚡', min:1, dur:'1 區塊', cap:'池子 $8.2M'},
-];
-const earnLiq = [
-  {n:'USDC-PAXG LP', t:'流動性挖礦・LP 池', apy:128.4, c:'#d4a945', ic:'LP', min:50, dur:'活期', cap:'$24M / $50M', featured:true},
-  {n:'USDC-CARB LP', t:'流動性挖礦・LP 池', apy:84.2, c:'#06b6d4', ic:'LP', min:50, dur:'活期', cap:'$8M / $20M'},
-  {n:'USDC-ANYU LP', t:'流動性挖礦・平台代幣池', apy:62.4, c:'#d97757', ic:'LP', min:50, dur:'活期', cap:'$4M / $15M'},
-];
-function earnCard(p){
-  return `<div class="earn-card ${p.featured?'featured':''}">
-    <div class="earn-head">
-      <div class="icon" style="background:linear-gradient(135deg,${p.c},${p.c}aa)">${p.ic}</div>
-      <div><div class="earn-name">${p.n}</div><div class="earn-type">${p.t}</div></div>
-    </div>
-    <div class="apy-display">${p.apy}<span class="pct">%</span></div>
-    <div class="apy-label">預估年化收益率 (APY)</div>
-    <div class="earn-meta">
-      <div class="em"><div class="l">起投</div><div class="v">${p.min}</div></div>
-      <div class="em"><div class="l">期限</div><div class="v">${p.dur}</div></div>
-    </div>
-    <div style="font-size:11px;color:var(--muted);margin-bottom:10px">${p.cap}</div>
-    <button onclick="subscribeEarn('${p.n.replace(/'/g,'')}', ${p.apy})">立即申購</button>
-  </div>`;
+/* ===== PLEDGE (質押借款) ===== */
+let pledgeSelectedCats = new Set();
+let pledgeActiveLoanS = [];
+const pledgeLockedCats = new Set();
+const pledgeCatMeta = {
+  forest: { label:'樹資產',   icon:'🌳', color:'#4ade80' },
+  carbon: { label:'碳資產',   icon:'🌿', color:'#22c55e' },
+  energy: { label:'綠電資產', icon:'⚡', color:'#facc15' },
+};
+
+function pledgeAssetValue(cat){
+  if(typeof seriesCatalog==='undefined'||typeof userNftHoldings==='undefined') return 0;
+  return seriesCatalog.filter(s=>s.cat===cat).reduce((sum,s)=>sum+(userNftHoldings[s.sym]||0)*s.floor,0);
 }
-function renderEarn(){
-  document.getElementById('earnSimpleGrid').innerHTML = earnSimple.map(earnCard).join('');
-  document.getElementById('earnStakingGrid').innerHTML = earnStaking.map(earnCard).join('');
-  document.getElementById('earnDualGrid').innerHTML = earnDual.map(earnCard).join('');
-  document.getElementById('earnStructGrid').innerHTML = earnStruct.map(earnCard).join('');
-  document.getElementById('earnLoanGrid').innerHTML = earnLoan.map(earnCard).join('');
-  document.getElementById('earnLiqGrid').innerHTML = earnLiq.map(earnCard).join('');
+function pledgeCount(cat){
+  if(typeof seriesCatalog==='undefined'||typeof userNftHoldings==='undefined') return 0;
+  return seriesCatalog.filter(s=>s.cat===cat).reduce((s,x)=>s+(userNftHoldings[x.sym]||0),0);
 }
-document.querySelectorAll('.earn-tabs .et').forEach(b=>{
-  b.onclick = ()=>{
-    document.querySelectorAll('.earn-tabs .et').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    document.querySelectorAll('.earn-section').forEach(x=>x.classList.remove('active'));
-    document.getElementById('earn-'+b.dataset.earn).classList.add('active');
-  };
-});
-function subscribeEarn(name, apy){
+
+function renderPledgePage(){
+  const cats = ['forest','carbon','energy'];
+  const totalVal = cats.reduce((s,c)=>s+pledgeAssetValue(c),0);
+  const maxBorrow = totalVal*0.5;
+  const totalBorrowed = pledgeActiveLoanS.reduce((s,l)=>s+l.borrowAmt,0);
+  const lockedCount = [...pledgeLockedCats].reduce((s,c)=>s+pledgeCount(c),0);
+  const fmt = n=>n.toLocaleString(undefined,{maximumFractionDigits:0});
+  const el = id=>document.getElementById(id);
+  if(el('pledgeTotalVal'))   el('pledgeTotalVal').textContent   = fmt(totalVal)+' ANYU';
+  if(el('pledgeMaxBorrow'))  el('pledgeMaxBorrow').textContent  = fmt(maxBorrow)+' ANYU';
+  if(el('pledgeBorrowed'))   el('pledgeBorrowed').textContent   = fmt(totalBorrowed)+' ANYU';
+  if(el('pledgeLockedCount'))el('pledgeLockedCount').textContent= lockedCount+' 件';
+
+  const grid = el('pledgeAssetGrid');
+  if(grid){
+    grid.innerHTML = cats.map(cat=>{
+      const m = pledgeCatMeta[cat];
+      const val = pledgeAssetValue(cat);
+      const cnt = pledgeCount(cat);
+      const isSelected = pledgeSelectedCats.has(cat);
+      const isLocked   = pledgeLockedCats.has(cat);
+      const cls = isLocked ? 'locked' : (isSelected ? 'selected' : '');
+      return `<div class="pledge-asset-card ${cls}" onclick="${isLocked?'':("togglePledgeCat('"+cat+"')")}">
+        <div class="pac-check">${isSelected&&!isLocked?'✓':''}</div>
+        <div class="pac-icon">${m.icon}</div>
+        <div class="pac-name">${m.label}</div>
+        <div class="pac-count">${cnt} 件 NFT</div>
+        <div class="pac-val">${fmt(val)}</div>
+        <div class="pac-unit">ANYU 估值</div>
+      </div>`;
+    }).join('');
+  }
+
+  const selectedVal = [...pledgeSelectedCats].reduce((s,c)=>s+pledgeAssetValue(c),0);
+  const step2 = el('pledgeStep2');
+  if(step2) step2.style.display = pledgeSelectedCats.size>0?'block':'none';
+  if(el('pcbSelected')) el('pcbSelected').textContent = fmt(selectedVal)+' ANYU';
+  if(el('pcbMax'))      el('pcbMax').textContent      = fmt(selectedVal*0.5)+' ANYU';
+
+  const loansWrap = el('pledgeLoansWrap');
+  if(loansWrap) loansWrap.style.display = pledgeActiveLoanS.length>0?'block':'none';
+  renderPledgeLoans();
+}
+
+function togglePledgeCat(cat){
+  if(pledgeSelectedCats.has(cat)) pledgeSelectedCats.delete(cat);
+  else pledgeSelectedCats.add(cat);
+  document.getElementById('pledgeBorrowAmt').value='';
+  document.getElementById('pledgeBorrowEst').style.display='none';
+  renderPledgePage();
+}
+
+function pledgeSetMax(){
+  const selectedVal=[...pledgeSelectedCats].reduce((s,c)=>s+pledgeAssetValue(c),0);
+  const inp=document.getElementById('pledgeBorrowAmt');
+  if(inp){ inp.value=Math.floor(selectedVal*0.5); updatePledgeEst(); }
+}
+
+function updatePledgeEst(){
+  const amt=parseFloat(document.getElementById('pledgeBorrowAmt').value)||0;
+  const selectedVal=[...pledgeSelectedCats].reduce((s,c)=>s+pledgeAssetValue(c),0);
+  const maxBorrow=Math.floor(selectedVal*0.5);
+  const fmt=n=>n.toLocaleString(undefined,{maximumFractionDigits:0});
+  const est=document.getElementById('pledgeBorrowEst');
+  const btn=document.getElementById('pledgeExecBtn');
+  if(!est||!btn) return;
+  if(amt>0){
+    est.style.display='block';
+    document.getElementById('pbeAmt').textContent=fmt(amt)+' ANYU';
+    document.getElementById('pbeLocked').textContent=[...pledgeSelectedCats].map(c=>pledgeCatMeta[c].label).join('、')+' (全部選定類別)';
+    document.getElementById('pbeLTV').textContent=((amt/selectedVal)*100).toFixed(1)+'%';
+  } else {
+    est.style.display='none';
+  }
+  const valid=amt>0&&amt<=maxBorrow&&pledgeSelectedCats.size>0;
+  btn.disabled=!valid;
+  btn.style.opacity=valid?'1':'0.5';
+}
+
+function confirmPledgeBorrow(){
   if(!walletConnected){ openModal('walletModal'); return; }
   if(!kycVerified){ toast('需要完成 KYC','','error'); return; }
-  toast('申購中', `${name} APY ${apy}% 處理中...`,'success');
-  setTimeout(()=>toast('申購成功', `${name} 已生效，每日 00:00 結算收益`,'success'), 1800);
+  const amt=parseFloat(document.getElementById('pledgeBorrowAmt').value)||0;
+  const selectedVal=[...pledgeSelectedCats].reduce((s,c)=>s+pledgeAssetValue(c),0);
+  const maxBorrow=Math.floor(selectedVal*0.5);
+  if(amt<=0||amt>maxBorrow){ toast('金額超出上限','','error'); return; }
+  const btn=document.getElementById('pledgeExecBtn');
+  btn.disabled=true; btn.textContent='處理中…';
+  setTimeout(()=>{
+    pledgeSelectedCats.forEach(c=>pledgeLockedCats.add(c));
+    walletBalances.ANYU=(walletBalances.ANYU||0)+amt;
+    pledgeActiveLoanS.push({
+      id:'L'+Date.now(), cats:[...pledgeSelectedCats],
+      collateralVal:selectedVal, borrowAmt:amt,
+      borrowedAt:Date.now(), rate:0.085
+    });
+    pledgeSelectedCats.clear();
+    document.getElementById('pledgeBorrowAmt').value='';
+    btn.textContent='確認借款';
+    toast('借款成功 🎉',`${amt.toLocaleString()} ANYU 已存入錢包，質押資產已鎖倉`,'success');
+    renderPledgePage();
+  },1500);
 }
+
+function repayLoan(loanId){
+  const loan=pledgeActiveLoanS.find(l=>l.id===loanId);
+  if(!loan) return;
+  const elapsed=(Date.now()-loan.borrowedAt)/(365*86400000);
+  const interest=loan.borrowAmt*loan.rate*elapsed;
+  const total=loan.borrowAmt+interest;
+  if((walletBalances.ANYU||0)<total){ toast('餘額不足','請先充值 ANYU','error'); return; }
+  walletBalances.ANYU-=total;
+  loan.cats.forEach(c=>pledgeLockedCats.delete(c));
+  pledgeActiveLoanS=pledgeActiveLoanS.filter(l=>l.id!==loanId);
+  toast('還款成功',`${total.toFixed(2)} ANYU 已還清，資產解鎖`,'success');
+  renderPledgePage();
+}
+
+function renderPledgeLoans(){
+  const el=document.getElementById('pledgeLoansList');
+  if(!el) return;
+  if(pledgeActiveLoanS.length===0){ el.innerHTML=''; return; }
+  const fmt=n=>n.toLocaleString(undefined,{maximumFractionDigits:0});
+  el.innerHTML=pledgeActiveLoanS.map(l=>{
+    const elapsed=(Date.now()-l.borrowedAt)/(365*86400000);
+    const interest=l.borrowAmt*l.rate*elapsed;
+    const total=l.borrowAmt+interest;
+    const catLabels=l.cats.map(c=>pledgeCatMeta[c]?.label||c).join('、');
+    const catIcons=l.cats.map(c=>pledgeCatMeta[c]?.icon||'').join('');
+    return `<div class="pledge-loan-row">
+      <div style="font-size:28px;flex-shrink:0">${catIcons}</div>
+      <div class="plr-info">
+        <div class="plr-amount">${fmt(l.borrowAmt)} ANYU</div>
+        <div class="plr-meta">質押：${catLabels} · 估值 ${fmt(l.collateralVal)} ANYU · 利率 8.5%/年</div>
+        <div class="plr-meta">應還：${total.toFixed(2)} ANYU（含利息 ${interest.toFixed(4)}）</div>
+      </div>
+      <button class="btn-primary" style="padding:9px 16px;font-size:12px;white-space:nowrap" onclick="repayLoan('${l.id}')">還款解鎖</button>
+    </div>`;
+  }).join('');
+}
+
+function renderEarn(){ renderPledgePage(); }
+function subscribeEarn(){ /* removed */ }
 
 /* ===== LEARN ===== */
 const articles = [
@@ -6704,7 +6838,7 @@ setPage = function(p){
   if(p==='assets'){ renderAssetsPage(); }
   if(p==='agent'){ renderAgent(); }
   if(p==='buy'){ recalcBuy(); }
-  if(p==='earn'){ renderEarn(); }
+  if(p==='earn'){ renderPledgePage(); }
   if(p==='market'){ renderLaunchPage(); renderPredictions(); }
   if(p==='nft'){
     nftView='browser';
