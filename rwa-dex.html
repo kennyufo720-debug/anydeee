@@ -977,6 +977,43 @@
   .qr-addr-box code{flex:1;font-family:"SF Mono",monospace;font-size:11px;word-break:break-all;color:var(--text)}
   .qr-addr-box button{background:var(--accent);color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0}
 
+  /* ====== 我的資產 passbook ====== */
+  .md-section-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;padding:8px 16px 4px;border-top:1px solid var(--line);margin-top:2px}
+  .md-sub-item{display:flex;align-items:center;gap:10px;padding:8px 16px 8px 28px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--line);color:var(--muted)}
+  .md-sub-item:hover{background:#241812;color:var(--text)}
+  .md-sub-item .mi{font-size:14px;width:18px;text-align:center}
+  /* page-assets layout */
+  #page-assets{padding:0}
+  .pb-hero{background:linear-gradient(135deg,#052e16,#14532d);padding:24px 16px 20px;text-align:center;border-bottom:1px solid var(--line)}
+  .pb-hero h1{font-size:18px;font-weight:800;margin-bottom:4px}
+  .pb-hero p{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:16px}
+  .pb-summary-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:480px;margin:0 auto}
+  .pb-stat{background:rgba(255,255,255,.08);border-radius:10px;padding:10px 8px;text-align:center}
+  .pb-stat .ps-val{font-size:16px;font-weight:800;color:#4ade80}
+  .pb-stat .ps-lab{font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+  .pb-tabs{display:flex;border-bottom:1px solid var(--line);background:var(--panel)}
+  .pb-tab{flex:1;padding:12px 6px;text-align:center;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:.15s}
+  .pb-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+  .pb-content{padding:16px}
+  .pb-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+  .pb-card-head{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .pb-card-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .pb-card-info{flex:1}
+  .pb-card-info .title{font-size:13px;font-weight:700}
+  .pb-card-info .sub{font-size:11px;color:var(--muted);margin-top:1px}
+  .pb-card-val{text-align:right}
+  .pb-card-val .v{font-size:14px;font-weight:800;color:#4ade80}
+  .pb-card-val .u{font-size:10px;color:var(--muted)}
+  .pb-record-list{padding:10px 16px 12px}
+  .pb-record{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+  .pb-record:last-child{border-bottom:none}
+  .pb-record .rd{font-size:11px;color:var(--muted)}
+  .pb-record .rv{font-size:12px;font-weight:700;color:#4ade80}
+  .pb-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:6px}
+  .pb-badge.tree{background:rgba(74,222,128,.15);color:#4ade80}
+  .pb-badge.carbon{background:rgba(34,197,94,.15);color:#22c55e}
+  .pb-badge.energy{background:rgba(250,204,21,.15);color:#facc15}
+  .pb-empty{text-align:center;padding:30px;color:var(--muted);font-size:13px}
   /* ====== 空投系統擴充 ====== */
   /* 詳情 Modal */
   .ad-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
@@ -1145,6 +1182,10 @@
         </div>
         <div class="md-item" onclick="setPage('wallet')"><span class="mi">🏦</span>我的錢包</div>
         <div class="md-item" onclick="setPage('portfolio')"><span class="mi">📊</span>投資組合</div>
+        <div class="md-section-label">我的資產</div>
+        <div class="md-sub-item" onclick="openAssets('tree')"><span class="mi">🌳</span>樹存摺</div>
+        <div class="md-sub-item" onclick="openAssets('carbon')"><span class="mi">🌿</span>碳存摺</div>
+        <div class="md-sub-item" onclick="openAssets('energy')"><span class="mi">⚡</span>綠電存摺</div>
         <div class="md-item" onclick="openKYC()"><span class="mi">🪪</span>身份驗證 (KYC)</div>
         <div class="md-item" onclick="openModal('twoFALoginModal')"><span class="mi">🛡</span>雙重驗證設定</div>
         <div class="md-item" onclick="setPage('benefits')"><span class="mi">🎁</span>會員福利</div>
@@ -1362,6 +1403,25 @@
     <h3>最近交易紀錄</h3>
     <div id="walletTxList"></div>
   </div>
+</div>
+
+<!-- ===== 我的資產 PAGE ===== -->
+<div class="page" id="page-assets">
+  <div class="pb-hero">
+    <h1>🌱 我的資產</h1>
+    <p>樹木碳匯 · 碳信用額度 · 綠色電力憑證</p>
+    <div class="pb-summary-row">
+      <div class="pb-stat"><div class="ps-val" id="pbTreeTotal">0</div><div class="ps-lab">棵樹 🌳</div></div>
+      <div class="pb-stat"><div class="ps-val" id="pbCarbonTotal">0</div><div class="ps-lab">噸 CO₂ 🌿</div></div>
+      <div class="pb-stat"><div class="ps-val" id="pbEnergyTotal">0</div><div class="ps-lab">度綠電 ⚡</div></div>
+    </div>
+  </div>
+  <div class="pb-tabs">
+    <button class="pb-tab active" data-pbt="tree" onclick="switchPbTab('tree')">🌳 樹存摺</button>
+    <button class="pb-tab" data-pbt="carbon" onclick="switchPbTab('carbon')">🌿 碳存摺</button>
+    <button class="pb-tab" data-pbt="energy" onclick="switchPbTab('energy')">⚡ 綠電存摺</button>
+  </div>
+  <div class="pb-content" id="pbContent"></div>
 </div>
 
 <!-- ===== PORTFOLIO PAGE ===== -->
@@ -3037,7 +3097,7 @@ function renderMemberUI(){
   const fa2B = document.getElementById('md2faBadge');
   fa2B.style.display = member2FAEnabled ? 'inline-block' : 'none';
   document.getElementById('mdVipBadge').textContent = memberKYCStatus ? 'VIP 1' : 'VIP 0';
-  document.getElementById('kycStatus').textContent = memberKYCStatus ? '已驗證 ✓' : '未驗證';
+  const _kycSt = document.getElementById('kycStatus'); if(_kycSt) _kycSt.textContent = memberKYCStatus ? '已驗證 ✓' : '未驗證';
 }
 function toggleMemberDrop(e){
   e.stopPropagation();
@@ -3200,6 +3260,91 @@ function renderWalletPage(){
       </div>
       <div class="tx-amt ${t.amt>0?'pos':'neg'}">${t.amt>0?'+':''}${t.amt.toLocaleString()} ${t.sym}</div>
     </div>`).join('');
+}
+
+/* ===== 我的資產 Passbooks ===== */
+let _pbTab = 'tree';
+const pbData = {
+  tree: {
+    label:'樹存摺', icon:'🌳', color:'#16a34a', bg:'#052e16',
+    total: 48, unit:'棵', badge:'tree',
+    cards:[
+      {icon:'🌲', title:'日本柳杉産權 SUGI', sub:'Kyoto Forest · 2024-06-01 入帳', val:'12', unit:'棵'},
+      {icon:'🌱', title:'半折植樹 BZTREE',   sub:'Taiwan Reforestation · 2024-09-15 入帳', val:'20', unit:'棵'},
+      {icon:'🌳', title:'ACR 森林管理 ACRFM',sub:'Oregon Forest · 2025-01-10 入帳', val:'16', unit:'棵'},
+    ],
+    records:[
+      {date:'2025-04-20', desc:'半折植樹空投入帳', val:'+5 棵'},
+      {date:'2025-03-11', desc:'SUGI 購入', val:'+12 棵'},
+      {date:'2025-01-10', desc:'ACRFM 鑄造', val:'+16 棵'},
+      {date:'2024-09-15', desc:'BZTREE 認購', val:'+15 棵'},
+    ]
+  },
+  carbon: {
+    label:'碳存摺', icon:'🌿', color:'#15803d', bg:'#052e16',
+    total: 6.24, unit:'噸 CO₂', badge:'carbon',
+    cards:[
+      {icon:'🌿', title:'碳信用額度 VCS-4821', sub:'Verified Carbon Standard · 2024-07-01', val:'2.40', unit:'tCO₂'},
+      {icon:'🍃', title:'黃金標準 GS-1105',   sub:'Gold Standard · 2025-02-18', val:'1.84', unit:'tCO₂'},
+      {icon:'🌱', title:'植樹碳匯 BZTREE',    sub:'自動累積碳匯 · 2025-04-01', val:'2.00', unit:'tCO₂'},
+    ],
+    records:[
+      {date:'2025-04-01', desc:'BZTREE 碳匯季度入帳', val:'+0.50 tCO₂'},
+      {date:'2025-02-18', desc:'GS-1105 購入', val:'+1.84 tCO₂'},
+      {date:'2024-07-01', desc:'VCS-4821 購入', val:'+2.40 tCO₂'},
+    ]
+  },
+  energy: {
+    label:'綠電存摺', icon:'⚡', color:'#ca8a04', bg:'#1c1003',
+    total: 3840, unit:'度', badge:'energy',
+    cards:[
+      {icon:'☀️', title:'太陽能憑證 REC-TW-001', sub:'台灣電力認證 · 2025-01-01', val:'2,400', unit:'kWh'},
+      {icon:'💨', title:'風力憑證 REC-TW-007',   sub:'台灣離岸風電 · 2025-03-15', val:'1,440', unit:'kWh'},
+    ],
+    records:[
+      {date:'2025-03-15', desc:'REC-TW-007 風力憑證入帳', val:'+1,440 kWh'},
+      {date:'2025-01-01', desc:'REC-TW-001 太陽能憑證入帳', val:'+2,400 kWh'},
+    ]
+  }
+};
+function openAssets(tab){
+  if(!isLoggedIn){ openModal('loginModal'); return; }
+  _pbTab = tab || 'tree';
+  setPage('assets');
+}
+function switchPbTab(tab){
+  _pbTab = tab;
+  document.querySelectorAll('.pb-tab').forEach(b=>b.classList.toggle('active', b.dataset.pbt===tab));
+  renderPbContent();
+}
+function renderAssetsPage(){
+  const d = pbData;
+  document.getElementById('pbTreeTotal').textContent   = d.tree.total;
+  document.getElementById('pbCarbonTotal').textContent = d.carbon.total;
+  document.getElementById('pbEnergyTotal').textContent = d.energy.total.toLocaleString();
+  document.querySelectorAll('.pb-tab').forEach(b=>b.classList.toggle('active', b.dataset.pbt===_pbTab));
+  renderPbContent();
+}
+function renderPbContent(){
+  const d = pbData[_pbTab];
+  const cards = d.cards.map(c=>`
+    <div class="pb-card">
+      <div class="pb-card-head">
+        <div class="pb-card-icon" style="background:${pbData[_pbTab].bg}">${c.icon}</div>
+        <div class="pb-card-info">
+          <div class="title">${c.title}<span class="pb-badge ${d.badge}">${d.unit}</span></div>
+          <div class="sub">${c.sub}</div>
+        </div>
+        <div class="pb-card-val"><div class="v">${c.val}</div><div class="u">${c.unit}</div></div>
+      </div>
+    </div>`).join('');
+  const recs = d.records.map(r=>`
+    <div class="pb-record">
+      <div><div style="font-size:12px;font-weight:600">${r.desc}</div><div class="rd">${r.date}</div></div>
+      <div class="rv">${r.val}</div>
+    </div>`).join('');
+  document.getElementById('pbContent').innerHTML = cards +
+    `<div class="pb-card"><div class="pb-record-list"><div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--muted)">異動紀錄</div>${recs}</div></div>`;
 }
 
 /* ─ 密碼輸入 id fix ─ */
@@ -6120,6 +6265,7 @@ setPage = function(p){
   _origSetPage(p);
   if(p==='benefits'){ renderAirdrops(); }
   if(p==='wallet'){ renderWalletPage(); }
+  if(p==='assets'){ renderAssetsPage(); }
   if(p==='agent'){ renderAgent(); }
   if(p==='buy'){ recalcBuy(); }
   if(p==='earn'){ renderEarn(); }
