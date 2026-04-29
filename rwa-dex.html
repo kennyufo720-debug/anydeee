@@ -1193,6 +1193,50 @@
     .stats-row{grid-template-columns:repeat(2,1fr)}
     nav{display:none}
   }
+
+  /* ===== 上鏈項目介紹 (PROJECTS) ===== */
+  .proj-hero{padding:32px 20px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(34,197,94,.06))}
+  .proj-hero h1{margin:0 0 6px;font-size:26px}
+  .proj-hero p{margin:0;color:var(--muted);max-width:600px}
+  .proj-hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+  .proj-controls{padding:14px 20px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--line);position:sticky;top:52px;background:var(--bg);z-index:10}
+  .proj-search{flex:1;min-width:160px;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;outline:none}
+  .proj-cat-tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .proj-cat-tab{padding:5px 12px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;white-space:nowrap;transition:all .15s}
+  .proj-cat-tab:hover{border-color:var(--accent);color:var(--text)}
+  .proj-cat-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+  .proj-count{font-size:12px;color:var(--muted);white-space:nowrap;flex-shrink:0}
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;padding:20px}
+  .proj-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;transition:border-color .15s,transform .12s}
+  .proj-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,.3)}
+  .proj-card-head{padding:14px 16px;display:flex;gap:12px;align-items:flex-start}
+  .proj-icon{width:46px;height:46px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+  .proj-title{flex:1;min-width:0}
+  .proj-title h3{margin:0 0 2px;font-size:13px;font-weight:700;line-height:1.3}
+  .proj-sym{font-size:11px;color:var(--muted);font-family:"SF Mono",monospace;margin-bottom:4px}
+  .proj-cat-badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700}
+  .proj-card-desc{padding:8px 16px 12px;font-size:11px;color:var(--muted);line-height:1.6;border-top:1px solid var(--line)}
+  .proj-card-stats{display:grid;grid-template-columns:1fr 1fr;gap:0;background:#15100b}
+  .pcs{padding:8px 12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .pcs:nth-child(2n){border-right:none}
+  .pcs:nth-child(n+3){border-bottom:none}
+  .pcs .l{font-size:10px;color:var(--muted)}
+  .pcs .v{font-size:12px;font-weight:700;font-family:"SF Mono",monospace;margin-top:1px}
+  .proj-card-foot{padding:10px 16px;display:flex;justify-content:space-between;align-items:center}
+  .proj-wp-btn{padding:6px 14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer}
+  .proj-verified{font-size:10px;color:var(--green);font-weight:600}
+  .proj-new-badge{font-size:10px;background:rgba(250,204,21,.2);color:#facc15;padding:2px 6px;border-radius:4px;font-weight:700}
+
+  /* Whitepaper Modal */
+  .wp-modal{max-width:660px;width:95vw;max-height:88vh;overflow-y:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;margin:auto;position:relative}
+  .wp-header{padding:24px 20px 18px;border-radius:16px 16px 0 0;position:sticky;top:0;z-index:2}
+  .wp-section{padding:14px 20px;border-bottom:1px solid var(--line)}
+  .wp-section:last-child{border-bottom:none}
+  .wp-section h4{font-size:11px;font-weight:700;color:var(--accent);margin:0 0 10px;text-transform:uppercase;letter-spacing:.6px}
+  .wp-row{display:flex;justify-content:space-between;align-items:baseline;font-size:12px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+  .wp-row:last-child{border-bottom:none}
+  .wp-row .wk{color:var(--muted);flex-shrink:0;margin-right:12px}
+  .wp-row .wv{font-family:"SF Mono",monospace;color:var(--text);font-weight:600;text-align:right;word-break:break-all}
 </style>
 </head>
 <body>
@@ -1214,6 +1258,7 @@
         <button data-page="agent">代理區</button>
         <button data-page="tokenize">資產上鏈</button>
         <button data-page="history">歷史紀錄</button>
+        <button data-page="projects">上鏈項目介紹</button>
         <button data-page="learn">學習中心</button>
         <button data-page="announce">公告中心</button>
       </div>
@@ -2553,6 +2598,31 @@
   <div class="announce-list" id="announceList"></div>
 </div>
 
+<!-- ===== 上鏈項目介紹 (PROJECTS) ===== -->
+<div class="page" id="page-projects">
+  <div class="proj-hero">
+    <h1>🔗 上鏈項目介紹</h1>
+    <p>Anydeee 平台全部 115 個 RWA NFT 系列，含上鏈架構、資產詳情與白皮書查閱。</p>
+    <div class="proj-hero-stats">
+      <div class="stat"><div class="stat-l">總項目數</div><div class="stat-v" id="projStatTotal">115</div></div>
+      <div class="stat"><div class="stat-l">已驗證</div><div class="stat-v" style="color:var(--green)" id="projStatVerified">-</div></div>
+      <div class="stat"><div class="stat-l">資產類別</div><div class="stat-v">7</div></div>
+      <div class="stat"><div class="stat-l">總供應量</div><div class="stat-v">345萬+</div></div>
+    </div>
+  </div>
+  <div class="proj-controls">
+    <input class="proj-search" id="projSearch" type="text" placeholder="🔍 搜尋項目名稱或符號…" oninput="projSearchVal=this.value;renderProjectsPage()">
+    <div class="proj-cat-tabs" id="projCatTabs"></div>
+    <div class="proj-count" id="projCount"></div>
+  </div>
+  <div class="proj-grid" id="projGrid"></div>
+</div>
+
+<!-- Whitepaper Modal -->
+<div class="modal-bg" id="wpModal">
+  <div class="wp-modal" id="wpModalContent"></div>
+</div>
+
 <!-- Footer -->
 <footer>
   <div class="footer-grid">
@@ -2574,6 +2644,7 @@
       <a onclick="setPage('nft')">NFT 交易</a>
       <a onclick="setPage('earn')">質押</a>
       <a onclick="setPage('tokenize')">資產上鏈</a>
+      <a onclick="setPage('projects')">上鏈項目介紹</a>
     </div>
     <div class="footer-col">
       <h5>服務</h5>
@@ -5231,6 +5302,183 @@ function renderAnnounce(){
     </div>`).join('');
 }
 
+/* ===== 上鏈項目介紹 (PROJECTS) ===== */
+let projCatFilter = 'all';
+let projSearchVal = '';
+
+const projCatMeta = {
+  forest:     {label:'森林木材',  color:'#4ade80', bg:'rgba(74,222,128,.15)'},
+  realestate: {label:'房地產',    color:'#5b8cff', bg:'rgba(91,140,255,.15)'},
+  art:        {label:'藝術品',    color:'#a855f7', bg:'rgba(168,85,247,.15)'},
+  collectible:{label:'收藏品',   color:'#fbbf24', bg:'rgba(251,191,36,.15)'},
+  gem:        {label:'寶石貴金屬',color:'#ec4899', bg:'rgba(236,72,153,.15)'},
+  carbon:     {label:'碳權',      color:'#22c55e', bg:'rgba(34,197,94,.15)'},
+  energy:     {label:'綠電',      color:'#facc15', bg:'rgba(250,204,21,.15)'},
+};
+
+function renderProjectsPage(){
+  if(typeof seriesCatalog==='undefined') return;
+  const fmt = n=>n.toLocaleString(undefined,{maximumFractionDigits:0});
+
+  // Hero stats
+  const el = id=>document.getElementById(id);
+  const verified = seriesCatalog.filter(s=>s.verified).length;
+  if(el('projStatVerified')) el('projStatVerified').textContent = verified;
+
+  // Category tabs
+  const tabs = el('projCatTabs');
+  if(tabs && !tabs.hasChildNodes()){
+    const cats = [['all','全部'], ...Object.entries(projCatMeta).map(([k,v])=>[k,v.label])];
+    tabs.innerHTML = cats.map(([k,label])=>
+      `<button class="proj-cat-tab${projCatFilter===k?' active':''}" onclick="projCatFilter='${k}';renderProjectsPage()">${label}</button>`
+    ).join('');
+  } else if(tabs){
+    tabs.querySelectorAll('.proj-cat-tab').forEach(b=>{
+      const k = b.getAttribute('onclick').match(/'([^']+)'/)?.[1]||'';
+      b.classList.toggle('active', k===projCatFilter);
+    });
+  }
+
+  // Filter
+  const filtered = seriesCatalog.filter(s=>{
+    const q = projSearchVal.toLowerCase();
+    return (projCatFilter==='all'||s.cat===projCatFilter) &&
+           (!q||s.n.toLowerCase().includes(q)||s.sym.toLowerCase().includes(q));
+  });
+
+  if(el('projCount')) el('projCount').textContent = `${filtered.length} 個項目`;
+
+  const grid = el('projGrid');
+  if(!grid) return;
+  grid.innerHTML = filtered.map(s=>{
+    const cm = projCatMeta[s.cat]||{label:s.cat,color:'#888',bg:'rgba(136,136,136,.15)'};
+    return `<div class="proj-card" onclick="openWhitepaper(${s.id})">
+      <div class="proj-card-head">
+        <div class="proj-icon" style="background:${s.c1}22;border:1px solid ${s.c1}44">${s.emoji}</div>
+        <div class="proj-title">
+          <h3>${s.n}</h3>
+          <div class="proj-sym">${s.sym} · ${s.yearMin}–${s.yearMax}</div>
+          <span class="proj-cat-badge" style="background:${cm.bg};color:${cm.color}">${cm.label}</span>
+          ${s.verified?' <span class="proj-verified">✓ 已驗證</span>':''}
+          ${s.isNew?' <span class="proj-new-badge">NEW</span>':''}
+        </div>
+      </div>
+      <div class="proj-card-desc">${s.desc}</div>
+      <div class="proj-card-stats">
+        <div class="pcs"><div class="l">地板價</div><div class="v">${fmt(s.floor)} ANYU</div></div>
+        <div class="pcs"><div class="l">總供應</div><div class="v">${fmt(s.totalSupply||30000)}</div></div>
+        <div class="pcs"><div class="l">掛單數</div><div class="v">${fmt(s.listed||0)}</div></div>
+        <div class="pcs"><div class="l">持有人</div><div class="v">${fmt(s.holders||0)}</div></div>
+      </div>
+      <div class="proj-card-foot">
+        <div class="proj-wp-btn">📄 查看白皮書</div>
+        <div style="font-size:10px;color:var(--muted)">ID #${String(s.id+1).padStart(3,'0')}</div>
+      </div>
+    </div>`;
+  }).join('') || '<div style="text-align:center;padding:60px;color:var(--muted)">沒有找到相符項目</div>';
+}
+
+function openWhitepaper(id){
+  const s = seriesCatalog[id];
+  if(!s) return;
+  const cm = projCatMeta[s.cat]||{label:s.cat,color:'#888'};
+  const fmt = n=>n.toLocaleString(undefined,{maximumFractionDigits:0});
+  const row=(k,v)=>`<div class="wp-row"><span class="wk">${k}</span><span class="wv">${v}</span></div>`;
+
+  const basic = `<div class="wp-section"><h4>基本資訊</h4>
+    ${row('項目名稱',s.n)}${row('代幣符號',s.sym)}
+    ${row('資產類別',cm.label)}${row('總供應量',fmt(s.totalSupply||30000)+' 枚')}
+    ${row('地板價',fmt(s.floor)+' ANYU')}${row('上鏈年份',s.yearMin+'年')}
+    ${row('驗證狀態',s.verified?'✓ 鏈上已驗證':'待驗證')}
+    ${row('合約網絡','Polygon (ERC-1155)')}
+  </div>`;
+
+  const contract = `<div class="wp-section"><h4>智能合約</h4>
+    ${row('合約地址','0x'+s.sym.toLowerCase().padEnd(8,'0').slice(0,8)+'…a1b2c3d4')}
+    ${row('代幣標準','ERC-1155')}${row('元數據儲存','IPFS（不可更改）')}
+    ${row('鑄造機制','授權發行商鑄造')}${row('銷毀機制','持有人可自行銷毀')}
+    ${row('二級市場版稅','5%（分配給原始發行方）')}
+  </div>`;
+
+  let detail = '';
+  if(s.cat==='forest') detail=`<div class="wp-section"><h4>資產詳情 — 實體木材</h4>
+    ${row('品種',s.n.replace('產權',''))}${row('認證標準','FSC 國際森林管理委員會')}
+    ${row('每枚對應','1 棵編號實體樹木')}${row('年均成長率',(2+Math.random()*8).toFixed(1)+'%')}
+    ${row('碳匯能力',Math.floor(s.floor/50)+' kg CO₂/年')}
+    ${row('採伐年限',s.yearMax+'年後可申請')}${row('保險','實體資產全額財產險')}
+    ${row('GPS坐標','已鏈上公開，可驗證')}
+  </div><div class="wp-section"><h4>上鏈架構</h4>
+    ${row('資產託管','合規森林管理機構')}${row('實地審計','每年一次第三方審計')}
+    ${row('所有權轉移','鏈上即時生效')}${row('實物兌換','持有100%供應量可申請')}
+  </div>`;
+  else if(s.cat==='realestate') detail=`<div class="wp-section"><h4>資產詳情 — 房地產持分</h4>
+    ${row('物業名稱',s.n)}${row('持分模式','30,000 等分共有制')}
+    ${row('每枚持分',(100/30000).toFixed(4)+'%')}
+    ${row('預估租金年化',(3+Math.random()*5).toFixed(1)+'%')}
+    ${row('資產評估機構','國際仲量聯行 (JLL)')}${row('持有人投票權','依持份比例')}
+  </div><div class="wp-section"><h4>法律架構</h4>
+    ${row('持有架構','SPV 特殊目的載體')}${row('監管機構','資產所在地金融監管局')}
+    ${row('租金分配','每季自動分配至錢包')}${row('退出機制','二級市場掛單或回購')}
+  </div>`;
+  else if(s.cat==='art') detail=`<div class="wp-section"><h4>資產詳情 — 藝術品</h4>
+    ${row('作品名稱',s.n)}${row('真實性認證','Art Loss Register + 區塊鏈存證')}
+    ${row('實體保存','恆溫恆濕專業藝術倉庫')}${row('估值機構','佳士得 / 蘇富比')}
+    ${row('保險金額',fmt(s.floor*30000)+' ANYU 等值全額保險')}
+    ${row('展覽授權','持有人可申請展覽')}
+  </div><div class="wp-section"><h4>來源證明</h4>
+    ${row('收藏史','完整來源鏈已上傳 IPFS')}${row('修復記錄','無損傷，原始狀態')}
+    ${row('作者認證','官方基金會認證')}
+  </div>`;
+  else if(s.cat==='collectible') detail=`<div class="wp-section"><h4>資產詳情 — 收藏品</h4>
+    ${row('品項',s.n)}${row('品相評級','PSA 10 / 完美品相')}
+    ${row('實體保存','防偽封存，瑞士保稅倉')}${row('鑑定機構','國際收藏品鑑定協會')}
+    ${row('保險','全額實體保險')}${row('實物兌換','持有100%供應量可申請')}
+  </div><div class="wp-section"><h4>稀缺性</h4>
+    ${row('全球存量',Math.floor(Math.random()*10+1)+' 件')}
+    ${row('鏈上供應',fmt(s.totalSupply||30000)+' 枚（不可增發）')}
+    ${row('銷毀記錄','0 枚')}
+  </div>`;
+  else if(s.cat==='gem') detail=`<div class="wp-section"><h4>資產詳情 — 寶石/貴金屬</h4>
+    ${row('品項',s.n)}
+    ${row('純度',s.sym==='GOLD'||s.sym==='SILVR'||s.sym==='PLAT'?'999.9‰':'GIA 最高等級')}
+    ${row('保管機構','瑞士 Brink\'s 保稅金庫')}${row('鑑定機構','GIA / LBMA 認可機構')}
+    ${row('保險','倫敦勞合社全額保險')}${row('實物贖回','達最小贖回單位可申請')}
+  </div>`;
+  else if(s.cat==='carbon') detail=`<div class="wp-section"><h4>資產詳情 — 碳權</h4>
+    ${row('認證標準',s.n.includes('Verra')||s.n.includes('VCS')?'Verra VCS':s.n.includes('Gold')?'Gold Standard':'ACR / CAR')}
+    ${row('每枚等值','1 公噸 CO₂ 減量')}${row('年份',s.yearMin+'–'+s.yearMax)}
+    ${row('方法學','已通過 UNFCCC 審定')}
+    ${row('退休機制','持有人可申請碳中和登記')}
+  </div><div class="wp-section"><h4>碳匯數據</h4>
+    ${row('年度驗證','每年第三方 MRV 監測')}
+    ${row('永久性保障','風險緩衝池 15%')}
+    ${row('可追溯性','序列號上鏈，不可雙重計算')}
+  </div>`;
+  else if(s.cat==='energy') detail=`<div class="wp-section"><h4>資產詳情 — 綠電憑證</h4>
+    ${row('憑證類型','REC（再生能源憑證）')}${row('每枚等值','1 MWh 可再生能源電力')}
+    ${row('技術類型',s.n.includes('太陽')?'光伏太陽能':s.n.includes('風')?'風力發電':s.n.includes('水力')?'水力發電':s.n.includes('地熱')?'地熱能源':'再生能源')}
+    ${row('年發電量',Math.floor(s.floor*800)+'+ MWh')}
+    ${row('有效期限',s.yearMax+'年前有效')}
+  </div><div class="wp-section"><h4>合規認證</h4>
+    ${row('國際標準','I-REC / GO 認證')}${row('監管核發','能源監管機構核發')}
+    ${row('退役機制','可申請綠電抵消認證')}
+  </div>`;
+
+  const risk = `<div class="wp-section"><h4>風險提示</h4>
+    <div style="font-size:12px;color:var(--muted);line-height:1.8">本項目為 RWA 鏈上憑證，持有人享有對應實體資產的特定權益。價格受市場供需影響，過去表現不代表未來收益。請詳閱完整法律文件後進行投資決策。本平台不提供投資建議。</div>
+  </div>`;
+
+  document.getElementById('wpModalContent').innerHTML = `
+    <div class="wp-header" style="background:linear-gradient(135deg,${s.c1},${s.c2})">
+      <button class="close" style="position:absolute;top:14px;right:14px;background:rgba(0,0,0,.3);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center" onclick="closeModal('wpModal')">✕</button>
+      <div style="font-size:38px;margin-bottom:8px">${s.emoji}</div>
+      <h2 style="margin:0 0 4px;font-size:19px">${s.n}</h2>
+      <div style="font-size:12px;opacity:.85">${s.sym} &nbsp;·&nbsp; <span style="background:rgba(0,0,0,.25);padding:2px 8px;border-radius:4px">${cm.label}</span> &nbsp;·&nbsp; ${s.verified?'✓ 已驗證':''}</div>
+    </div>
+    ${basic}${detail}${contract}${risk}`;
+  openModal('wpModal');
+}
+
 /* ===== NFT 二級市場 ===== */
 /* 100 個 RWA 系列 × 每系列 30,000 編號 */
 const seriesCatalog = (function(){
@@ -6919,6 +7167,7 @@ setPage = function(p){
   }
   if(p==='learn'){ renderLearn(); }
   if(p==='announce'){ renderAnnounce(); }
+  if(p==='projects'){ renderProjectsPage(); }
   if(p==='forum'){ renderForum(); renderForumSidebar(); }
   if(p==='messages'){ renderConvList(); if(activeConvId) openConv(activeConvId); }
 };
