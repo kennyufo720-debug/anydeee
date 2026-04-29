@@ -3764,6 +3764,11 @@ function confirmPfTrade(){
     if((walletBalances.ANYU||0) < cost){ toast('ANYU 餘額不足','請先充值','error'); return; }
     walletBalances.ANYU = (walletBalances.ANYU||0) - cost;
     userNftHoldings[_pfTradeSym] = (userNftHoldings[_pfTradeSym]||0) + qty;
+    // 同步 myNFTHoldings：補入對應數量的虛擬條目
+    for(let i=0;i<qty;i++){
+      const ed = 10000+Math.floor(Math.random()*19999);
+      myNFTHoldings.unshift({seriesId:s.id, edition:'#'+ed, year:s.yearMax, rarity:'Uncommon', acquiredPrice:s.floor, acquiredAt:new Date()});
+    }
     toast('買入成功', s.n+' × '+qty+' 枚', 'success');
   } else {
     const have = userNftHoldings[_pfTradeSym]||0;
@@ -3771,6 +3776,9 @@ function confirmPfTrade(){
     const gain = s.floor * qty * 0.999;
     walletBalances.ANYU = (walletBalances.ANYU||0) + gain;
     userNftHoldings[_pfTradeSym] -= qty;
+    // 同步 myNFTHoldings：移除對應數量條目
+    let removed = 0;
+    myNFTHoldings = myNFTHoldings.filter(h=>{ if(removed<qty && h.seriesId===s.id){ removed++; return false; } return true; });
     toast('賣出成功', s.n+' × '+qty+' 枚 · +'+Math.round(gain).toLocaleString()+' ANYU', 'success');
   }
   closeModal('pfTradeModal');
@@ -5670,17 +5678,21 @@ let currentDetailListing = null;
 // 初始化使用者持倉（5 件）
 function initMyNFTs(){
   myNFTHoldings = [];
-  for(let i=0;i<5;i++){
-    const s = seriesCatalog[Math.floor(Math.random()*seriesCatalog.length)];
-    myNFTHoldings.push({
-      seriesId: s.id,
-      edition: Math.floor(Math.random()*30000)+1,
-      year: s.yearMin + Math.floor(Math.random()*(s.yearMax-s.yearMin+1)),
-      rarity: pickRarity(),
-      acquiredPrice: Math.floor(s.floor*(0.7+Math.random()*0.5)),
-      acquiredAt: new Date(Date.now()-Math.random()*86400000*30)
-    });
-  }
+  // 從 userNftHoldings 建立，確保兩份數據一致
+  Object.entries(userNftHoldings).forEach(([sym, qty])=>{
+    const s = seriesCatalog.find(x=>x.sym===sym);
+    if(!s||qty<=0) return;
+    for(let i=0;i<qty;i++){
+      myNFTHoldings.push({
+        seriesId: s.id,
+        edition: '#'+(10000+Math.floor(Math.random()*19999)),
+        year: s.yearMin + Math.floor(Math.random()*Math.max(1,s.yearMax-s.yearMin+1)),
+        rarity: pickRarity(),
+        acquiredPrice: Math.floor(s.floor*(0.75+Math.random()*0.35)),
+        acquiredAt: new Date(Date.now()-Math.random()*86400000*180)
+      });
+    }
+  });
 }
 function pickRarity(){
   const r = Math.random();
@@ -6207,12 +6219,16 @@ function buyNow(seriesId, edition, year, rarity, price){
     }
     // 加到持倉
     myNFTHoldings.unshift({seriesId, edition, year, rarity, acquiredPrice:price, acquiredAt:new Date()});
+    // 同步 userNftHoldings 聚合數量
+    const _bSym = seriesCatalog[seriesId]?.sym;
+    if(_bSym) userNftHoldings[_bSym] = (userNftHoldings[_bSym]||0)+1;
     // 加到活動
     nftActivity.unshift({seriesId, type:'sale', edition, year, price, from:'0x'+Math.random().toString(16).substr(2,4)+'..'+Math.random().toString(16).substr(2,4), to:walletAddress?.substr(0,6)+'...'+walletAddress?.substr(-4)||'你', time:Date.now(), tx:'0x'+Math.random().toString(16).substr(2,12)});
     seriesCatalog[seriesId].listed--;
     toast('購買成功', `${seriesCatalog[seriesId].n} #${edition} 已入錢包`,'success');
     if(nftView==='series') renderSeriesItems();
     if(nftBrowserTab==='mine' && nftView==='browser') renderMyHoldings();
+    if(typeof renderPortfolioHero==='function') renderPortfolioHero();
   }, 1800);
 }
 
