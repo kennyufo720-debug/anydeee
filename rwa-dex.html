@@ -1790,7 +1790,7 @@
                     '<div><div class=\'l\'>24h 量</div><div class=\'v\'>$' + formatN(s.vol24h) + '</div></div>' +
                     '<div><div class=\'l\'>掛單</div><div class=\'v\'>' + s.listed.toLocaleString() + '</div></div>' +
                     '<div><div class=\'l\'>持有人</div><div class=\'v\'>' + s.holders.toLocaleString() + '</div></div>' +
-                    '<div><div class=\'l\'>總供應</div><div class=\'v\'>30K</div></div>' +
+                    '<div><div class=\'l\'>總供應</div><div class=\'v\'>'+(s.totalSupply>=1000?(s.totalSupply/1000).toFixed(s.totalSupply%1000===0?0:1)+'K':s.totalSupply)+'</div></div>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -1823,7 +1823,7 @@
             <div class="ss"><div class="l">24h 量</div><div class="v num" id="ssVol">—</div></div>
             <div class="ss"><div class="l">掛單</div><div class="v num" id="ssListed">—</div></div>
             <div class="ss"><div class="l">持有人</div><div class="v num" id="ssHolders">—</div></div>
-            <div class="ss"><div class="l">總供應</div><div class="v num">30,000</div></div>
+            <div class="ss"><div class="l">總供應</div><div class="v num" id="ssTotalSupply">—</div></div>
             <div class="ss"><div class="l">發行年份</div><div class="v num" id="ssYears">—</div></div>
           </div>
         </div>
@@ -3910,6 +3910,7 @@ const seriesCatalog = (function(){
     ['馬達加斯加雨林','MADAG','🌴','#0d9488','#064e44', 220, [2019,2026]],
     ['D197 貓山王榴槤','D197','🥭','#facc15','#713f12', 1842, [2018,2026], true],
     ['D88 樹葡萄','D88','🍇','#581c87','#2e1065', 980, [2017,2026], true],
+    ['半折植樹','BZTREE','🌱','#16a34a','#052e16', 480, [2025,2026], true],
   ];
   const seriesImages = {
     'RTEAK': 'ziyu-forest.jpeg',  // 紅柚木產權 — 子瑜森林實景
@@ -4025,8 +4026,7 @@ const seriesCatalog = (function(){
 // 全市場掛單統計
 seriesCatalog.forEach((s,i)=>{
   s.id = i;
-  s.totalSupply = 30000;
-  // 隨機掛單數（佔比 0.5–8%）
+  if(!s.totalSupply) s.totalSupply = 30000;
   s.listed = Math.floor(s.totalSupply * (0.005 + Math.random()*0.075));
   s.holders = Math.floor(s.totalSupply * (0.15 + Math.random()*0.45));
   s.vol24h = Math.floor(s.floor * s.listed * (0.05 + Math.random()*0.4));
@@ -4034,6 +4034,9 @@ seriesCatalog.forEach((s,i)=>{
   s.floorChange = (Math.random()-0.45)*15;
   s.verified = Math.random()>0.1;
 });
+// 特定系列供應量覆寫
+const _bzTree = seriesCatalog.find(s=>s.sym==='BZTREE');
+if(_bzTree){ _bzTree.totalSupply=2500; _bzTree.listed=Math.floor(2500*0.12); _bzTree.holders=Math.floor(2500*0.38); _bzTree.vol24h=Math.floor(_bzTree.floor*_bzTree.listed*0.25); _bzTree.verified=true; }
 
 // 用戶持有的 NFT（隨機分配 5 件作為起始）
 let myNFTHoldings = [];
@@ -4306,6 +4309,8 @@ function openSeries(id){
   document.getElementById('ssListed').textContent = s.listed.toLocaleString();
   document.getElementById('ssHolders').textContent = s.holders.toLocaleString();
   document.getElementById('ssYears').textContent = `${s.yearMin}–${s.yearMax}`;
+  const supEl = document.getElementById('ssTotalSupply');
+  if(supEl) supEl.textContent = s.totalSupply.toLocaleString();
   // 年份 pills
   const years = [];
   for(let y=s.yearMin;y<=s.yearMax;y++) years.push(y);
