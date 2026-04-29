@@ -994,7 +994,8 @@
   .wallet-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px}
   .wallet-asset-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
   .wac-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-  .wac-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0}
+  .wac-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0;overflow:hidden}
+  .wac-icon img{width:100%;height:100%;object-fit:cover;border-radius:50%}
   .wac-name{font-weight:700;font-size:14px}
   .wac-sym{font-size:11px;color:var(--muted)}
   .wac-bal{font-size:24px;font-weight:800;font-family:"SF Mono",monospace;margin-bottom:4px}
@@ -3163,8 +3164,8 @@ const walletBalances = {
   ANYU: 128400
 };
 const walletPrices = { ANYU:0.42 };
-const walletColors  = { ANYU:'#d97757' };
-const walletEmoji   = { ANYU:'🔥' };
+const walletColors  = { ANYU:'transparent' };
+const walletEmoji   = { ANYU:'<img src="anyu-coin.png" alt="ANYU">' };
 
 const txHistory = [
   {type:'deposit',  title:'ANYU 充值',          sub:'Polygon 網路',     amt:+50000, sym:'ANYU', time:'2026-04-28 14:22'},
