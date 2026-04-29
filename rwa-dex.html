@@ -858,6 +858,125 @@
   .msg-date-sep{text-align:center;color:var(--muted);font-size:11px;margin:8px 0;display:flex;align-items:center;gap:10px}
   .msg-date-sep::before, .msg-date-sep::after{content:"";flex:1;height:1px;background:var(--line)}
 
+  /* ====== 會員系統 ====== */
+  /* Header member profile */
+  .member-pill{display:flex;align-items:center;gap:8px;background:#241812;border-radius:20px;padding:5px 12px 5px 5px;cursor:pointer;border:1px solid var(--line);transition:border-color .15s;position:relative}
+  .member-pill:hover{border-color:var(--accent)}
+  .member-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:12px;flex-shrink:0}
+  .member-name{font-size:12px;font-weight:600;color:var(--text);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .member-drop{position:absolute;top:calc(100% + 8px);right:0;width:240px;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.6);z-index:400;display:none;overflow:hidden}
+  .member-pill.open .member-drop{display:block}
+  .md-head{padding:14px 16px;background:#15100b;border-bottom:1px solid var(--line)}
+  .md-head .dn{font-weight:700;font-size:14px;margin-bottom:2px}
+  .md-head .de{font-size:11px;color:var(--muted)}
+  .md-badges{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .md-badge{font-size:10px;padding:2px 8px;border-radius:4px;font-weight:700}
+  .md-badge.kyc-ok{background:rgba(34,197,94,.2);color:var(--green)}
+  .md-badge.kyc-no{background:rgba(239,68,68,.15);color:var(--red)}
+  .md-badge.fa-ok{background:rgba(91,140,255,.2);color:#5b8cff}
+  .md-badge.vip{background:rgba(212,169,69,.2);color:var(--gold)}
+  .md-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;font-size:13px;border-bottom:1px solid var(--line)}
+  .md-item:last-child{border-bottom:none}
+  .md-item:hover{background:#241812;color:var(--accent)}
+  .md-item .mi{font-size:15px;width:20px;text-align:center}
+  .md-item.danger{color:var(--red)}
+  .md-item.danger:hover{background:rgba(239,68,68,.08)}
+  /* Login / Register modal */
+  .auth-modal{width:420px;max-width:95vw}
+  .auth-logo{text-align:center;padding:24px 0 8px;font-size:32px}
+  .auth-title{text-align:center;font-size:20px;font-weight:800;margin-bottom:4px}
+  .auth-sub{text-align:center;font-size:12px;color:var(--muted);margin-bottom:20px}
+  .auth-field{margin-bottom:14px}
+  .auth-field label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.3px}
+  .auth-field .af-wrap{display:flex;background:#100a07;border:1px solid var(--line);border-radius:8px;padding:10px 12px;align-items:center;gap:8px}
+  .auth-field .af-wrap:focus-within{border-color:var(--accent)}
+  .auth-field .af-wrap input{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-size:14px}
+  .auth-field .af-wrap .ico{color:var(--muted);font-size:14px;flex-shrink:0}
+  .auth-field .af-wrap .eye{color:var(--muted);font-size:13px;cursor:pointer;flex-shrink:0}
+  .auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted);font-size:11px}
+  .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--line)}
+  .auth-social{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .auth-social button{background:#241812;border:1px solid var(--line);border-radius:8px;padding:9px;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+  .auth-social button:hover{border-color:var(--accent);color:var(--accent)}
+  .auth-btn{width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:700;color:#fff;border:none;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));margin-top:4px}
+  .auth-btn:hover{filter:brightness(1.1)}
+  .auth-footer{text-align:center;font-size:12px;color:var(--muted);margin-top:14px}
+  .auth-footer a{color:var(--accent);cursor:pointer}
+  .auth-strength{height:3px;border-radius:2px;margin-top:4px;transition:all .3s}
+  /* KYC multi-step */
+  .kyc-steps{display:flex;align-items:center;gap:0;margin-bottom:20px;padding:0 4px}
+  .kyc-step-item{display:flex;flex-direction:column;align-items:center;flex:1;position:relative}
+  .kyc-step-item:not(:last-child)::after{content:'';position:absolute;top:14px;left:50%;width:100%;height:2px;background:var(--line);z-index:0}
+  .kyc-step-item.done::after{background:var(--green)}
+  .kyc-step-item.active::after{background:linear-gradient(90deg,var(--accent),var(--line))}
+  .ks-circle{width:28px;height:28px;border-radius:50%;background:var(--line);color:var(--muted);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;flex-shrink:0;transition:all .3s}
+  .kyc-step-item.done .ks-circle{background:var(--green);color:#fff}
+  .kyc-step-item.active .ks-circle{background:var(--accent);color:#fff;box-shadow:0 0 0 3px rgba(217,119,87,.3)}
+  .ks-label{font-size:10px;color:var(--muted);margin-top:4px;text-align:center;white-space:nowrap}
+  .kyc-step-item.active .ks-label{color:var(--accent);font-weight:700}
+  .kyc-step-item.done .ks-label{color:var(--green)}
+  .kyc-panel{display:none}.kyc-panel.active{display:block}
+  .doc-upload-box{border:2px dashed var(--line);border-radius:10px;padding:28px;text-align:center;cursor:pointer;transition:border-color .15s;background:#100a07}
+  .doc-upload-box:hover{border-color:var(--accent)}
+  .doc-upload-box .ui{font-size:36px;margin-bottom:8px}
+  .doc-upload-box .ut{font-size:13px;font-weight:600;margin-bottom:4px}
+  .doc-upload-box .us{font-size:11px;color:var(--muted)}
+  .doc-upload-box.uploaded{border-color:var(--green);background:rgba(34,197,94,.05)}
+  .face-scan-box{background:#100a07;border:1px solid var(--line);border-radius:12px;padding:24px;text-align:center}
+  .face-scan-anim{width:120px;height:120px;border-radius:50%;background:#241812;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden}
+  .face-scan-anim::after{content:'';position:absolute;top:-100%;left:0;right:0;height:50%;background:linear-gradient(transparent,rgba(34,197,94,.3),transparent);animation:scanLine 2s infinite}
+  @keyframes scanLine{0%{top:-100%}100%{top:200%}}
+  /* 2FA */
+  .tfa-qr{width:160px;height:160px;background:#fff;margin:0 auto 12px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#000;padding:10px;text-align:center}
+  .tfa-code-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin:12px 0}
+  .tfa-backup{background:#100a07;border:1px solid var(--line);border-radius:6px;padding:8px;font-family:"SF Mono",monospace;font-size:12px;text-align:center;letter-spacing:2px;color:var(--text)}
+  .otp-row{display:flex;gap:8px;justify-content:center;margin:16px 0}
+  .otp-digit{width:44px;height:52px;background:#100a07;border:2px solid var(--line);border-radius:8px;text-align:center;color:var(--text);font-size:22px;font-weight:700;font-family:"SF Mono",monospace;outline:none}
+  .otp-digit:focus{border-color:var(--accent)}
+  /* Wallet page */
+  .wallet-hero{padding:28px 20px;border-bottom:1px solid var(--line);background:linear-gradient(135deg,rgba(217,119,87,.08),rgba(91,140,255,.05))}
+  .wallet-hero h1{margin:0 0 4px;font-size:22px;display:flex;align-items:center;gap:10px}
+  .wallet-total{font-size:36px;font-weight:800;margin:8px 0 4px;font-family:"SF Mono",monospace}
+  .wallet-actions-row{display:flex;gap:10px;margin-top:16px}
+  .wallet-act-btn{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 20px;cursor:pointer;font-size:12px;color:var(--text);font-weight:600;transition:border-color .15s;min-width:80px}
+  .wallet-act-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .wallet-act-btn .wai{font-size:20px;margin-bottom:2px}
+  .wallet-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:20px}
+  .wallet-asset-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .wac-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .wac-icon{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff;flex-shrink:0}
+  .wac-name{font-weight:700;font-size:14px}
+  .wac-sym{font-size:11px;color:var(--muted)}
+  .wac-bal{font-size:24px;font-weight:800;font-family:"SF Mono",monospace;margin-bottom:4px}
+  .wac-usd{font-size:12px;color:var(--muted)}
+  .wac-actions{display:flex;gap:6px;margin-top:12px}
+  .wac-btn{flex:1;padding:7px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:#241812;color:var(--text)}
+  .wac-btn:hover{background:#33231a;color:var(--accent)}
+  .tx-section{padding:0 20px 20px}
+  .tx-section h3{font-size:14px;font-weight:700;margin-bottom:12px}
+  .tx-row{display:flex;align-items:center;gap:12px;padding:12px;background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:6px}
+  .tx-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .tx-ico.deposit{background:rgba(34,197,94,.15)}
+  .tx-ico.withdraw{background:rgba(239,68,68,.15)}
+  .tx-ico.trade{background:rgba(217,119,87,.15)}
+  .tx-ico.airdrop{background:rgba(212,169,69,.15)}
+  .tx-body{flex:1;min-width:0}
+  .tx-title{font-size:13px;font-weight:600}
+  .tx-sub{font-size:11px;color:var(--muted);margin-top:1px}
+  .tx-amt{font-family:"SF Mono",monospace;font-weight:700;font-size:14px}
+  .tx-amt.pos{color:var(--green)} .tx-amt.neg{color:var(--red)}
+  /* Deposit / Withdraw modal */
+  .dw-tabs{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--line);margin:-20px -20px 16px}
+  .dw-tab{padding:12px;text-align:center;font-weight:600;font-size:13px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent}
+  .dw-tab.active.dep{color:var(--green);border-bottom-color:var(--green)}
+  .dw-tab.active.wd{color:var(--red);border-bottom-color:var(--red)}
+  .chain-select{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+  .chain-btn{background:#241812;border:1px solid var(--line);border-radius:6px;padding:6px 12px;font-size:11px;font-weight:600;cursor:pointer;color:var(--muted)}
+  .chain-btn.active{background:rgba(217,119,87,.15);border-color:var(--accent);color:var(--accent)}
+  .qr-addr-box{background:#100a07;border:1px solid var(--line);border-radius:8px;padding:12px;display:flex;align-items:center;gap:10px;margin-top:8px}
+  .qr-addr-box code{flex:1;font-family:"SF Mono",monospace;font-size:11px;word-break:break-all;color:var(--text)}
+  .qr-addr-box button{background:var(--accent);color:#fff;border:none;border-radius:5px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;flex-shrink:0}
+
   /* ====== 空投系統擴充 ====== */
   /* 詳情 Modal */
   .ad-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
@@ -986,6 +1105,7 @@
     <div class="more-wrap">
       <button class="more-btn">更多 ▾</button>
       <div class="more-menu">
+        <button data-page="wallet">站內錢包</button>
         <button data-page="portfolio">投資組合</button>
         <button data-page="agent">代理區</button>
         <button data-page="tokenize">資產上鏈</button>
@@ -1000,12 +1120,37 @@
     <button class="icon-btn" id="msgBtn" title="站內訊息"><span>💬</span><span class="notif-dot" id="msgDot">2</span></button>
     <button class="icon-btn" id="notifBtn" title="通知"><span class="bell">🔔</span><span class="notif-dot">3</span></button>
     <a href="admin.html" target="_blank" class="admin-entry-btn" title="管理後台（限授權人員）">
-      <span>⚙</span>
-      <span class="lab">管理後台</span>
+      <span>⚙</span><span class="lab">管理後台</span>
     </a>
     <div class="net-pill"><span class="led"></span><span id="netName">Polygon</span></div>
-    <button class="btn-ghost" id="kycBtn">KYC: <span id="kycStatus">未驗證</span></button>
-    <button class="btn-primary" id="walletBtn">連接錢包</button>
+    <!-- 未登入 -->
+    <div id="guestNav" style="display:flex;gap:6px">
+      <button class="btn-ghost" onclick="openModal('loginModal')">登入</button>
+      <button class="btn-primary" onclick="openModal('registerModal')">免費註冊</button>
+    </div>
+    <!-- 已登入 -->
+    <div class="member-pill" id="memberNav" style="display:none" onclick="toggleMemberDrop(event)">
+      <div class="member-av" id="memberAv">A</div>
+      <div class="member-name" id="memberNameLabel">會員</div>
+      <span style="font-size:9px;color:var(--muted);margin-left:2px">▾</span>
+      <div class="member-drop" id="memberDrop">
+        <div class="md-head">
+          <div class="dn" id="mdName">—</div>
+          <div class="de" id="mdEmail">—</div>
+          <div class="md-badges">
+            <span class="md-badge kyc-no" id="mdKycBadge">KYC 未驗證</span>
+            <span class="md-badge fa-ok" id="md2faBadge" style="display:none">2FA ✓</span>
+            <span class="md-badge vip" id="mdVipBadge">VIP 0</span>
+          </div>
+        </div>
+        <div class="md-item" onclick="setPage('wallet')"><span class="mi">🏦</span>我的錢包</div>
+        <div class="md-item" onclick="setPage('portfolio')"><span class="mi">📊</span>投資組合</div>
+        <div class="md-item" onclick="openKYC()"><span class="mi">🪪</span>身份驗證 (KYC)</div>
+        <div class="md-item" onclick="openModal('twoFALoginModal')"><span class="mi">🛡</span>雙重驗證設定</div>
+        <div class="md-item" onclick="setPage('benefits')"><span class="mi">🎁</span>會員福利</div>
+        <div class="md-item danger" onclick="doLogout()"><span class="mi">🚪</span>登出</div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -1195,6 +1340,27 @@
         <div class="bp-empty">尚無未成交訂單</div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ===== WALLET PAGE ===== -->
+<div class="page" id="page-wallet">
+  <div class="wallet-hero">
+    <h1>🏦 站內錢包</h1>
+    <div style="font-size:12px;color:var(--muted)">總資產估值（USDC）</div>
+    <div class="wallet-total" id="walletTotal">$0.00</div>
+    <div style="font-size:12px;color:var(--muted)" id="walletChange">—</div>
+    <div class="wallet-actions-row">
+      <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('dep')"><div class="wai">⬇</div>充值</button>
+      <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('wd')"><div class="wai">⬆</div>提領</button>
+      <button class="wallet-act-btn" onclick="setPage('trade')"><div class="wai">🔄</div>交易</button>
+      <button class="wallet-act-btn" onclick="setPage('benefits')"><div class="wai">🎁</div>空投</button>
+    </div>
+  </div>
+  <div class="wallet-grid" id="walletAssetGrid"></div>
+  <div class="tx-section">
+    <h3>最近交易紀錄</h3>
+    <div id="walletTxList"></div>
   </div>
 </div>
 
@@ -2261,6 +2427,306 @@
   <div class="search-results" id="searchResults"></div>
 </div>
 
+<!-- ====== 登入 Modal ====== -->
+<div class="modal-bg" id="loginModal">
+  <div class="modal auth-modal">
+    <div class="modal-body" style="padding:20px 24px 24px">
+      <button class="close" onclick="closeModal('loginModal')" style="position:absolute;top:14px;right:16px;background:transparent;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
+      <div class="auth-logo">🔐</div>
+      <div class="auth-title">歡迎回來</div>
+      <div class="auth-sub">登入你的 Anydeee 帳號</div>
+      <div class="auth-field">
+        <label>電子郵件</label>
+        <div class="af-wrap"><span class="ico">✉</span><input type="email" id="loginEmail" placeholder="your@email.com" /></div>
+      </div>
+      <div class="auth-field">
+        <label>密碼</label>
+        <div class="af-wrap"><span class="ico">🔒</span><input type="password" id="loginPwd" placeholder="••••••••" id="loginPwdInput" /><span class="eye" onclick="togglePwd('loginPwdInput')">👁</span></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:16px">
+        <label style="display:flex;align-items:center;gap:5px;cursor:pointer;color:var(--muted)"><input type="checkbox" /> 記住我</label>
+        <a style="color:var(--accent);cursor:pointer;font-size:11px">忘記密碼？</a>
+      </div>
+      <button class="auth-btn" onclick="doLogin()">登入</button>
+      <div class="auth-divider">或</div>
+      <div class="auth-social">
+        <button onclick="socialLogin('google')">🇬 Google</button>
+        <button onclick="socialLogin('apple')"> Apple</button>
+      </div>
+      <div class="auth-footer">還沒有帳號？<a onclick="switchToRegister()">立即註冊</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 註冊 Modal ====== -->
+<div class="modal-bg" id="registerModal">
+  <div class="modal auth-modal">
+    <div class="modal-body" style="padding:20px 24px 24px">
+      <button class="close" onclick="closeModal('registerModal')" style="position:absolute;top:14px;right:16px;background:transparent;color:var(--muted);font-size:20px;cursor:pointer">✕</button>
+      <div class="auth-logo">🌱</div>
+      <div class="auth-title">建立帳號</div>
+      <div class="auth-sub">加入 Anydeee RWA 生態系</div>
+      <div class="auth-field">
+        <label>姓名 / 暱稱</label>
+        <div class="af-wrap"><span class="ico">👤</span><input type="text" id="regName" placeholder="你的名字" /></div>
+      </div>
+      <div class="auth-field">
+        <label>電子郵件</label>
+        <div class="af-wrap"><span class="ico">✉</span><input type="email" id="regEmail" placeholder="your@email.com" /></div>
+      </div>
+      <div class="auth-field">
+        <label>密碼</label>
+        <div class="af-wrap"><span class="ico">🔒</span><input type="password" id="regPwd" placeholder="至少 8 位，含大小寫與數字" oninput="checkPwdStrength(this.value)" /><span class="eye" onclick="togglePwd('regPwd')">👁</span></div>
+        <div class="auth-strength" id="pwdStrengthBar" style="background:var(--line);width:0%"></div>
+        <div style="font-size:10px;color:var(--muted);margin-top:3px" id="pwdStrengthLabel"></div>
+      </div>
+      <div class="auth-field">
+        <label>確認密碼</label>
+        <div class="af-wrap"><span class="ico">🔒</span><input type="password" id="regPwd2" placeholder="再次輸入密碼" /></div>
+      </div>
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--muted);margin-bottom:14px;cursor:pointer">
+        <input type="checkbox" id="regTerms" style="margin-top:2px" />
+        <span>我已閱讀並同意 <a style="color:var(--accent)">服務條款</a> 及 <a style="color:var(--accent)">隱私政策</a></span>
+      </label>
+      <button class="auth-btn" onclick="doRegister()">建立帳號</button>
+      <div class="auth-footer">已有帳號？<a onclick="switchToLogin()">立即登入</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== KYC 多步驟 Modal ====== -->
+<div class="modal-bg" id="kycFullModal">
+  <div class="modal" style="width:520px;max-width:95vw">
+    <div class="modal-head">
+      <h3 id="kycStepTitle">身份驗證 (KYC)</h3>
+      <button class="close" onclick="closeModal('kycFullModal')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px">
+      <!-- 步驟指示器 -->
+      <div class="kyc-steps" id="kycStepsIndicator"></div>
+
+      <!-- Step 1：基本資料 -->
+      <div class="kyc-panel active" id="kyc-s1">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">基本個人資料</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div class="auth-field" style="margin-bottom:0">
+            <label>真實姓名</label>
+            <div class="af-wrap"><input type="text" id="kycName" placeholder="中文或英文姓名" /></div>
+          </div>
+          <div class="auth-field" style="margin-bottom:0">
+            <label>出生日期</label>
+            <div class="af-wrap"><input type="date" id="kycDOB" style="color-scheme:dark" /></div>
+          </div>
+          <div class="auth-field" style="margin-bottom:0">
+            <label>國籍</label>
+            <select id="kycNation" style="width:100%;background:#100a07;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:10px 12px;font-size:14px;outline:none">
+              <option value="TW">🇹🇼 台灣</option>
+              <option value="HK">🇭🇰 香港</option>
+              <option value="SG">🇸🇬 新加坡</option>
+              <option value="US">🇺🇸 美國</option>
+              <option value="JP">🇯🇵 日本</option>
+              <option value="OTHER">其他</option>
+            </select>
+          </div>
+          <div class="auth-field" style="margin-bottom:0">
+            <label>手機號碼</label>
+            <div class="af-wrap"><span class="ico">📱</span><input type="tel" id="kycPhone" placeholder="+886 912 345 678" /></div>
+          </div>
+        </div>
+        <div class="auth-field" style="margin-top:10px">
+          <label>居住地址</label>
+          <div class="af-wrap"><input type="text" id="kycAddr" placeholder="城市、縣市、國家" /></div>
+        </div>
+        <button class="auth-btn" style="margin-top:14px" onclick="kycNext(1)">下一步 →</button>
+      </div>
+
+      <!-- Step 2：證件上傳 -->
+      <div class="kyc-panel" id="kyc-s2">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">身份證件上傳</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px">
+          <button class="chain-btn active" onclick="selectDocType(this,'id')">🪪 身分證</button>
+          <button class="chain-btn" onclick="selectDocType(this,'passport')">📘 護照</button>
+          <button class="chain-btn" onclick="selectDocType(this,'dl')">🚗 駕照</button>
+        </div>
+        <div class="doc-upload-box" id="docFrontBox" onclick="simulateUpload('docFront','docFrontBox')">
+          <div class="ui">📄</div>
+          <div class="ut" id="docFrontLabel">正面上傳</div>
+          <div class="us">JPG / PNG，最大 10MB</div>
+        </div>
+        <div class="doc-upload-box" id="docBackBox" style="margin-top:10px" onclick="simulateUpload('docBack','docBackBox')">
+          <div class="ui">📄</div>
+          <div class="ut" id="docBackLabel">背面上傳</div>
+          <div class="us">JPG / PNG，最大 10MB</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="btn-ghost" style="flex:1" onclick="kycBack(2)">← 上一步</button>
+          <button class="auth-btn" style="flex:2;margin-top:0" onclick="kycNext(2)">下一步 →</button>
+        </div>
+      </div>
+
+      <!-- Step 3：人臉驗證 -->
+      <div class="kyc-panel" id="kyc-s3">
+        <div style="font-size:14px;font-weight:700;margin-bottom:14px">人臉活體驗證</div>
+        <div class="face-scan-box">
+          <div class="face-scan-anim" id="faceScanAnim">😐</div>
+          <div style="font-size:13px;font-weight:700;margin-bottom:6px" id="faceScanLabel">對準攝影機，保持正面</div>
+          <div style="font-size:11px;color:var(--muted)">系統將自動偵測人臉並完成驗證</div>
+          <button class="auth-btn" style="margin-top:14px;max-width:200px" id="faceScanBtn" onclick="startFaceScan()">開始掃描</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:14px">
+          <button class="btn-ghost" style="flex:1" onclick="kycBack(3)">← 上一步</button>
+        </div>
+      </div>
+
+      <!-- Step 4：設定 2FA -->
+      <div class="kyc-panel" id="kyc-s4">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px">設定雙重驗證 (2FA)</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:14px">強烈建議啟用，保護你的帳號安全</div>
+        <div style="background:#15100b;border:1px solid var(--line);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px">
+          <div style="font-size:11px;color:var(--muted);margin-bottom:8px">使用 Google Authenticator 或 Authy 掃描</div>
+          <div class="tfa-qr" id="tfaQRCode">
+            <div style="background:#000;padding:12px;border-radius:4px">
+              <svg width="100" height="100" viewBox="0 0 10 10" style="image-rendering:pixelated">
+                <rect fill="#000" width="10" height="10"/>
+                <rect fill="#fff" x="1" y="1" width="3" height="3"/>
+                <rect fill="#000" x="2" y="2" width="1" height="1"/>
+                <rect fill="#fff" x="6" y="1" width="3" height="3"/>
+                <rect fill="#000" x="7" y="2" width="1" height="1"/>
+                <rect fill="#fff" x="1" y="6" width="3" height="3"/>
+                <rect fill="#000" x="2" y="7" width="1" height="1"/>
+                <rect fill="#fff" x="5" y="5" width="1" height="1"/>
+                <rect fill="#fff" x="7" y="5" width="1" height="1"/>
+                <rect fill="#fff" x="5" y="7" width="2" height="1"/>
+                <rect fill="#fff" x="8" y="7" width="1" height="1"/>
+                <rect fill="#fff" x="6" y="9" width="2" height="1"/>
+              </svg>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:6px">或手動輸入金鑰：</div>
+          <code style="font-family:'SF Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:2px" id="tfaSecret">ANYD-7F2E-91KX-MPLQ</code>
+        </div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">輸入驗證碼確認綁定：</div>
+        <div class="otp-row" id="otpRow2fa">
+          <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRow2fa')" />
+          <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRow2fa')" />
+          <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRow2fa')" />
+          <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRow2fa')" />
+          <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRow2fa')" />
+          <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRow2fa')" />
+        </div>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button class="btn-ghost" style="flex:1" onclick="kycBack(4)">← 上一步</button>
+          <button class="auth-btn" style="flex:2;margin-top:0" onclick="kycNext(4)">綁定並完成 KYC</button>
+        </div>
+        <div style="text-align:center;margin-top:10px"><a style="color:var(--muted);font-size:11px;cursor:pointer" onclick="skip2FA()">暫時略過（不建議）</a></div>
+      </div>
+
+      <!-- Step 5：完成 -->
+      <div class="kyc-panel" id="kyc-s5">
+        <div style="text-align:center;padding:20px 0">
+          <div style="font-size:64px;margin-bottom:14px">🎉</div>
+          <div style="font-size:20px;font-weight:800;margin-bottom:8px">KYC 驗證完成！</div>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6">身份驗證已通過，雙重驗證已啟用。<br>你現在可以進行所有 RWA 資產交易。</div>
+          <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:20px">
+            <span class="md-badge kyc-ok" style="font-size:12px;padding:4px 12px">✓ KYC 已驗證</span>
+            <span class="md-badge fa-ok" style="font-size:12px;padding:4px 12px" id="kycDone2FABadge">✓ 2FA 已啟用</span>
+            <span class="md-badge vip" style="font-size:12px;padding:4px 12px">VIP 1 解鎖</span>
+          </div>
+          <button class="auth-btn" style="max-width:220px;margin:0 auto" onclick="closeModal('kycFullModal');renderMemberUI()">開始交易 →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 2FA 登入驗證 Modal ====== -->
+<div class="modal-bg" id="twoFALoginModal">
+  <div class="modal auth-modal">
+    <div class="modal-body" style="padding:24px">
+      <div class="auth-logo">🛡</div>
+      <div class="auth-title">雙重驗證</div>
+      <div class="auth-sub" id="twoFALoginSub">請輸入驗證器 App 上顯示的 6 位數驗證碼</div>
+      <div class="otp-row" id="otpRowLogin">
+        <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRowLogin')" />
+        <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRowLogin')" />
+        <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRowLogin')" />
+        <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRowLogin')" />
+        <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRowLogin')" />
+        <input class="otp-digit" maxlength="1" oninput="otpNext(this,'otpRowLogin')" />
+      </div>
+      <button class="auth-btn" onclick="verify2FA()">驗證</button>
+      <div class="auth-footer" style="margin-top:12px"><a style="color:var(--muted);cursor:pointer;font-size:11px" onclick="closeModal('twoFALoginModal')">取消登入</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 充值 / 提領 Modal ====== -->
+<div class="modal-bg" id="depositModal">
+  <div class="modal" style="width:460px;max-width:95vw">
+    <div class="modal-head"><h3 id="dwModalTitle">充值 / 提領</h3><button class="close" onclick="closeModal('depositModal')">✕</button></div>
+    <div class="modal-body">
+      <div class="dw-tabs">
+        <div class="dw-tab active dep" id="depTab" onclick="switchDW('dep')">充值</div>
+        <div class="dw-tab wd" id="wdTab" onclick="switchDW('wd')">提領</div>
+      </div>
+      <div id="depPanel">
+        <div class="auth-field">
+          <label>選擇幣種</label>
+          <select id="depCoin" style="width:100%;background:#100a07;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:10px;font-size:13px;outline:none" onchange="updateDepAddr()">
+            <option value="USDC">USDC</option>
+            <option value="USDT">USDT</option>
+            <option value="PAXG">PAXG</option>
+            <option value="ANY">ANY</option>
+          </select>
+        </div>
+        <div class="auth-field">
+          <label>選擇網路</label>
+          <div class="chain-select" id="depChains">
+            <button class="chain-btn active" onclick="selectChain(this)">Polygon</button>
+            <button class="chain-btn" onclick="selectChain(this)">Ethereum</button>
+            <button class="chain-btn" onclick="selectChain(this)">BSC</button>
+            <button class="chain-btn" onclick="selectChain(this)">Arbitrum</button>
+          </div>
+        </div>
+        <div class="auth-field">
+          <label>充值地址</label>
+          <div class="qr-addr-box">
+            <code id="depAddr">0x4580412...e72f1d8b</code>
+            <button onclick="copyDepAddr()">複製</button>
+          </div>
+          <div style="font-size:10px;color:var(--red);margin-top:6px">⚠ 僅限傳送 <span id="depCoinLabel">USDC</span>，傳錯幣種將永久損失</div>
+        </div>
+        <div style="background:#15100b;border-radius:8px;padding:10px 12px;font-size:11px;color:var(--muted)">
+          最低充值：$10 USDC ・ 到帳時間：1–3 個區塊（~30 秒）
+        </div>
+      </div>
+      <div id="wdPanel" style="display:none">
+        <div class="auth-field">
+          <label>提領幣種</label>
+          <select id="wdCoin" style="width:100%;background:#100a07;border:1px solid var(--line);border-radius:8px;color:var(--text);padding:10px;font-size:13px;outline:none">
+            <option value="USDC">USDC (餘額: 12,540.00)</option>
+            <option value="USDT">USDT (餘額: 3,820.00)</option>
+            <option value="PAXG">PAXG (餘額: 2.4)</option>
+            <option value="ANY">ANY (餘額: 12,840)</option>
+          </select>
+        </div>
+        <div class="auth-field">
+          <label>提領地址</label>
+          <div class="af-wrap"><span class="ico">📬</span><input type="text" id="wdAddr" placeholder="0x..." /></div>
+        </div>
+        <div class="auth-field">
+          <label>提領數量</label>
+          <div class="af-wrap"><input type="number" id="wdAmt" placeholder="0.00" /><span class="ico" style="cursor:pointer;color:var(--accent)" onclick="setWdMax()">MAX</span></div>
+        </div>
+        <div style="background:#15100b;border-radius:8px;padding:10px 12px;font-size:11px;color:var(--muted);margin-bottom:12px">
+          手續費：2 USDC ・ 到帳時間：5–30 分鐘 ・ 最低：10 USDC
+        </div>
+        <button class="submit-btn sell" style="width:100%" onclick="doWithdraw()">確認提領</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ====== 空投詳情 Modal ====== -->
 <div class="modal-bg" id="airdropDetailModal">
   <div class="modal" style="width:520px;max-width:95vw">
@@ -2456,6 +2922,286 @@ const assets = [
   {sym:'AMZN-F', name:'亞馬遜雨林碳匯林', cat:'forest', catName:'森林', icon:'🌲', color:'#15803d', price:88.40, ch:6.42, vol:1820000, mc:84000000, verified:true},
   {sym:'CYPRS', name:'阿里山扁柏保育林', cat:'forest', catName:'森林', icon:'🌲', color:'#166534', price:482.20, ch:1.04, vol:240000, mc:18000000, verified:true},
 ];
+
+/* ===== 會員系統 ===== */
+let isLoggedIn = false;
+let currentUser = null; // {name, email, avatar}
+let memberKYCStatus = false;
+let member2FAEnabled = false;
+let _kycStep = 1;
+let _pendingLoginUser = null;
+
+const walletBalances = {
+  USDC: 12540.00,
+  USDT: 3820.00,
+  PAXG: 2.4,
+  ANY: 12840
+};
+const walletPrices = { USDC:1, USDT:1, PAXG:2043.21, ANY:0.42 };
+const walletColors  = { USDC:'#2775ca', USDT:'#26a17b', PAXG:'#d4a945', ANY:'#d97757' };
+const walletEmoji   = { USDC:'💵', USDT:'💚', PAXG:'🥇', ANY:'🔥' };
+
+const txHistory = [
+  {type:'deposit',  title:'USDC 充值',        sub:'Polygon 網路',     amt:+5000,  sym:'USDC', time:'2026-04-28 14:22'},
+  {type:'trade',    title:'買入 PAXG',         sub:'限價單成交',       amt:-4086,  sym:'USDC', time:'2026-04-27 09:15'},
+  {type:'airdrop',  title:'PAXG Genesis 空投', sub:'空投已到帳',       amt:+280,   sym:'USDC', time:'2026-04-25 16:40'},
+  {type:'trade',    title:'賣出 CARB',         sub:'市價單成交',       amt:+1082,  sym:'USDC', time:'2026-04-24 11:30'},
+  {type:'deposit',  title:'ANY 充值',          sub:'Polygon 網路',     amt:+10000, sym:'ANY',  time:'2026-04-22 08:10'},
+  {type:'withdraw', title:'USDC 提領',         sub:'Ethereum 主網',    amt:-2000,  sym:'USDC', time:'2026-04-20 17:55'},
+  {type:'trade',    title:'買入 UST-1Y',       sub:'限價單成交',       amt:-8418,  sym:'USDC', time:'2026-04-18 10:22'},
+  {type:'airdrop',  title:'Carbon Credit 回饋',sub:'季度空投已到帳',   amt:+142,   sym:'USDC', time:'2026-04-15 00:00'},
+];
+
+/* ─ 登入/登出 ─ */
+function doLogin(){
+  const email = document.getElementById('loginEmail').value.trim();
+  const pwd   = document.getElementById('loginPwd').value;
+  if(!email || !pwd){ toast('請填寫完整','請輸入電子郵件與密碼','error'); return; }
+  const name = email.split('@')[0].replace(/[^a-zA-Z0-9一-龥]/g,'') || '會員';
+  _pendingLoginUser = { name, email, avatar: name.charAt(0).toUpperCase() };
+  closeModal('loginModal');
+  // 若已設 2FA，先驗 OTP
+  if(member2FAEnabled){
+    openModal('twoFALoginModal');
+  } else {
+    completeLogin(_pendingLoginUser);
+  }
+}
+function verify2FA(){
+  const row = document.getElementById('otpRowLogin');
+  const code = [...row.querySelectorAll('.otp-digit')].map(i=>i.value).join('');
+  if(code.length < 6){ toast('請輸入完整 6 位驗證碼','','error'); return; }
+  // 模擬驗證通過（任意 6 碼）
+  closeModal('twoFALoginModal');
+  completeLogin(_pendingLoginUser);
+}
+function completeLogin(user){
+  isLoggedIn = true;
+  currentUser = user;
+  walletConnected = true;
+  walletAddress = '0x' + Math.random().toString(16).slice(2,10) + '...' + Math.random().toString(16).slice(2,8);
+  kycVerified = memberKYCStatus;
+  renderMemberUI();
+  toast('登入成功', `歡迎回來，${user.name}！`,'success');
+}
+function doLogout(){
+  isLoggedIn = false; currentUser = null; walletConnected = false; walletAddress = null; kycVerified = false;
+  document.getElementById('memberNav').style.display = 'none';
+  document.getElementById('guestNav').style.display = 'flex';
+  document.getElementById('memberNav').classList.remove('open');
+  toast('已登出','期待再見！','success');
+}
+function socialLogin(provider){
+  const names = {google:'Google 用戶', apple:'Apple 用戶'};
+  const emails = {google:'user@gmail.com', apple:'user@icloud.com'};
+  _pendingLoginUser = { name: names[provider], email: emails[provider], avatar: provider==='google'?'G':'🍎' };
+  closeModal('loginModal'); closeModal('registerModal');
+  completeLogin(_pendingLoginUser);
+}
+function doRegister(){
+  const name  = document.getElementById('regName').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pwd   = document.getElementById('regPwd').value;
+  const pwd2  = document.getElementById('regPwd2').value;
+  const terms = document.getElementById('regTerms').checked;
+  if(!name||!email||!pwd){ toast('請填寫所有必填欄位','','error'); return; }
+  if(pwd!==pwd2){ toast('密碼不一致','請確認兩次密碼相同','error'); return; }
+  if(!terms){ toast('請同意服務條款','','error'); return; }
+  if(pwd.length<8){ toast('密碼太短','至少需要 8 個字元','error'); return; }
+  _pendingLoginUser = { name, email, avatar: name.charAt(0).toUpperCase() };
+  closeModal('registerModal');
+  completeLogin(_pendingLoginUser);
+  setTimeout(()=>toast('帳號已建立', '建議完成 KYC 驗證以解鎖所有功能','success'), 800);
+}
+function switchToRegister(){ closeModal('loginModal'); setTimeout(()=>openModal('registerModal'),200); }
+function switchToLogin(){ closeModal('registerModal'); setTimeout(()=>openModal('loginModal'),200); }
+
+/* ─ 會員 UI ─ */
+function renderMemberUI(){
+  if(!isLoggedIn) return;
+  const u = currentUser;
+  document.getElementById('guestNav').style.display  = 'none';
+  document.getElementById('memberNav').style.display = 'flex';
+  document.getElementById('memberAv').textContent   = u.avatar;
+  document.getElementById('memberNameLabel').textContent = u.name;
+  document.getElementById('mdName').textContent  = u.name;
+  document.getElementById('mdEmail').textContent = u.email;
+  const kycB = document.getElementById('mdKycBadge');
+  kycB.textContent = memberKYCStatus ? '✓ KYC 已驗證' : 'KYC 未驗證';
+  kycB.className   = 'md-badge ' + (memberKYCStatus ? 'kyc-ok' : 'kyc-no');
+  const fa2B = document.getElementById('md2faBadge');
+  fa2B.style.display = member2FAEnabled ? 'inline-block' : 'none';
+  document.getElementById('mdVipBadge').textContent = memberKYCStatus ? 'VIP 1' : 'VIP 0';
+  document.getElementById('kycStatus').textContent = memberKYCStatus ? '已驗證 ✓' : '未驗證';
+}
+function toggleMemberDrop(e){
+  e.stopPropagation();
+  document.getElementById('memberNav').classList.toggle('open');
+}
+document.addEventListener('click',()=>{ const n=document.getElementById('memberNav'); if(n) n.classList.remove('open'); });
+
+/* ─ KYC 流程 ─ */
+function openKYC(){
+  document.getElementById('memberNav').classList.remove('open');
+  if(!isLoggedIn){ openModal('loginModal'); return; }
+  _kycStep = 1;
+  renderKYCSteps();
+  document.querySelectorAll('.kyc-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('kyc-s1').classList.add('active');
+  openModal('kycFullModal');
+}
+function renderKYCSteps(){
+  const labels = ['基本資料','證件上傳','人臉驗證','雙重驗證','完成'];
+  document.getElementById('kycStepsIndicator').innerHTML = labels.map((l,i)=>{
+    const n = i+1;
+    const cls = n < _kycStep ? 'kyc-step-item done' : n === _kycStep ? 'kyc-step-item active' : 'kyc-step-item';
+    return `<div class="${cls}"><div class="ks-circle">${n < _kycStep ? '✓' : n}</div><div class="ks-label">${l}</div></div>`;
+  }).join('');
+}
+function kycNext(step){
+  if(step===1){
+    const name = document.getElementById('kycName').value.trim();
+    if(!name){ toast('請填寫真實姓名','','error'); return; }
+  }
+  if(step===2){
+    const front = document.getElementById('docFrontBox').classList.contains('uploaded');
+    if(!front){ toast('請上傳證件正面','','error'); return; }
+  }
+  if(step===4){ member2FAEnabled = true; }
+  _kycStep = step + 1;
+  renderKYCSteps();
+  document.querySelectorAll('.kyc-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`kyc-s${_kycStep}`).classList.add('active');
+  if(_kycStep===5){
+    memberKYCStatus = true; kycVerified = true;
+    document.getElementById('kycStatus').textContent = '已驗證 ✓';
+    document.getElementById('kycDone2FABadge').style.display = member2FAEnabled ? 'inline-block' : 'none';
+    renderMemberUI();
+    document.getElementById('kycBanner').style.display = 'none';
+  }
+}
+function kycBack(step){ _kycStep = step - 1; renderKYCSteps(); document.querySelectorAll('.kyc-panel').forEach(p=>p.classList.remove('active')); document.getElementById(`kyc-s${_kycStep}`).classList.add('active'); }
+function skip2FA(){ _kycStep = 5; kycNext(4); member2FAEnabled = false; }
+function selectDocType(btn, type){ document.querySelectorAll('.doc-upload-box ~ *,.chain-btn').forEach(b=>{if(b.classList.contains('chain-btn')) b.classList.remove('active');}); btn.classList.add('active'); document.getElementById('docFrontLabel').textContent = type==='passport'?'護照資料頁':'正面上傳'; document.getElementById('docBackLabel').textContent = type==='passport'?'（護照無需背面）':'背面上傳'; }
+function simulateUpload(id, boxId){
+  const box = document.getElementById(boxId);
+  box.innerHTML = `<div class="ui">⏳</div><div class="ut">上傳中...</div>`;
+  setTimeout(()=>{
+    box.innerHTML = `<div class="ui">✅</div><div class="ut">上傳成功</div><div class="us">檔案已加密上傳</div>`;
+    box.classList.add('uploaded');
+  }, 1200);
+}
+function startFaceScan(){
+  const anim = document.getElementById('faceScanAnim');
+  const label = document.getElementById('faceScanLabel');
+  const btn = document.getElementById('faceScanBtn');
+  btn.disabled = true; btn.textContent = '掃描中...';
+  const faces = ['😐','🙂','😊','🤩'];
+  let i = 0;
+  const iv = setInterval(()=>{ anim.textContent = faces[i++ % faces.length]; },500);
+  setTimeout(()=>{
+    clearInterval(iv);
+    anim.textContent = '✅';
+    label.textContent = '人臉驗證通過！';
+    setTimeout(()=>kycNext(3), 800);
+  }, 3000);
+}
+
+/* ─ 2FA OTP 輸入 ─ */
+function otpNext(input, rowId){
+  if(input.value && input.nextElementSibling && input.nextElementSibling.classList.contains('otp-digit')){
+    input.nextElementSibling.focus();
+  }
+  const row = document.getElementById(rowId);
+  const code = [...row.querySelectorAll('.otp-digit')].map(i=>i.value).join('');
+  if(code.length===6 && rowId==='otpRow2fa') kycNext(4);
+  if(code.length===6 && rowId==='otpRowLogin') verify2FA();
+}
+
+/* ─ 密碼強度 ─ */
+function checkPwdStrength(v){
+  const bar = document.getElementById('pwdStrengthBar');
+  const label = document.getElementById('pwdStrengthLabel');
+  if(!bar) return;
+  let s = 0;
+  if(v.length>=8) s++; if(/[A-Z]/.test(v)) s++; if(/[0-9]/.test(v)) s++; if(/[^a-zA-Z0-9]/.test(v)) s++;
+  const configs = [{pct:'25%',color:'#ef4444',txt:'弱'},{pct:'50%',color:'#f59e0b',txt:'一般'},{pct:'75%',color:'#22c55e',txt:'強'},{pct:'100%',color:'#16a34a',txt:'非常強'}];
+  const c = configs[Math.min(s-1,3)] || {pct:'0%',color:'var(--line)',txt:''};
+  bar.style.width = c.pct; bar.style.background = c.color;
+  label.textContent = c.txt; label.style.color = c.color;
+}
+function togglePwd(id){
+  const el = document.getElementById(id) || document.querySelector(`#${id}`);
+  if(!el){ const inputs = document.querySelectorAll(`[id="${id}"]`); inputs.forEach(i=>i.type = i.type==='password'?'text':'password'); return; }
+  el.type = el.type==='password'?'text':'password';
+}
+
+/* ─ 充值/提領 ─ */
+function switchDW(mode){
+  const isDep = mode==='dep';
+  document.getElementById('depPanel').style.display = isDep?'block':'none';
+  document.getElementById('wdPanel').style.display  = isDep?'none':'block';
+  document.getElementById('depTab').classList.toggle('active', isDep);
+  document.getElementById('wdTab').classList.toggle('active', !isDep);
+  document.getElementById('dwModalTitle').textContent = isDep ? '充值' : '提領';
+}
+function selectChain(btn){ document.querySelectorAll('#depChains .chain-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); }
+function updateDepAddr(){
+  const addr = '0x4580412c7e5AaF4dB9f22bD48e77CF4Afe3e7d' + Math.floor(Math.random()*100);
+  document.getElementById('depAddr').textContent = addr;
+  document.getElementById('depCoinLabel').textContent = document.getElementById('depCoin').value;
+}
+function copyDepAddr(){ const a = document.getElementById('depAddr').textContent; navigator.clipboard?.writeText(a); toast('已複製','充值地址已複製到剪貼簿','success'); }
+function setWdMax(){ document.getElementById('wdAmt').value = '12540'; }
+function doWithdraw(){
+  if(!isLoggedIn){ openModal('loginModal'); return; }
+  const amt = parseFloat(document.getElementById('wdAmt').value);
+  const addr = document.getElementById('wdAddr').value.trim();
+  if(!amt||!addr){ toast('請填寫提領地址與數量','','error'); return; }
+  if(!member2FAEnabled){ toast('需要雙重驗證','提領需先啟用 2FA 保護','error'); openKYC(); return; }
+  toast('提領申請送出', `${amt} USDC 廣播至鏈上，5-30 分鐘到帳`,'success');
+  closeModal('depositModal');
+  walletBalances.USDC = Math.max(0, walletBalances.USDC - amt);
+  renderWalletPage();
+}
+
+/* ─ 錢包頁面 ─ */
+function renderWalletPage(){
+  const total = Object.entries(walletBalances).reduce((s,[k,v])=>s+v*walletPrices[k],0);
+  document.getElementById('walletTotal').textContent = '$'+total.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('walletChange').textContent = '+$1,284.10 (+2.7%) 今日';
+  const grid = document.getElementById('walletAssetGrid');
+  grid.innerHTML = Object.entries(walletBalances).map(([sym,bal])=>`
+    <div class="wallet-asset-card">
+      <div class="wac-head">
+        <div class="wac-icon" style="background:${walletColors[sym]}">${walletEmoji[sym]}</div>
+        <div><div class="wac-name">${sym}</div><div class="wac-sym">${sym==='PAXG'?'Paxos Gold':sym==='ANY'?'Anydeee Token':sym==='USDC'?'USD Coin':'Tether'}</div></div>
+      </div>
+      <div class="wac-bal">${bal.toLocaleString(undefined,{maximumFractionDigits:sym==='PAXG'?4:2})}</div>
+      <div class="wac-usd">≈ $${(bal*walletPrices[sym]).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})} USD</div>
+      <div class="wac-actions">
+        <button class="wac-btn" onclick="openModal('depositModal');switchDW('dep')">充值</button>
+        <button class="wac-btn" onclick="openModal('depositModal');switchDW('wd')">提領</button>
+        <button class="wac-btn" onclick="openTrade('${sym==='ANY'||sym==='USDC'||sym==='USDT'?'PAXG':sym}')">交易</button>
+      </div>
+    </div>`).join('');
+  const txList = document.getElementById('walletTxList');
+  txList.innerHTML = txHistory.map(t=>`
+    <div class="tx-row">
+      <div class="tx-ico ${t.type}">${t.type==='deposit'?'⬇':t.type==='withdraw'?'⬆':t.type==='airdrop'?'🎁':'🔄'}</div>
+      <div class="tx-body">
+        <div class="tx-title">${t.title}</div>
+        <div class="tx-sub">${t.sub} · ${t.time}</div>
+      </div>
+      <div class="tx-amt ${t.amt>0?'pos':'neg'}">${t.amt>0?'+':''}${t.amt.toLocaleString()} ${t.sym}</div>
+    </div>`).join('');
+}
+
+/* ─ 密碼輸入 id fix ─ */
+function togglePwd(inputId){
+  const all = document.querySelectorAll(`[id="${inputId}"]`);
+  all.forEach(el=>{ el.type = el.type==='password'?'text':'password'; });
+}
 
 /* ===== State ===== */
 let currentPair = assets[0];
@@ -2787,10 +3533,11 @@ function renderHistory(){
 /* ===== Wallet ===== */
 function openModal(id){document.getElementById(id).classList.add('show')}
 function closeModal(id){document.getElementById(id).classList.remove('show')}
-document.getElementById('walletBtn').onclick = ()=>{
+const _walletBtnEl = document.getElementById('walletBtn');
+if(_walletBtnEl) _walletBtnEl.onclick = ()=>{
   if(walletConnected){
     walletConnected=false;walletAddress=null;
-    document.getElementById('walletBtn').textContent='連接錢包';
+    _walletBtnEl.textContent='連接錢包';
     toast('錢包已斷開','','success');
   } else {
     openModal('walletModal');
@@ -2898,7 +3645,8 @@ function checkEchoTreeClaim(){
 }
 
 /* ===== KYC ===== */
-document.getElementById('kycBtn').onclick = ()=>{
+const _kycBtnEl = document.getElementById('kycBtn');
+if(_kycBtnEl) _kycBtnEl.onclick = ()=>{
   if(kycVerified){
     toast('KYC 已驗證','你可以交易所有 RWA 資產','success');
   } else {
@@ -5366,6 +6114,7 @@ const _origSetPage = setPage;
 setPage = function(p){
   _origSetPage(p);
   if(p==='benefits'){ renderAirdrops(); }
+  if(p==='wallet'){ renderWalletPage(); }
   if(p==='agent'){ renderAgent(); }
   if(p==='buy'){ recalcBuy(); }
   if(p==='earn'){ renderEarn(); }
