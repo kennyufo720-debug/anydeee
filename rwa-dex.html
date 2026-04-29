@@ -2200,7 +2200,7 @@
               <option value="recent">最新掛單</option>
             </select>
             <div style="margin-left:auto;display:flex;gap:4px">
-              <button class="btn-sweep" id="sweepModeBtn" onclick="toggleSweepMode()">🧹 批量掃地板</button>
+              <button class="btn-sweep" id="sweepModeBtn" onclick="toggleSweepMode()">🛒 批量購買</button>
               <button class="btn-ghost" id="gridViewBtn" style="padding:6px 10px">⊞</button>
               <button class="btn-ghost" id="listViewBtn" style="padding:6px 10px">☰</button>
             </div>
@@ -3051,9 +3051,9 @@
   <div class="sweep-bar-actions">
     <div class="sweep-quick-btns">
       <span style="font-size:11px;color:#93c5fd;margin-right:2px">快速選:</span>
-      <button class="sweep-quick-btn" onclick="sweepFloor(5)">地板 5</button>
-      <button class="sweep-quick-btn" onclick="sweepFloor(10)">地板 10</button>
-      <button class="sweep-quick-btn" onclick="sweepFloor(20)">地板 20</button>
+      <button class="sweep-quick-btn" onclick="sweepFloor(20)">批量 20</button>
+      <button class="sweep-quick-btn" onclick="sweepFloor(50)">批量 50</button>
+      <button class="sweep-quick-btn" onclick="sweepFloor(100)">批量 100</button>
       <button class="sweep-quick-btn" onclick="sweepClearCart()">清除</button>
     </div>
     <button class="btn-sweep-cancel" onclick="toggleSweepMode()">取消</button>
@@ -3065,7 +3065,7 @@
 <div class="modal-bg" id="sweepModal">
   <div class="modal" style="max-width:480px;width:100%">
     <div class="modal-head">
-      <h3>🧹 批量掃地板確認</h3>
+      <h3>🛒 批量購買確認</h3>
       <button class="close" onclick="closeModal('sweepModal')">✕</button>
     </div>
     <div style="padding:0 20px 20px">
@@ -5590,7 +5590,7 @@ function renderSeriesItems(){
     }).join('')}</div>`;
   } else {
     c.innerHTML = `<table class="items-list">
-      <thead><tr><th>${sweepMode?'<input type="checkbox" title="全選" onchange="if(this.checked)sweepFloor(99);else sweepClearCart()">':''}</th><th>編號</th><th>年份</th><th>稀有度</th><th style="text-align:right">價格</th><th style="text-align:right">上次成交</th><th>賣方</th><th></th></tr></thead>
+      <thead><tr><th>${sweepMode?'<input type="checkbox" title="全選" onchange="if(this.checked)sweepFloor(100);else sweepClearCart()">':''}</th><th>編號</th><th>年份</th><th>稀有度</th><th style="text-align:right">價格</th><th style="text-align:right">上次成交</th><th>賣方</th><th></th></tr></thead>
       <tbody>${visible.map(it=>{
         const inCart = sweepMode && sweepCart.some(x=>x.seriesId===currentSeriesId && x.edition===it.edition);
         return `
@@ -5837,7 +5837,7 @@ function cancelMyListing(id){
   else if(nftBrowserTab==='mine') renderMyHoldings();
 }
 
-/* ===== 批量掃地板 (Bulk Sweep Floor) ===== */
+/* ===== 批量購買 (Bulk Sweep Floor) ===== */
 let sweepMode = false;
 let sweepCart = [];   // [{seriesId, edition, year, rarity, price}]
 
