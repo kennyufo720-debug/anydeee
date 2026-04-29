@@ -1428,25 +1428,34 @@
 <div class="page" id="page-portfolio">
   <div class="pf-hero">
     <div class="pf-balance">
-      <div class="lab">投資組合總價值</div>
-      <div class="val num">$48,902.41</div>
-      <div class="delta up">+$1,284.10 (+2.7%) 今日</div>
+      <div class="lab">投資組合總價值（NFT 資產）</div>
+      <div class="val num" id="pfTotalVal">—</div>
+      <div class="delta" id="pfTodayDelta">計算中…</div>
     </div>
     <div class="pf-actions">
-      <button class="btn-ghost">充值</button>
-      <button class="btn-ghost">提領</button>
-      <button class="btn-primary">交易</button>
+      <button class="btn-ghost" onclick="openModal('depositModal');switchDW('dep')">充值</button>
+      <button class="btn-ghost" onclick="openModal('depositModal');switchDW('wd')">提領</button>
+      <button class="btn-primary" onclick="setPage('nft')">前往市場</button>
     </div>
   </div>
   <div class="holdings-section">
-    <div class="section-h">我的持倉</div>
-    <table class="market-table">
+    <div class="section-h" style="display:flex;justify-content:space-between;align-items:center">
+      <span>我的持倉</span>
+      <div style="display:flex;gap:6px">
+        <button class="nft-chip active" id="pfFilterAll"  onclick="setPfFilter('all')">全部</button>
+        <button class="nft-chip" id="pfFilterForest" onclick="setPfFilter('forest')">🌳 森林</button>
+        <button class="nft-chip" id="pfFilterCarbon" onclick="setPfFilter('carbon')">🌿 碳權</button>
+        <button class="nft-chip" id="pfFilterEnergy" onclick="setPfFilter('energy')">⚡ 綠電</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto">
+    <table class="market-table" style="margin-top:10px;min-width:680px">
       <thead>
         <tr>
           <th>資產</th>
           <th style="text-align:right">持有數量</th>
           <th style="text-align:right">均價</th>
-          <th style="text-align:right">當前價</th>
+          <th style="text-align:right">當前地板價</th>
           <th style="text-align:right">市值</th>
           <th style="text-align:right">未實現損益</th>
           <th style="text-align:right">操作</th>
@@ -1454,6 +1463,36 @@
       </thead>
       <tbody id="holdingsBody"></tbody>
     </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===== NFT 買賣 Modal ===== -->
+<div class="modal-bg" id="pfTradeModal">
+  <div class="modal" style="width:420px;max-width:95vw">
+    <div class="modal-head">
+      <h3 id="pfTradeTitle">NFT 交易</h3>
+      <button class="close" onclick="closeModal('pfTradeModal')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:20px 24px">
+      <div id="pfTradeInfo" style="background:#100a07;border-radius:10px;padding:14px;margin-bottom:16px"></div>
+      <div class="auth-field">
+        <label id="pfTradeQtyLabel">數量</label>
+        <div class="af-wrap">
+          <span class="ico">🔢</span>
+          <input type="number" id="pfTradeQty" placeholder="輸入數量" min="1" oninput="updatePfEst()" />
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:16px">
+        <span>預估金額</span>
+        <span id="pfTradeEst" style="color:var(--text);font-weight:700">$0.00</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:20px">
+        <span>手續費 (0.1%)</span>
+        <span id="pfTradeFee">$0.00</span>
+      </div>
+      <button class="auth-btn" id="pfTradeConfirmBtn" onclick="confirmPfTrade()">確認交易</button>
+    </div>
   </div>
 </div>
 
@@ -3391,6 +3430,144 @@ let holdings = [
   {sym:'CARB', amount:280, avg:39.10},
 ];
 
+/* ===== 投資組合 (NFT持倉) ===== */
+let _pfFilter = 'all';
+let _pfTradeSym = '';
+let _pfTradeSide = 'buy';
+
+/* 確定性均價：floor × 82~94%，以 sym charcode 為種子 */
+function _nftAvgPrice(sym, floor){
+  const seed = sym.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  return floor * (0.82 + (seed % 13) / 100);
+}
+
+function getPfRows(filter){
+  if(typeof seriesCatalog==='undefined') return [];
+  return Object.entries(userNftHoldings)
+    .filter(([sym, qty])=> qty > 0)
+    .map(([sym, qty])=>{
+      const s = seriesCatalog.find(x=>x.sym===sym);
+      if(!s) return null;
+      if(filter && filter!=='all' && s.cat!==filter) return null;
+      return { sym, qty, s };
+    }).filter(Boolean);
+}
+
+function renderHoldings(){
+  const body = document.getElementById('holdingsBody');
+  const rows = getPfRows(_pfFilter);
+  if(!rows.length){
+    body.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--muted)">此類別尚無持倉 · <span style="color:var(--accent);cursor:pointer" onclick="setPage('nft')">前往市場</span></td></tr>`;
+    return;
+  }
+  body.innerHTML = rows.map(({sym, qty, s})=>{
+    const avg   = _nftAvgPrice(sym, s.floor);
+    const value = s.floor * qty;
+    const pnl   = (s.floor - avg) * qty;
+    const pct   = ((s.floor/avg)-1)*100;
+    const catIcon = s.cat==='forest'?'🌳':s.cat==='carbon'?'🌿':'⚡';
+    return `<tr>
+      <td><div class="asset-cell">
+        <div class="asset-icon" style="background:linear-gradient(135deg,${s.c1},${s.c2});font-size:16px;display:flex;align-items:center;justify-content:center">${s.emoji}</div>
+        <div><div class="asset-name">${s.n}</div><div class="asset-sub">${s.sym} · ${catIcon}</div></div>
+      </div></td>
+      <td style="text-align:right" class="num">${qty.toLocaleString()}</td>
+      <td style="text-align:right" class="num">$${avg.toFixed(0)}</td>
+      <td style="text-align:right" class="num">$${s.floor.toLocaleString()}</td>
+      <td style="text-align:right" class="num">$${value.toLocaleString()}</td>
+      <td style="text-align:right" class="num ${pnl>=0?'up':'dn'}">${pnl>=0?'+':''}$${Math.round(pnl).toLocaleString()} (${pct.toFixed(1)}%)</td>
+      <td style="text-align:right;white-space:nowrap">
+        <button class="btn-primary" style="margin-right:4px;padding:5px 10px;font-size:11px" onclick="openPfTrade('${sym}','buy')">買入</button>
+        <button class="btn-ghost"   style="padding:5px 10px;font-size:11px"                  onclick="openPfTrade('${sym}','sell')">賣出</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function renderPortfolioHero(){
+  const rows = getPfRows('all');
+  const total = rows.reduce((a,{sym,qty,s})=> a + s.floor*qty, 0);
+  const todayDelta = rows.reduce((a,{sym,qty,s})=> a + s.floor*qty*(s.floorChange||0)/100, 0);
+  const el = document.getElementById('pfTotalVal');
+  const de = document.getElementById('pfTodayDelta');
+  if(el) el.textContent = '$'+total.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  if(de){
+    de.textContent = (todayDelta>=0?'+':'')+'$'+Math.abs(Math.round(todayDelta)).toLocaleString()+' (今日)';
+    de.className = 'delta '+(todayDelta>=0?'up':'dn');
+  }
+}
+
+function setPfFilter(f){
+  _pfFilter = f;
+  ['all','forest','carbon','energy'].forEach(k=>{
+    const el = document.getElementById('pfFilter'+k.charAt(0).toUpperCase()+k.slice(1));
+    if(el) el.classList.toggle('active', k===f);
+  });
+  renderHoldings();
+}
+
+function openPfTrade(sym, side){
+  if(!isLoggedIn){ openModal('loginModal'); return; }
+  const s = seriesCatalog.find(x=>x.sym===sym);
+  if(!s) return;
+  _pfTradeSym  = sym;
+  _pfTradeSide = side;
+  const have = userNftHoldings[sym]||0;
+  const btnEl = document.getElementById('pfTradeConfirmBtn');
+  if(btnEl){ btnEl.textContent = side==='buy'?'確認買入':'確認賣出'; btnEl.style.background = side==='buy'?'var(--accent)':'#ef4444'; }
+  document.getElementById('pfTradeTitle').textContent = (side==='buy'?'買入 ':'賣出 ')+s.n;
+  document.getElementById('pfTradeInfo').innerHTML = `
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+      <div style="font-size:28px">${s.emoji}</div>
+      <div><div style="font-weight:700">${s.n}</div><div style="font-size:11px;color:var(--muted)">${s.sym}</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
+      <div><div style="color:var(--muted)">地板價</div><div style="font-weight:700">$${s.floor.toLocaleString()}</div></div>
+      <div><div style="color:var(--muted)">24h 漲跌</div><div class="${(s.floorChange||0)>=0?'up':'dn'}" style="font-weight:700">${(s.floorChange||0)>=0?'+':''}${(s.floorChange||0).toFixed(1)}%</div></div>
+      <div><div style="color:var(--muted)">目前持有</div><div style="font-weight:700">${have.toLocaleString()} 枚</div></div>
+      <div><div style="color:var(--muted)">USDC 餘額</div><div style="font-weight:700">$${walletBalances.USDC.toLocaleString()}</div></div>
+    </div>`;
+  document.getElementById('pfTradeQtyLabel').textContent = side==='buy'?'買入數量（枚）':'賣出數量（最多 '+have.toLocaleString()+' 枚）';
+  document.getElementById('pfTradeQty').value = '';
+  document.getElementById('pfTradeEst').textContent = '$0.00';
+  document.getElementById('pfTradeFee').textContent = '$0.00';
+  openModal('pfTradeModal');
+}
+
+function updatePfEst(){
+  const s = seriesCatalog.find(x=>x.sym===_pfTradeSym);
+  if(!s) return;
+  const qty = parseInt(document.getElementById('pfTradeQty').value)||0;
+  const gross = s.floor * qty;
+  const fee   = gross * 0.001;
+  document.getElementById('pfTradeEst').textContent = '$'+gross.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('pfTradeFee').textContent = '$'+fee.toFixed(2);
+}
+
+function confirmPfTrade(){
+  const s   = seriesCatalog.find(x=>x.sym===_pfTradeSym);
+  const qty = parseInt(document.getElementById('pfTradeQty').value);
+  if(!s||!qty||qty<=0){ toast('請輸入有效數量','','error'); return; }
+  if(_pfTradeSide==='buy'){
+    const cost = s.floor * qty * 1.001;
+    if(walletBalances.USDC < cost){ toast('USDC 餘額不足','請先充值','error'); return; }
+    walletBalances.USDC -= cost;
+    userNftHoldings[_pfTradeSym] = (userNftHoldings[_pfTradeSym]||0) + qty;
+    toast('買入成功', s.n+' × '+qty+' 枚', 'success');
+  } else {
+    const have = userNftHoldings[_pfTradeSym]||0;
+    if(have < qty){ toast('持有數量不足','最多可賣 '+have+' 枚','error'); return; }
+    const gain = s.floor * qty * 0.999;
+    walletBalances.USDC += gain;
+    userNftHoldings[_pfTradeSym] -= qty;
+    toast('賣出成功', s.n+' × '+qty+' 枚 · +$'+Math.round(gain).toLocaleString()+' USDC', 'success');
+  }
+  closeModal('pfTradeModal');
+  renderHoldings();
+  renderPortfolioHero();
+  if(typeof renderAssetsPage==='function') renderAssetsPage();
+}
+
 /* ===== Render Market ===== */
 function renderMarket(filter='all', search=''){
   const body = document.getElementById('marketBody');
@@ -3434,7 +3611,7 @@ function setPage(p){
   document.querySelectorAll('#mainNav button').forEach(b=>b.classList.toggle('active', b.dataset.page===p));
   if(p==='trade' && !chartInited){ initChart(); chartInited=true; }
   if(p==='trade'){ setTimeout(()=>chart && chart.timeScale().fitContent(), 100); }
-  if(p==='portfolio') renderHoldings();
+  if(p==='portfolio'){ renderPortfolioHero(); renderHoldings(); }
   if(p==='history') renderHistory();
 }
 document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>setPage(b.dataset.page));
@@ -3656,27 +3833,7 @@ function renderBP(tab){
 }
 
 /* ===== Holdings page ===== */
-function renderHoldings(){
-  const body = document.getElementById('holdingsBody');
-  body.innerHTML = holdings.map(h=>{
-    const a = assets.find(x=>x.sym===h.sym);
-    const value = a.price * h.amount;
-    const pnl = (a.price - h.avg) * h.amount;
-    const pnlPct = ((a.price/h.avg)-1)*100;
-    return `<tr>
-      <td><div class="asset-cell">
-        <div class="asset-icon" style="background:linear-gradient(135deg,${a.color},${a.color}aa)">${a.icon}</div>
-        <div><div class="asset-name">${a.name}</div><div class="asset-sub">${a.sym}</div></div>
-      </div></td>
-      <td style="text-align:right" class="num">${h.amount}</td>
-      <td style="text-align:right" class="num">$${h.avg.toFixed(2)}</td>
-      <td style="text-align:right" class="num">$${a.price.toFixed(2)}</td>
-      <td style="text-align:right" class="num">$${value.toFixed(2)}</td>
-      <td style="text-align:right" class="num ${pnl>=0?'up':'dn'}">${pnl>=0?'+':''}$${pnl.toFixed(2)} (${pnlPct.toFixed(2)}%)</td>
-      <td style="text-align:right"><button class="btn-primary" onclick="openTrade('${a.sym}')">交易</button></td>
-    </tr>`;
-  }).join('');
-}
+/* renderHoldings is defined above in the NFT持倉 section */
 
 /* ===== History page ===== */
 function renderHistory(){
