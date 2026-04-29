@@ -895,7 +895,7 @@
   .auth-field .af-wrap .eye{color:var(--muted);font-size:13px;cursor:pointer;flex-shrink:0}
   .auth-divider{display:flex;align-items:center;gap:10px;margin:16px 0;color:var(--muted);font-size:11px}
   .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--line)}
-  .auth-social{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+  .auth-social{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
   .auth-social button{background:#241812;border:1px solid var(--line);border-radius:8px;padding:9px;color:var(--text);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
   .auth-social button:hover{border-color:var(--accent);color:var(--accent)}
   .auth-btn{width:100%;padding:12px;border-radius:8px;font-size:14px;font-weight:700;color:#fff;border:none;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));margin-top:4px}
@@ -2452,6 +2452,10 @@
       <div class="auth-social">
         <button onclick="socialLogin('google')">🇬 Google</button>
         <button onclick="socialLogin('apple')"> Apple</button>
+        <button onclick="socialLogin('line')" style="background:#06C755;border-color:#06C755;color:#fff">
+          <svg width="14" height="14" viewBox="0 0 48 48" fill="currentColor"><path d="M24 4C12.95 4 4 11.82 4 21.5c0 5.92 3.73 11.15 9.44 14.42-.41 1.54-1.49 5.57-1.7 6.43-.27 1.07.39 1.06 1.09.62.56-.35 7.03-4.65 9.88-6.53.73.1 1.48.16 2.29.16 11.05 0 20-7.82 20-17.5S35.05 4 24 4z"/></svg>
+          LINE
+        </button>
       </div>
       <div class="auth-footer">還沒有帳號？<a onclick="switchToRegister()">立即註冊</a></div>
     </div>
@@ -2992,9 +2996,10 @@ function doLogout(){
   toast('已登出','期待再見！','success');
 }
 function socialLogin(provider){
-  const names = {google:'Google 用戶', apple:'Apple 用戶'};
-  const emails = {google:'user@gmail.com', apple:'user@icloud.com'};
-  _pendingLoginUser = { name: names[provider], email: emails[provider], avatar: provider==='google'?'G':'🍎' };
+  const names  = {google:'Google 用戶', apple:'Apple 用戶', line:'LINE 用戶'};
+  const emails = {google:'user@gmail.com', apple:'user@icloud.com', line:'user@line.me'};
+  const avatars = {google:'G', apple:'🍎', line:'L'};
+  _pendingLoginUser = { name: names[provider], email: emails[provider], avatar: avatars[provider]||'?' };
   closeModal('loginModal'); closeModal('registerModal');
   completeLogin(_pendingLoginUser);
 }
