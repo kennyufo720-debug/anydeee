@@ -858,13 +858,58 @@
   .msg-date-sep{text-align:center;color:var(--muted);font-size:11px;margin:8px 0;display:flex;align-items:center;gap:10px}
   .msg-date-sep::before, .msg-date-sep::after{content:"";flex:1;height:1px;background:var(--line)}
 
+  /* ====== 空投系統擴充 ====== */
+  /* 詳情 Modal */
+  .ad-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+  .ad-detail-stat{background:#15100b;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .ad-detail-stat .dl{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+  .ad-detail-stat .dv{font-size:15px;font-weight:700;font-family:"SF Mono",monospace}
+  .cond-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+  .cond-item{background:#15100b;border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px;transition:border-color .15s}
+  .cond-item.done{border-color:rgba(34,197,94,.4);background:rgba(34,197,94,.05)}
+  .cond-item.fail{border-color:rgba(239,68,68,.3)}
+  .cond-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:#241812}
+  .cond-item.done .cond-icon{background:rgba(34,197,94,.15)}
+  .cond-body{flex:1;min-width:0}
+  .cond-body .ct{font-size:13px;font-weight:600;margin-bottom:2px}
+  .cond-body .cd{font-size:11px;color:var(--muted)}
+  .cond-body .cp{font-size:11px;margin-top:4px}
+  .cond-progress-bar{height:4px;background:#241812;border-radius:2px;margin-top:4px;overflow:hidden}
+  .cond-progress-bar .cpf{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:2px;transition:width .4s}
+  .cond-action-btn{background:#241812;color:var(--text);padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;white-space:nowrap;flex-shrink:0}
+  .cond-action-btn:hover{background:#33231a;color:var(--accent)}
+  .cond-done-mark{color:var(--green);font-size:16px;flex-shrink:0}
+  .elig-bar{border-radius:8px;padding:10px 14px;font-size:13px;font-weight:600;display:flex;align-items:center;gap:8px;margin-bottom:14px}
+  .elig-bar.full{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+  .elig-bar.partial{background:rgba(245,176,74,.10);border:1px solid rgba(245,176,74,.3);color:var(--yellow)}
+  .elig-bar.none{background:rgba(239,68,68,.10);border:1px solid rgba(239,68,68,.25);color:var(--red)}
+  .alloc-box{background:linear-gradient(135deg,rgba(217,119,87,.12),rgba(217,119,87,.04));border:1px solid rgba(217,119,87,.3);border-radius:10px;padding:14px 16px;display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .alloc-box .ai{font-size:28px}
+  .alloc-box .al{font-size:11px;color:var(--muted);margin-bottom:2px}
+  .alloc-box .av{font-size:22px;font-weight:800;color:var(--accent);font-family:"SF Mono",monospace}
+  .alloc-box .ab{font-size:11px;color:var(--muted);margin-top:2px}
+  .countdown-row{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin-bottom:14px}
+  .countdown-row .cds{display:flex;gap:4px}
+  .cd-unit{background:#241812;border-radius:4px;padding:3px 7px;font-family:"SF Mono",monospace;font-size:13px;font-weight:700;color:var(--text);min-width:30px;text-align:center}
+  /* Create-airdrop modal */
+  .create-cond-row{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;background:#15100b;border:1px solid var(--line);border-radius:8px;padding:10px}
+  .create-cond-row select{background:#100a07;border:1px solid var(--line);border-radius:6px;color:var(--text);padding:7px 8px;font-size:12px;outline:none;flex:1}
+  .create-cond-row input{background:#100a07;border:1px solid var(--line);border-radius:6px;color:var(--text);padding:7px 8px;font-size:12px;outline:none;flex:1}
+  .create-cond-row .rm-cond{background:rgba(239,68,68,.15);color:var(--red);border:none;border-radius:5px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;flex-shrink:0}
+  .cond-type-badge{display:inline-block;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;margin-left:6px;vertical-align:middle}
+  .cond-type-badge.hold{background:rgba(91,140,255,.18);color:#5b8cff}
+  .cond-type-badge.vol{background:rgba(217,119,87,.18);color:var(--accent)}
+  .cond-type-badge.social{background:rgba(167,139,250,.18);color:#a78bfa}
+  .cond-type-badge.kyc{background:rgba(34,197,94,.18);color:var(--green)}
+  .cond-type-badge.vip{background:rgba(212,169,69,.18);color:var(--gold)}
+  .cond-type-badge.referral{background:rgba(245,176,74,.18);color:var(--yellow)}
+  .cond-type-badge.snapshot{background:rgba(100,116,139,.2);color:#94a3b8}
+
   /* 發文 modal */
   .post-form .field{margin-bottom:12px}
   .post-form input, .post-form textarea, .post-form select{width:100%;background:#100a07;border:1px solid var(--line);border-radius:8px;padding:10px;color:var(--text);font-size:13px;outline:none;font-family:inherit}
   .post-form textarea{min-height:140px;resize:vertical;line-height:1.6}
-  .type-select{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-  .type-select button{padding:9px;background:#241812;color:var(--muted);border:1px solid var(--line);border-radius:6px;cursor:pointer;font-size:12px;font-weight:600}
-  .type-select button.active{background:#33231a;color:var(--accent);border-color:var(--accent)}
+
 
   /* MODAL */
   .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px)}
@@ -1208,6 +1253,15 @@
 
   <!-- 空投項目 -->
   <div class="ben-section active" id="ben-airdrop">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div>
+        <span style="font-size:15px;font-weight:700">空投項目</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:8px" id="airdropCountLabel"></span>
+      </div>
+      <button onclick="openModal('createAirdropModal');initCondBuilder()" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:8px;padding:9px 18px;font-weight:700;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:6px">
+        ＋ 建立空投
+      </button>
+    </div>
     <div class="airdrop-grid" id="airdropGrid"></div>
   </div>
 
@@ -2207,6 +2261,112 @@
   <div class="search-results" id="searchResults"></div>
 </div>
 
+<!-- ====== 空投詳情 Modal ====== -->
+<div class="modal-bg" id="airdropDetailModal">
+  <div class="modal" style="width:520px;max-width:95vw">
+    <div class="modal-head">
+      <h3 id="adModalTitle">空投詳情</h3>
+      <button class="close" onclick="closeModal('airdropDetailModal')">✕</button>
+    </div>
+    <div class="modal-body" style="max-height:75vh;overflow-y:auto;padding:16px 20px">
+      <!-- 資格狀態列 -->
+      <div class="elig-bar none" id="adEligBar">⚠ 尚未達到所有領取條件</div>
+
+      <!-- 配額顯示 -->
+      <div class="alloc-box" id="adAllocBox">
+        <div class="ai">🎁</div>
+        <div>
+          <div class="al">你的預估配額</div>
+          <div class="av" id="adAllocVal">—</div>
+          <div class="ab" id="adAllocNote">滿足所有條件後可領取</div>
+        </div>
+      </div>
+
+      <!-- 倒數計時 -->
+      <div class="countdown-row">
+        <span>截止倒數：</span>
+        <div class="cds">
+          <span class="cd-unit" id="cdDays">—</span><span style="color:var(--muted);padding:0 2px">天</span>
+          <span class="cd-unit" id="cdHrs">—</span><span style="color:var(--muted);padding:0 2px">時</span>
+          <span class="cd-unit" id="cdMins">—</span><span style="color:var(--muted);padding:0 2px">分</span>
+        </div>
+        <span id="adEndDate" style="margin-left:6px"></span>
+      </div>
+
+      <!-- 統計 -->
+      <div class="ad-detail-grid">
+        <div class="ad-detail-stat"><div class="dl">總獎池</div><div class="dv" id="adTotal">—</div></div>
+        <div class="ad-detail-stat"><div class="dl">已領取</div><div class="dv" id="adClaimed">—</div></div>
+        <div class="ad-detail-stat"><div class="dl">剩餘名額</div><div class="dv" id="adRemain">—</div></div>
+        <div class="ad-detail-stat"><div class="dl">發行方</div><div class="dv" id="adProj">—</div></div>
+      </div>
+
+      <!-- 領取條件清單 -->
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">領取條件</div>
+      <div class="cond-list" id="adCondList"></div>
+
+      <!-- 操作按鈕 -->
+      <button class="submit-btn buy" id="adClaimBtn" style="width:100%;margin-top:4px">立即領取</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 建立空投 Modal ====== -->
+<div class="modal-bg" id="createAirdropModal">
+  <div class="modal" style="width:560px;max-width:95vw">
+    <div class="modal-head">
+      <h3>建立新空投</h3>
+      <button class="close" onclick="closeModal('createAirdropModal')">✕</button>
+    </div>
+    <div class="modal-body" style="max-height:78vh;overflow-y:auto;padding:16px 20px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div class="field" style="margin-bottom:0">
+          <label>空投名稱</label>
+          <div class="input"><input type="text" id="newAdName" placeholder="例：PAXG Genesis Airdrop" /></div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>發行方 / 項目名稱</label>
+          <div class="input"><input type="text" id="newAdProj" placeholder="例：Paxos Gold" /></div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>每人配額 (USDC 估值)</label>
+          <div class="input"><input type="number" id="newAdValue" placeholder="0" min="0" /><span class="suffix">USDC</span></div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>總發放名額</label>
+          <div class="input"><input type="number" id="newAdTotal" placeholder="50000" min="1" /></div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>截止日期</label>
+          <div class="input"><input type="date" id="newAdEnd" style="color-scheme:dark" /></div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>狀態</label>
+          <select id="newAdStatus" style="background:#100a07;border:1px solid var(--line);border-radius:6px;color:var(--text);padding:8px 10px;width:100%;font-size:13px;outline:none">
+            <option value="live">進行中 (Live)</option>
+            <option value="upcoming">即將開始 (Upcoming)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 領取條件設定 -->
+      <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin:14px 0 8px;display:flex;align-items:center;justify-content:space-between">
+        <span>領取條件設定</span>
+        <button onclick="addCondRow()" style="background:var(--accent);color:#fff;border:none;border-radius:6px;padding:4px 12px;font-size:11px;font-weight:700;cursor:pointer">+ 新增條件</button>
+      </div>
+      <div id="condBuilder"></div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:14px">
+        💡 用戶需滿足全部條件才可領取。條件類型：持倉、交易量、KYC、VIP、邀請、社群任務、快照日。
+      </div>
+
+      <div style="display:flex;gap:8px">
+        <button class="btn-ghost" style="flex:1" onclick="closeModal('createAirdropModal')">取消</button>
+        <button class="submit-btn buy" style="flex:2;margin-top:0;padding:11px" onclick="submitCreateAirdrop()">建立空投</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Wallet modal -->
 <div class="modal-bg" id="walletModal">
   <div class="modal">
@@ -2819,88 +2979,116 @@ const airdrops = [
     name:'PAXG Genesis Airdrop', proj:'Paxos Gold', logo:'AU', color:'#d4a945',
     status:'live', value:280, total:50000, claimed:32480,
     end:'2026-05-15', tasks:[
-      {t:'持有 ≥ 0.1 PAXG 滿 30 天', done:true},
-      {t:'完成 KYC 驗證', done:true},
-      {t:'追蹤官方 𝕏', done:false}
+      {type:'holding',  t:'持有 ≥ 0.1 PAXG 滿 30 天', detail:'當前持倉：0.38 PAXG ✓', done:true},
+      {type:'kyc',      t:'完成 KYC 驗證', done:true},
+      {type:'social',   t:'追蹤官方 𝕏 帳號', detail:'點擊「前往完成」，完成後自動驗證', done:false}
     ]
   },
   {
     name:'Carbon Credit 季度回饋', proj:'Verra Carbon Token', logo:'CO₂', color:'#06b6d4',
     status:'live', value:142, total:20000, claimed:8240,
     end:'2026-05-08', tasks:[
-      {t:'本季交易量 ≥ $1,000', done:true},
-      {t:'持有 CARB ≥ 100 顆', done:true}
+      {type:'volume',   t:'本季交易量 ≥ $1,000', detail:'當前：$4,820 ✓', done:true},
+      {type:'holding',  t:'持有 CARB ≥ 100 顆', detail:'當前持倉：248 CARB ✓', done:true}
     ]
   },
   {
     name:'TPE-101 房地產股息', proj:'Taipei 101 Tower Token', logo:'TPE', color:'#5b8cff',
     status:'live', value:1420, total:120000, claimed:108200,
     end:'2026-05-30', tasks:[
-      {t:'持有 TPE-101 ≥ 50 顆', done:true},
-      {t:'快照日 2026-04-20 持倉', done:true}
+      {type:'holding',  t:'持有 TPE-101 ≥ 50 顆', detail:'當前持倉：82 TPE-101 ✓', done:true},
+      {type:'snapshot', t:'快照日 2026-04-20 持倉達標', detail:'已通過快照驗證 ✓', done:true}
     ]
   },
   {
     name:'ANY 平台代幣空投 (Wave 2)', proj:'Anydeee', logo:'A', color:'#d97757',
     status:'upcoming', value:0, total:1000000, claimed:0,
     end:'2026-05-20', tasks:[
-      {t:'累積交易量 ≥ $50K', done:true},
-      {t:'邀請 ≥ 3 位活躍用戶', done:false},
-      {t:'參與社群 AMA', done:false}
+      {type:'volume',   t:'累積交易量 ≥ $50,000', detail:'當前：$482,193 ✓', done:true},
+      {type:'referral', t:'邀請 ≥ 3 位活躍用戶', detail:'當前：1 / 3 人', progress:33, done:false},
+      {type:'social',   t:'參與官方社群 AMA', detail:'點擊「前往完成」完成報名', done:false}
     ]
   },
   {
     name:'Manhattan REIT Q2 分紅', proj:'NYC-RE Token', logo:'NYC', color:'#7c5cff',
     status:'upcoming', value:0, total:80000, claimed:0,
     end:'2026-06-01', tasks:[
-      {t:'快照日 2026-05-15 持有 ≥ 10 顆', done:false}
+      {type:'snapshot', t:'快照日 2026-05-15 持有 NYC-RE ≥ 10 顆', detail:'快照尚未到達，持續持倉即可', done:false}
     ]
   },
   {
     name:'WTI 原油代幣首發回饋', proj:'WTI Crude Oil Token', logo:'OIL', color:'#64748b',
     status:'ended', value:84, total:30000, claimed:30000,
     end:'2026-04-10', tasks:[
-      {t:'參與首發認購', done:true}
+      {type:'holding',  t:'參與首發認購', done:true}
     ]
   },
   {
     name:'Banksy 藝術品 NFT 抽選', proj:'WIN-ART', logo:'ART', color:'#f43f5e',
     status:'live', value:0, total:50, claimed:38,
     end:'2026-05-25', tasks:[
-      {t:'持有任一藝術品代幣', done:false},
-      {t:'完成 VIP 3', done:true}
+      {type:'holding',  t:'持有任一藝術品代幣 ≥ 1 顆', detail:'尚未持有，前往 NFT 市場購買', done:false},
+      {type:'vip',      t:'VIP 等級 ≥ 3', detail:'當前 VIP 3 ✓', done:true}
     ]
   },
   {
     name:'US Treasury 利息回饋', proj:'UST-1Y', logo:'UST', color:'#22c55e',
     status:'live', value:412, total:200000, claimed:142000,
     end:'2026-05-31', tasks:[
-      {t:'持有 UST-1Y ≥ 1000 顆', done:true},
-      {t:'未提前贖回', done:true}
+      {type:'holding',  t:'持有 UST-1Y ≥ 1,000 顆', detail:'當前持倉：2,400 UST-1Y ✓', done:true},
+      {type:'holding',  t:'持有期間未提前贖回', detail:'持倉狀態正常 ✓', done:true}
     ]
   }
 ];
 
-let claimedAirdrops = new Set(); // store names of claimed airdrops
+let claimedAirdrops = new Set();
 
+/* ─── 條件類型定義 ─── */
+const COND_TYPES = {
+  holding:  { label:'持倉條件',   icon:'🏦', badge:'hold',     desc:(v,p)=>`持有 ${p||'指定代幣'} ≥ ${v||'?'} 顆` },
+  volume:   { label:'交易量條件', icon:'📊', badge:'vol',      desc:(v)=>`累積交易量 ≥ $${Number(v||0).toLocaleString()}` },
+  kyc:      { label:'KYC 驗證',   icon:'🪪', badge:'kyc',      desc:()=>'完成身份驗證 (KYC)' },
+  vip:      { label:'VIP 等級',   icon:'⭐', badge:'vip',      desc:(v)=>`VIP 等級 ≥ ${v||1}` },
+  referral: { label:'邀請好友',   icon:'👥', badge:'referral', desc:(v)=>`邀請 ≥ ${v||1} 位活躍用戶` },
+  social:   { label:'社群任務',   icon:'📣', badge:'social',   desc:(_,p)=>`完成社群任務：${p||'追蹤官方帳號'}` },
+  snapshot: { label:'快照持倉',   icon:'📷', badge:'snapshot', desc:(_,p)=>`快照日 ${p||'指定日期'} 持倉符合` },
+};
+
+/* ─── 檢查單一條件是否達成 ─── */
+function checkCondition(cond){
+  switch(cond.type){
+    case 'kyc':      return kycVerified;
+    case 'vip':      return true; // VIP3 已滿足
+    case 'holding':  return cond.done !== false;
+    case 'volume':   return cond.done !== false;
+    case 'referral': return cond.done !== false;
+    case 'social':   return cond.done === true;
+    case 'snapshot': return cond.done !== false;
+    default:         return cond.done !== false;
+  }
+}
+
+/* ─── 渲染空投卡片列表 ─── */
 function renderAirdrops(){
   const grid = document.getElementById('airdropGrid');
+  const label = document.getElementById('airdropCountLabel');
+  const live = airdrops.filter(a=>a.status==='live').length;
+  if(label) label.textContent = `${airdrops.length} 個項目 · ${live} 個進行中`;
+
   grid.innerHTML = airdrops.map((a,i)=>{
-    const pct = (a.claimed/a.total)*100;
-    const eligible = a.tasks.every(t=>t.done);
+    const pct = Math.min(100,(a.claimed/a.total)*100);
+    const tasks = a.tasks || [];
+    const eligible = tasks.every(t=>checkCondition(t));
     const isClaimed = claimedAirdrops.has(a.name);
+    const doneCount = tasks.filter(t=>checkCondition(t)).length;
+
     let claimBtn = '';
-    if(a.status==='ended'){
-      claimBtn = `<button class="ad-claim" disabled>已結束</button>`;
-    } else if(a.status==='upcoming'){
-      claimBtn = `<button class="ad-claim" disabled>即將開放</button>`;
-    } else if(isClaimed){
-      claimBtn = `<button class="ad-claim" disabled>✓ 已領取</button>`;
-    } else if(!eligible){
-      claimBtn = `<button class="ad-claim" disabled>未達資格</button>`;
-    } else {
-      claimBtn = `<button class="ad-claim" onclick="claimAirdrop(${i})">立即領取</button>`;
-    }
+    if(a.status==='ended')         claimBtn = `<button class="ad-claim" disabled>已結束</button>`;
+    else if(a.status==='upcoming') claimBtn = `<button class="ad-claim" disabled>即將開放</button>`;
+    else if(isClaimed)             claimBtn = `<button class="ad-claim" disabled>✓ 已領取</button>`;
+    else if(!eligible)             claimBtn = `<button class="ad-claim" disabled style="font-size:11px">條件 ${doneCount}/${tasks.length} 達成</button>`;
+    else                           claimBtn = `<button class="ad-claim" onclick="claimAirdrop(${i})">立即領取</button>`;
+
     return `<div class="ad-card">
       <div class="ad-banner" style="background:linear-gradient(135deg,${a.color},${a.color}aa)">
         <span class="ad-status ${a.status}">${a.status==='live'?'進行中':a.status==='upcoming'?'即將開始':'已結束'}</span>
@@ -2914,32 +3102,209 @@ function renderAirdrops(){
           <div class="m"><div class="l">截止日</div><div class="v">${a.end}</div></div>
         </div>
         <div class="ad-progress">
-          <div class="pl"><span>已領取</span><span>${a.claimed.toLocaleString()} / ${a.total.toLocaleString()}</span></div>
+          <div class="pl"><span>領取進度</span><span>${a.claimed.toLocaleString()} / ${a.total.toLocaleString()}</span></div>
           <div class="ad-progress-bar"><div class="f" style="width:${pct}%"></div></div>
         </div>
         <div class="ad-tasks">
-          ${a.tasks.map(t=>`<div class="tk ${t.done?'done':''}"><span class="chk">${t.done?'✓':''}</span>${t.t}</div>`).join('')}
+          ${tasks.slice(0,3).map(t=>`<div class="tk ${checkCondition(t)?'done':''}"><span class="chk">${checkCondition(t)?'✓':''}</span>${t.t}</div>`).join('')}
+          ${tasks.length>3?`<div class="tk" style="color:var(--muted)">…還有 ${tasks.length-3} 個條件</div>`:''}
         </div>
         <div class="ad-actions" style="margin-top:10px">
           ${claimBtn}
-          <button class="ad-info">詳情</button>
+          <button class="ad-info" onclick="openAirdropDetail(${i})">詳情 / 條件</button>
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-function claimAirdrop(i){
+/* ─── 開啟空投詳情 Modal ─── */
+let _detailIdx = -1;
+function openAirdropDetail(i){
+  _detailIdx = i;
+  const a = airdrops[i];
+  const tasks = a.tasks || [];
+  const eligible = tasks.every(t=>checkCondition(t));
+  const isClaimed = claimedAirdrops.has(a.name);
+
+  document.getElementById('adModalTitle').textContent = a.name;
+  document.getElementById('adTotal').textContent = a.total.toLocaleString();
+  document.getElementById('adClaimed').textContent = a.claimed.toLocaleString();
+  document.getElementById('adRemain').textContent = Math.max(0, a.total - a.claimed).toLocaleString();
+  document.getElementById('adProj').textContent = a.proj;
+  document.getElementById('adAllocVal').textContent = a.value > 0 ? `$${a.value.toLocaleString()} USDC` : 'TBA';
+  document.getElementById('adEndDate').textContent = `截止 ${a.end}`;
+
+  // 倒數
+  const endMs = new Date(a.end).getTime();
+  const diff = endMs - Date.now();
+  const days = Math.max(0, Math.floor(diff/86400000));
+  const hrs  = Math.max(0, Math.floor((diff%86400000)/3600000));
+  const mins = Math.max(0, Math.floor((diff%3600000)/60000));
+  document.getElementById('cdDays').textContent = days;
+  document.getElementById('cdHrs').textContent  = String(hrs).padStart(2,'0');
+  document.getElementById('cdMins').textContent = String(mins).padStart(2,'0');
+
+  // 資格狀態列
+  const eb = document.getElementById('adEligBar');
+  const doneCount = tasks.filter(t=>checkCondition(t)).length;
+  if(isClaimed){
+    eb.className='elig-bar full'; eb.textContent='✓ 你已成功領取此空投';
+  } else if(a.status==='ended'){
+    eb.className='elig-bar none'; eb.textContent='此空投已結束';
+  } else if(a.status==='upcoming'){
+    eb.className='elig-bar partial'; eb.textContent='⏳ 此空投尚未開放領取';
+  } else if(eligible){
+    eb.className='elig-bar full'; eb.textContent='✓ 你已達到所有領取條件！';
+  } else {
+    eb.className='elig-bar partial';
+    eb.textContent=`條件達成 ${doneCount} / ${tasks.length}，尚有 ${tasks.length-doneCount} 項未完成`;
+  }
+
+  // 配額備註
+  document.getElementById('adAllocNote').textContent =
+    isClaimed ? '已入帳至你的錢包' :
+    eligible  ? '點擊下方按鈕立即領取' :
+    '滿足所有條件後可領取';
+
+  // 領取條件列表
+  const list = document.getElementById('adCondList');
+  list.innerHTML = tasks.map((t,ti)=>{
+    const done = checkCondition(t);
+    const ct = COND_TYPES[t.type] || { icon:'✅', badge:'kyc', desc:()=>t.t };
+    const badgeHtml = t.type ? `<span class="cond-type-badge ${ct.badge}">${ct.label}</span>` : '';
+    let actionBtn = '';
+    if(!done && t.type==='social'){
+      actionBtn = `<button class="cond-action-btn" onclick="completeTask(${i},${ti},'social')">前往完成</button>`;
+    } else if(!done && t.type==='kyc'){
+      actionBtn = `<button class="cond-action-btn" onclick="completeTask(${i},${ti},'kyc')">前往驗證</button>`;
+    } else if(!done && t.type==='referral'){
+      actionBtn = `<button class="cond-action-btn" onclick="completeTask(${i},${ti},'referral')">邀請好友</button>`;
+    }
+    const pct = done ? 100 : (t.progress||0);
+    return `<div class="cond-item ${done?'done':'fail'}" id="cond-${i}-${ti}">
+      <div class="cond-icon">${ct.icon||'📋'}</div>
+      <div class="cond-body">
+        <div class="ct">${t.t}${badgeHtml}</div>
+        ${t.detail?`<div class="cd">${t.detail}</div>`:''}
+        ${pct>0&&pct<100?`<div class="cond-progress-bar"><div class="cpf" style="width:${pct}%"></div></div><div class="cp" style="color:var(--muted)">${pct}% 完成</div>`:''}
+      </div>
+      ${done ? `<span class="cond-done-mark">✓</span>` : actionBtn}
+    </div>`;
+  }).join('');
+
+  // 領取按鈕狀態
+  const btn = document.getElementById('adClaimBtn');
+  if(isClaimed){ btn.textContent='✓ 已領取'; btn.disabled=true; btn.className='submit-btn buy'; btn.style.opacity='.5'; }
+  else if(a.status!=='live'){ btn.textContent=a.status==='upcoming'?'尚未開放':'已結束'; btn.disabled=true; btn.style.opacity='.5'; }
+  else if(!eligible){ btn.textContent=`尚有 ${tasks.length-doneCount} 個條件未達成`; btn.disabled=true; btn.style.opacity='.6'; }
+  else { btn.textContent='立即領取空投'; btn.disabled=false; btn.style.opacity='1';
+         btn.onclick=()=>claimAirdrop(i,true); }
+
+  openModal('airdropDetailModal');
+}
+
+/* ─── 完成社群 / KYC / 邀請任務 ─── */
+function completeTask(ai, ti, type){
+  const a = airdrops[ai];
+  const task = a.tasks[ti];
+  if(type==='kyc'){
+    kycVerified = true;
+    task.done = true;
+    toast('KYC 已驗證','身份驗證完成！','success');
+  } else if(type==='social'){
+    task.done = true;
+    toast('社群任務完成',`「${task.t}」已記錄`,'success');
+  } else if(type==='referral'){
+    task.done = true;
+    toast('邀請任務達標','已達邀請門檻！','success');
+  }
+  // 重新渲染 modal 內的條件列
+  setTimeout(()=>{ openAirdropDetail(ai); renderAirdrops(); }, 400);
+}
+
+/* ─── 領取空投 ─── */
+function claimAirdrop(i, fromModal=false){
   if(!walletConnected){ openModal('walletModal'); return; }
   if(!kycVerified){ toast('需要完成 KYC','請先完成身份驗證','error'); return; }
   const a = airdrops[i];
+  if(!a.tasks.every(t=>checkCondition(t))){ toast('條件未達成','請先完成所有領取條件','error'); return; }
   claimedAirdrops.add(a.name);
   a.claimed = Math.min(a.total, a.claimed + 1);
+  const btn = document.getElementById('adClaimBtn');
+  if(btn){ btn.textContent='廣播中...'; btn.disabled=true; }
   toast('空投領取中', `${a.name} 廣播至鏈上...`,'success');
   setTimeout(()=>{
-    toast('空投已到帳', `價值 $${a.value} 已存入錢包`,'success');
+    toast('空投已到帳', `${a.value>0?'$'+a.value+' USDC ':''} 已存入錢包 🎉`,'success');
     renderAirdrops();
+    if(fromModal) openAirdropDetail(i);
   }, 1800);
+}
+
+/* ─── 建立空投：條件建構器 ─── */
+let _condRows = [];
+function initCondBuilder(){
+  _condRows = [];
+  document.getElementById('condBuilder').innerHTML = '';
+  addCondRow(); // 預設一行
+}
+function addCondRow(){
+  const id = Date.now();
+  _condRows.push(id);
+  const div = document.createElement('div');
+  div.className = 'create-cond-row';
+  div.id = 'crow-'+id;
+  div.innerHTML = `
+    <select onchange="updateCondRow(${id},this)" style="max-width:140px">
+      ${Object.entries(COND_TYPES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')}
+    </select>
+    <input type="text" placeholder="數值 / 說明（例：0.1 / PAXG / 2026-05-01）" id="crval-${id}" />
+    <input type="text" placeholder="代幣/平台名稱（選填）" id="crparam-${id}" style="max-width:130px" />
+    <button class="rm-cond" onclick="removeCondRow(${id})">✕</button>`;
+  document.getElementById('condBuilder').appendChild(div);
+}
+function removeCondRow(id){
+  _condRows = _condRows.filter(x=>x!==id);
+  const el = document.getElementById('crow-'+id);
+  if(el) el.remove();
+  if(_condRows.length===0) addCondRow();
+}
+function updateCondRow(id, sel){
+  const noVal = ['kyc'];
+  const row = document.getElementById('crow-'+id);
+  const inputs = row.querySelectorAll('input');
+  inputs[0].placeholder = noVal.includes(sel.value) ? '（此條件無需輸入值）' : '數值（例：0.1 / 50000 / 3）';
+  inputs[0].disabled = noVal.includes(sel.value);
+}
+function submitCreateAirdrop(){
+  const name = document.getElementById('newAdName').value.trim();
+  const proj = document.getElementById('newAdProj').value.trim();
+  const value = parseInt(document.getElementById('newAdValue').value)||0;
+  const total = parseInt(document.getElementById('newAdTotal').value)||1000;
+  const end   = document.getElementById('newAdEnd').value || '2026-12-31';
+  const status = document.getElementById('newAdStatus').value;
+  if(!name||!proj){ toast('請填寫必填欄位','名稱和發行方為必填','error'); return; }
+
+  const tasks = _condRows.map(id=>{
+    const sel   = document.querySelector(`#crow-${id} select`).value;
+    const val   = document.getElementById('crval-'+id).value.trim();
+    const param = document.getElementById('crparam-'+id).value.trim();
+    const ct = COND_TYPES[sel];
+    return { type: sel, t: ct.desc(val,param), done: sel==='kyc'?kycVerified:false, detail: val&&param?`目標：${val}${param?'（'+param+'）':''}`:'' };
+  });
+
+  const colors = ['#d97757','#5b8cff','#22c55e','#f43f5e','#7c5cff','#06b6d4','#d4a945'];
+  const newAd = {
+    name, proj,
+    logo: name.slice(0,3).toUpperCase(),
+    color: colors[airdrops.length % colors.length],
+    status, value, total, claimed: 0,
+    end, tasks
+  };
+  airdrops.unshift(newAd);
+  closeModal('createAirdropModal');
+  renderAirdrops();
+  toast('空投已建立', `「${name}」已上架，共 ${tasks.length} 個領取條件`,'success');
 }
 
 /* tab switcher within benefits page */
