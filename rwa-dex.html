@@ -3216,12 +3216,12 @@ function completeLogin(user){
   currentUser = user;
   walletConnected = true;
   walletAddress = '0x' + Math.random().toString(16).slice(2,10) + '...' + Math.random().toString(16).slice(2,8);
-  kycVerified = memberKYCStatus;
+  kycVerified = true;
   renderMemberUI();
   toast('登入成功', `歡迎回來，${user.name}！`,'success');
 }
 function doLogout(){
-  isLoggedIn = false; currentUser = null; walletConnected = false; walletAddress = null; kycVerified = false;
+  isLoggedIn = false; currentUser = null; walletConnected = false; walletAddress = null; kycVerified = true;
   document.getElementById('memberNav').style.display = 'none';
   document.getElementById('guestNav').style.display = 'flex';
   document.getElementById('memberNav').classList.remove('open');
@@ -3560,7 +3560,7 @@ function togglePwd(inputId){
 let currentPair = assets[0];
 let walletConnected = false;
 let walletAddress = null;
-let kycVerified = false;
+let kycVerified = true;
 let openOrders = [];
 let orderHistory = [];
 let holdings = [
