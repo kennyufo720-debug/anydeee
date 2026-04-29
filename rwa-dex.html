@@ -1979,6 +1979,7 @@
       <div class="nft-chip" data-scat="collectible">🍷 收藏品</div>
       <div class="nft-chip" data-scat="gem">💎 寶石</div>
       <div class="nft-chip" data-scat="carbon">🌱 碳權</div>
+      <div class="nft-chip" data-scat="energy">⚡ 綠色能源</div>
       <select class="sort" id="seriesSort">
         <option value="vol">24h 成交量</option>
         <option value="floor-asc">地板價：低到高</option>
@@ -3264,49 +3265,34 @@ function renderWalletPage(){
 
 /* ===== 我的資產 Passbooks ===== */
 let _pbTab = 'tree';
-const pbData = {
-  tree: {
-    label:'樹存摺', icon:'🌳', color:'#16a34a', bg:'#052e16',
-    total: 48, unit:'棵', badge:'tree',
-    cards:[
-      {icon:'🌲', title:'日本柳杉産權 SUGI', sub:'Kyoto Forest · 2024-06-01 入帳', val:'12', unit:'棵'},
-      {icon:'🌱', title:'半折植樹 BZTREE',   sub:'Taiwan Reforestation · 2024-09-15 入帳', val:'20', unit:'棵'},
-      {icon:'🌳', title:'ACR 森林管理 ACRFM',sub:'Oregon Forest · 2025-01-10 入帳', val:'16', unit:'棵'},
-    ],
-    records:[
-      {date:'2025-04-20', desc:'半折植樹空投入帳', val:'+5 棵'},
-      {date:'2025-03-11', desc:'SUGI 購入', val:'+12 棵'},
-      {date:'2025-01-10', desc:'ACRFM 鑄造', val:'+16 棵'},
-      {date:'2024-09-15', desc:'BZTREE 認購', val:'+15 棵'},
-    ]
-  },
-  carbon: {
-    label:'碳存摺', icon:'🌿', color:'#15803d', bg:'#052e16',
-    total: 6.24, unit:'噸 CO₂', badge:'carbon',
-    cards:[
-      {icon:'🌿', title:'碳信用額度 VCS-4821', sub:'Verified Carbon Standard · 2024-07-01', val:'2.40', unit:'tCO₂'},
-      {icon:'🍃', title:'黃金標準 GS-1105',   sub:'Gold Standard · 2025-02-18', val:'1.84', unit:'tCO₂'},
-      {icon:'🌱', title:'植樹碳匯 BZTREE',    sub:'自動累積碳匯 · 2025-04-01', val:'2.00', unit:'tCO₂'},
-    ],
-    records:[
-      {date:'2025-04-01', desc:'BZTREE 碳匯季度入帳', val:'+0.50 tCO₂'},
-      {date:'2025-02-18', desc:'GS-1105 購入', val:'+1.84 tCO₂'},
-      {date:'2024-07-01', desc:'VCS-4821 購入', val:'+2.40 tCO₂'},
-    ]
-  },
-  energy: {
-    label:'綠電存摺', icon:'⚡', color:'#ca8a04', bg:'#1c1003',
-    total: 3840, unit:'度', badge:'energy',
-    cards:[
-      {icon:'☀️', title:'太陽能憑證 REC-TW-001', sub:'台灣電力認證 · 2025-01-01', val:'2,400', unit:'kWh'},
-      {icon:'💨', title:'風力憑證 REC-TW-007',   sub:'台灣離岸風電 · 2025-03-15', val:'1,440', unit:'kWh'},
-    ],
-    records:[
-      {date:'2025-03-15', desc:'REC-TW-007 風力憑證入帳', val:'+1,440 kWh'},
-      {date:'2025-01-01', desc:'REC-TW-001 太陽能憑證入帳', val:'+2,400 kWh'},
-    ]
-  }
+
+/* 模擬用戶持有量 sym → qty */
+const userNftHoldings = {
+  /* 森林 */  SUGI:12, BZTREE:20, CYPRS:3, AMZN:8, HINOKI:5, PINE:4,
+  /* 碳權 */  VCSRF:30, PVPEAT:15, GSWND:20, GSSOL:25, REDD:10, VCSOC:8,
+  /* 綠電 */  TWSOL:80, TWWND:60, EUWND:40, USSOL:50, TWHYD:30, JPWND:20,
 };
+
+const pbMeta = {
+  tree:   { cat:'forest', label:'樹存摺',  icon:'🌳', badge:'tree',   unitLabel:'棵',    bg:'#052e16', accentColor:'#4ade80' },
+  carbon: { cat:'carbon', label:'碳存摺',  icon:'🌿', badge:'carbon', unitLabel:'tCO₂', bg:'#022c22', accentColor:'#22c55e' },
+  energy: { cat:'energy', label:'綠電存摺',icon:'⚡', badge:'energy', unitLabel:'MWh',  bg:'#1c1a03', accentColor:'#facc15' },
+};
+
+function _pbHoldings(cat){
+  if(typeof seriesCatalog==='undefined') return {};
+  const syms = seriesCatalog.filter(s=>s.cat===cat).map(s=>s.sym);
+  const out = {};
+  syms.forEach(sym=>{ if(userNftHoldings[sym]) out[sym]=userNftHoldings[sym]; });
+  return out;
+}
+function _pbTotals(){
+  const treeQty   = Object.values(_pbHoldings('forest')).reduce((a,b)=>a+b,0);
+  const carbonQty = Object.values(_pbHoldings('carbon')).reduce((a,b)=>a+b,0);
+  const energyQty = Object.values(_pbHoldings('energy')).reduce((a,b)=>a+b,0);
+  return { treeQty, carbonQty, energyQty };
+}
+
 function openAssets(tab){
   if(!isLoggedIn){ openModal('loginModal'); return; }
   _pbTab = tab || 'tree';
@@ -3318,33 +3304,71 @@ function switchPbTab(tab){
   renderPbContent();
 }
 function renderAssetsPage(){
-  const d = pbData;
-  document.getElementById('pbTreeTotal').textContent   = d.tree.total;
-  document.getElementById('pbCarbonTotal').textContent = d.carbon.total;
-  document.getElementById('pbEnergyTotal').textContent = d.energy.total.toLocaleString();
+  const t = _pbTotals();
+  document.getElementById('pbTreeTotal').textContent   = t.treeQty;
+  document.getElementById('pbCarbonTotal').textContent = t.carbonQty;
+  document.getElementById('pbEnergyTotal').textContent = (t.energyQty * 1000).toLocaleString();
   document.querySelectorAll('.pb-tab').forEach(b=>b.classList.toggle('active', b.dataset.pbt===_pbTab));
   renderPbContent();
 }
 function renderPbContent(){
-  const d = pbData[_pbTab];
-  const cards = d.cards.map(c=>`
-    <div class="pb-card">
+  const meta  = pbMeta[_pbTab];
+  const catKey = meta.cat;
+  if(typeof seriesCatalog==='undefined'){ document.getElementById('pbContent').innerHTML='<div class="pb-empty">資料載入中…</div>'; return; }
+
+  const series = seriesCatalog.filter(s=>s.cat===catKey);
+  const held   = _pbHoldings(catKey);
+
+  /* ── 持有卡片（有持有量的系列） ── */
+  const heldCards = series.filter(s=>held[s.sym]).map(s=>{
+    const qty  = held[s.sym];
+    const unit = meta.unitLabel;
+    const disp = _pbTab==='energy' ? (qty*1000).toLocaleString()+' kWh' : qty.toLocaleString()+' '+unit;
+    return `<div class="pb-card">
       <div class="pb-card-head">
-        <div class="pb-card-icon" style="background:${pbData[_pbTab].bg}">${c.icon}</div>
+        <div class="pb-card-icon" style="background:${meta.bg};font-size:20px">${s.emoji}</div>
         <div class="pb-card-info">
-          <div class="title">${c.title}<span class="pb-badge ${d.badge}">${d.unit}</span></div>
-          <div class="sub">${c.sub}</div>
+          <div class="title">${s.n}<span class="pb-badge ${meta.badge}">${s.sym}</span></div>
+          <div class="sub">地板價 $${s.floor.toLocaleString()} · 24h 量 $${Math.round(s.vol24h/1000)}K · 持有人 ${s.holders.toLocaleString()}</div>
         </div>
-        <div class="pb-card-val"><div class="v">${c.val}</div><div class="u">${c.unit}</div></div>
+        <div class="pb-card-val">
+          <div class="v" style="color:${meta.accentColor}">${disp}</div>
+          <div class="u">市值 $${(s.floor*qty).toLocaleString()}</div>
+        </div>
       </div>
-    </div>`).join('');
-  const recs = d.records.map(r=>`
-    <div class="pb-record">
-      <div><div style="font-size:12px;font-weight:600">${r.desc}</div><div class="rd">${r.date}</div></div>
-      <div class="rv">${r.val}</div>
-    </div>`).join('');
-  document.getElementById('pbContent').innerHTML = cards +
-    `<div class="pb-card"><div class="pb-record-list"><div style="font-size:12px;font-weight:700;margin-bottom:8px;color:var(--muted)">異動紀錄</div>${recs}</div></div>`;
+    </div>`;
+  }).join('');
+
+  /* ── 市場概況（全部系列，表格） ── */
+  const mktRows = series.map(s=>`
+    <tr style="cursor:pointer" onclick="setPage('nft')">
+      <td><span style="margin-right:6px">${s.emoji}</span>${s.n}</td>
+      <td style="text-align:right;font-family:monospace;color:var(--text)">$${s.floor.toLocaleString()}</td>
+      <td style="text-align:right;color:${s.floorChange>=0?'var(--green)':'var(--red)'}">${s.floorChange>=0?'+':''}${s.floorChange?.toFixed(1)||'0.0'}%</td>
+      <td style="text-align:right;color:var(--muted)">$${Math.round(s.vol24h/1000)}K</td>
+      <td style="text-align:right;color:var(--muted)">${s.holders.toLocaleString()}</td>
+      <td style="text-align:right;color:${held[s.sym]?meta.accentColor:'var(--muted)'}">${held[s.sym]?held[s.sym]+' '+(_pbTab==='energy'?'MWh':meta.unitLabel):'—'}</td>
+    </tr>`).join('');
+
+  document.getElementById('pbContent').innerHTML = `
+    ${heldCards || '<div class="pb-empty">尚未持有此類資產 · <span style="color:var(--accent);cursor:pointer" onclick="setPage(\'nft\')">前往市場</span></div>'}
+    <div class="pb-card" style="overflow:auto">
+      <div style="padding:12px 16px 8px;font-size:12px;font-weight:700;color:var(--muted);display:flex;justify-content:space-between;align-items:center">
+        <span>二級市場 · ${meta.label.replace('存摺','')} NFT 全系列</span>
+        <span style="color:var(--accent);cursor:pointer;font-weight:600" onclick="setPage('nft')">前往交易 →</span>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px">
+        <thead><tr style="color:var(--muted);border-bottom:1px solid var(--line)">
+          <th style="text-align:left;padding:6px 16px">系列</th>
+          <th style="text-align:right;padding:6px 8px">地板價</th>
+          <th style="text-align:right;padding:6px 8px">漲跌</th>
+          <th style="text-align:right;padding:6px 8px">24h 量</th>
+          <th style="text-align:right;padding:6px 8px">持有人</th>
+          <th style="text-align:right;padding:6px 16px 6px 8px">我的持有</th>
+        </tr></thead>
+        <tbody>${mktRows}</tbody>
+      </table>
+    </div>`;
 }
 
 /* ─ 密碼輸入 id fix ─ */
@@ -4917,8 +4941,22 @@ const seriesCatalog = (function(){
     ['碳直接捕捉 DAC','DAC','🏭','#64748b','#1e293b', 184, [2021,2026]],
   ];
   carbons.forEach(([n,s,e,c1,c2,fl,yr])=>out.push({n,sym:s,emoji:e,c1,c2,floor:fl,yearMin:yr[0],yearMax:yr[1],cat:'carbon',desc:`${n}認證碳權批次，每枚 = 1 公噸 CO₂`}));
+  // 綠色能源 (10)
+  const energies = [
+    ['台灣太陽能 REC','TWSOL','☀️','#facc15','#713f12', 32, [2022,2026]],
+    ['台灣離岸風電 REC','TWWND','💨','#3b82f6','#1e3a8a', 28, [2022,2026]],
+    ['歐洲風電憑證','EUWND','🌀','#0ea5e9','#0c4a6e', 24, [2020,2026]],
+    ['美國太陽農場 REC','USSOL','🌞','#f59e0b','#78350f', 36, [2021,2026]],
+    ['台灣小水力發電','TWHYD','💧','#22d3ee','#0e7490', 18, [2019,2026]],
+    ['冰島地熱能源','ISGEO','🌋','#ef4444','#7f1d1d', 42, [2020,2026]],
+    ['澳洲太陽農場 REC','AUSSOL','🔆','#fbbf24','#92400e', 30, [2022,2026]],
+    ['日本海上風電','JPWND','🌬️','#6366f1','#3730a3', 38, [2021,2026]],
+    ['韓國太陽能 REC','KRSOL','⚡','#10b981','#065f46', 26, [2022,2026]],
+    ['德國綠電憑證','DEGRE','🌿','#84cc16','#4d7c0f', 44, [2019,2026]],
+  ];
+  energies.forEach(([n,s,e,c1,c2,fl,yr])=>out.push({n,sym:s,emoji:e,c1,c2,floor:fl,yearMin:yr[0],yearMax:yr[1],cat:'energy',desc:`${n}綠電憑證，每枚 = 1 MWh 可再生能源電力`}));
   // 補充剩餘到 100
-  return out.slice(0,105);
+  return out.slice(0,115);
 })();
 
 // 全市場掛單統計
