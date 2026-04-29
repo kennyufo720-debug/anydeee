@@ -665,6 +665,43 @@
   .items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px}
   .item-card{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s}
   .item-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+
+  /* Bulk Sweep */
+  .btn-sweep{background:linear-gradient(135deg,#1d4ed8,#1e40af);color:#fff;padding:7px 14px;border-radius:8px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+  .btn-sweep:hover{filter:brightness(1.12)}
+  .btn-sweep.active{background:linear-gradient(135deg,#d97757,#bf5d3a);box-shadow:0 0 12px rgba(217,119,87,.4)}
+  .item-card.sweep-mode{border-color:#2563eb55}
+  .item-card.sweep-mode:hover{border-color:#3b82f6;transform:translateY(-2px)}
+  .item-card.sweep-selected{border-color:#3b82f6!important;box-shadow:0 0 0 2px rgba(59,130,246,.5),0 4px 12px rgba(59,130,246,.2)}
+  .item-card .sweep-check{display:none;position:absolute;top:6px;left:6px;width:20px;height:20px;border-radius:50%;background:#3b82f6;color:#fff;font-size:11px;align-items:center;justify-content:center;font-weight:700;z-index:2}
+  .item-card.sweep-mode .sweep-check{display:flex;border:2px solid rgba(255,255,255,.3);background:rgba(0,0,0,.4)}
+  .item-card.sweep-selected .sweep-check{background:#3b82f6;border-color:#3b82f6}
+  .item-card .ii{position:relative}
+  #sweepBar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,#1e3a8a,#1e40af);border-top:1px solid #3b82f6;padding:12px 24px;display:none;z-index:400;align-items:center;gap:16px;box-shadow:0 -4px 24px rgba(59,130,246,.25)}
+  #sweepBar.show{display:flex}
+  .sweep-bar-info{flex:1}
+  .sweep-bar-info .sb-count{font-size:14px;font-weight:700;color:#fff}
+  .sweep-bar-info .sb-total{font-size:12px;color:#93c5fd;margin-top:2px}
+  .sweep-bar-actions{display:flex;gap:8px;align-items:center}
+  .sweep-quick-btns{display:flex;gap:6px}
+  .sweep-quick-btn{background:rgba(255,255,255,.1);color:#fff;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;border:1px solid rgba(255,255,255,.15)}
+  .sweep-quick-btn:hover{background:rgba(255,255,255,.2)}
+  .btn-sweep-confirm{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff;padding:10px 20px;border-radius:8px;font-weight:700;font-size:13px}
+  .btn-sweep-confirm:hover{filter:brightness(1.1)}
+  .btn-sweep-cancel{background:rgba(255,255,255,.1);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;border:1px solid rgba(255,255,255,.2)}
+  #sweepModal .sweep-items-list{max-height:280px;overflow-y:auto;margin:12px 0}
+  #sweepModal .si-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+  #sweepModal .si-row:last-child{border-bottom:none}
+  #sweepModal .si-thumb{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  #sweepModal .si-info{flex:1}
+  #sweepModal .si-name{font-size:12px;font-weight:600}
+  #sweepModal .si-meta{font-size:11px;color:var(--muted)}
+  #sweepModal .si-price{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap}
+  #sweepModal .si-remove{color:var(--muted);font-size:16px;cursor:pointer;padding:0 4px}
+  #sweepModal .si-remove:hover{color:var(--red)}
+  #sweepModal .sweep-summary{background:#15100b;border-radius:8px;padding:12px;margin-top:8px}
+  #sweepModal .sweep-summary .row{display:flex;justify-content:space-between;font-size:12px;padding:3px 0}
+  #sweepModal .sweep-summary .row.total{font-size:14px;font-weight:700;border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
   .item-card .ii{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:42px;position:relative}
   .item-card .ii .edt{position:absolute;top:6px;left:6px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);color:#fff;font-size:10px;padding:2px 6px;border-radius:3px;font-family:"SF Mono",monospace;font-weight:700}
   .item-card .ii .yr{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);color:var(--accent);font-size:10px;padding:2px 6px;border-radius:3px;font-family:"SF Mono",monospace;font-weight:700}
@@ -2163,6 +2200,7 @@
               <option value="recent">最新掛單</option>
             </select>
             <div style="margin-left:auto;display:flex;gap:4px">
+              <button class="btn-sweep" id="sweepModeBtn" onclick="toggleSweepMode()">🧹 批量掃地板</button>
               <button class="btn-ghost" id="gridViewBtn" style="padding:6px 10px">⊞</button>
               <button class="btn-ghost" id="listViewBtn" style="padding:6px 10px">☰</button>
             </div>
@@ -3000,6 +3038,46 @@
         </button>
       </div>
       <p class="et-note">連接錢包後，NFT 將自動存入你的 Anydeee 持倉。<br>每張票券限兌換一次，不可轉讓。</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Bulk Sweep Bar ── -->
+<div id="sweepBar">
+  <div class="sweep-bar-info">
+    <div class="sb-count" id="sweepBarCount">已選 0 件</div>
+    <div class="sb-total" id="sweepBarTotal">總計 0 ANYU · 手續費 1.5%</div>
+  </div>
+  <div class="sweep-bar-actions">
+    <div class="sweep-quick-btns">
+      <span style="font-size:11px;color:#93c5fd;margin-right:2px">快速選:</span>
+      <button class="sweep-quick-btn" onclick="sweepFloor(5)">地板 5</button>
+      <button class="sweep-quick-btn" onclick="sweepFloor(10)">地板 10</button>
+      <button class="sweep-quick-btn" onclick="sweepFloor(20)">地板 20</button>
+      <button class="sweep-quick-btn" onclick="sweepClearCart()">清除</button>
+    </div>
+    <button class="btn-sweep-cancel" onclick="toggleSweepMode()">取消</button>
+    <button class="btn-sweep-confirm" id="sweepConfirmBtn" onclick="openSweepConfirm()">確認購買</button>
+  </div>
+</div>
+
+<!-- ── Bulk Sweep Confirm Modal ── -->
+<div class="modal-bg" id="sweepModal">
+  <div class="modal" style="max-width:480px;width:100%">
+    <div class="modal-head">
+      <h3>🧹 批量掃地板確認</h3>
+      <button class="close" onclick="closeModal('sweepModal')">✕</button>
+    </div>
+    <div style="padding:0 20px 20px">
+      <div class="sweep-items-list" id="sweepItemsList"></div>
+      <div class="sweep-summary">
+        <div class="row"><span style="color:var(--muted)">小計</span><span id="sweepSubtotal" class="num">0 ANYU</span></div>
+        <div class="row"><span style="color:var(--muted)">手續費 (1.5%)</span><span id="sweepFeeAmt" class="num">0 ANYU</span></div>
+        <div class="row"><span style="color:var(--muted)">版稅 (5%)</span><span id="sweepRoyaltyAmt" class="num">0 ANYU</span></div>
+        <div class="row total"><span>總支出</span><span id="sweepTotalAmt" class="num" style="color:var(--accent)">0 ANYU</span></div>
+        <div class="row" style="margin-top:8px"><span style="color:var(--muted)">錢包餘額</span><span id="sweepWalletBal" class="num" style="color:var(--green)">0 ANYU</span></div>
+      </div>
+      <button class="auth-btn" id="sweepExecBtn" onclick="confirmSweep()" style="margin-top:16px;width:100%;padding:13px;font-size:14px">⚡ 一鍵掃單</button>
     </div>
   </div>
 </div>
@@ -5487,8 +5565,14 @@ function renderSeriesItems(){
       const iiStyle = s.img
         ? `background:linear-gradient(135deg,rgba(40,25,15,.45),rgba(15,10,5,.15)),url('${s.img}') center/cover no-repeat`
         : `background:linear-gradient(135deg,${s.c1},${s.c2})`;
-      return `<div class="item-card" onclick="openItemDetail(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${JSON.stringify(it).replace(/"/g,'&quot;')})">
+      const inCart = sweepMode && sweepCart.some(x=>x.seriesId===currentSeriesId && x.edition===it.edition);
+      const sweepClass = sweepMode ? (inCart ? 'sweep-mode sweep-selected' : 'sweep-mode') : '';
+      const sweepClickHandler = sweepMode && !it.auction
+        ? `sweepToggleItem(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})`
+        : `openItemDetail(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${JSON.stringify(it).replace(/"/g,'&quot;')})`;
+      return `<div class="item-card ${sweepClass}" onclick="${sweepClickHandler}">
         <div class="ii" style="${iiStyle}">
+          <div class="sweep-check">${inCart?'✓':''}</div>
           <span class="edt">#${it.edition}</span>
           <span class="yr">${it.year}</span>
           <span class="rar ${it.rarity}">${rarityName(it.rarity)}</span>
@@ -5499,16 +5583,19 @@ function renderSeriesItems(){
           <div class="it">${s.n}</div>
           <div class="ip">$${it.price.toLocaleString()}</div>
           <div class="il">上次成交 $${it.lastSale.toLocaleString()} <span class="${it.price>=it.lastSale?'up':'dn'}">(${it.price>=it.lastSale?'+':''}${(((it.price/it.lastSale)-1)*100).toFixed(1)}%)</span></div>
-          <button class="${it.auction?'bid':''}" onclick="event.stopPropagation();${it.auction?`openOffer(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})`:`buyNow(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})`}">${it.auction?'🔨 出價':'立即購買'}</button>
+          ${sweepMode ? (it.auction ? '<button disabled style="opacity:.4;cursor:not-allowed">拍賣不可掃</button>' : `<button class="${inCart?'btn-primary':''}" onclick="event.stopPropagation();sweepToggleItem(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})">${inCart?'✓ 已加入':'+ 加入掃單'}</button>`)
+            : `<button class="${it.auction?'bid':''}" onclick="event.stopPropagation();${it.auction?`openOffer(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})`:`buyNow(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})`}">${it.auction?'🔨 出價':'立即購買'}</button>`}
         </div>
       </div>`;
     }).join('')}</div>`;
   } else {
     c.innerHTML = `<table class="items-list">
-      <thead><tr><th></th><th>編號</th><th>年份</th><th>稀有度</th><th style="text-align:right">價格</th><th style="text-align:right">上次成交</th><th>賣方</th><th></th></tr></thead>
-      <tbody>${visible.map(it=>`
-        <tr onclick="openItemDetail(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${JSON.stringify(it).replace(/"/g,'&quot;')})">
-          <td><div class="item-thumb" style="background:linear-gradient(135deg,${s.c1},${s.c2})">${s.emoji}</div></td>
+      <thead><tr><th>${sweepMode?'<input type="checkbox" title="全選" onchange="if(this.checked)sweepFloor(99);else sweepClearCart()">':''}</th><th>編號</th><th>年份</th><th>稀有度</th><th style="text-align:right">價格</th><th style="text-align:right">上次成交</th><th>賣方</th><th></th></tr></thead>
+      <tbody>${visible.map(it=>{
+        const inCart = sweepMode && sweepCart.some(x=>x.seriesId===currentSeriesId && x.edition===it.edition);
+        return `
+        <tr onclick="${sweepMode && !it.auction ? `sweepToggleItem(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})` : `openItemDetail(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${JSON.stringify(it).replace(/"/g,'&quot;')})`}" style="${inCart?'background:#1e3a8a22;':''}" >
+          <td>${sweepMode && !it.auction ? `<input type="checkbox" ${inCart?'checked':''} onclick="event.stopPropagation();sweepToggleItem(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})">` : `<div class="item-thumb" style="background:linear-gradient(135deg,${s.c1},${s.c2})">${s.emoji}</div>`}</td>
           <td class="num">#${it.edition}</td>
           <td class="num">${it.year}</td>
           <td><span class="tag" style="background:rgba(${it.rarity==='legendary'?'212,169,69':it.rarity==='epic'?'168,85,247':it.rarity==='rare'?'59,130,246':'107,114,128'},.2)">${rarityName(it.rarity)}</span></td>
@@ -5516,7 +5603,7 @@ function renderSeriesItems(){
           <td style="text-align:right" class="num">$${it.lastSale.toLocaleString()}</td>
           <td><span class="addr">${it.seller}</span></td>
           <td><button class="btn-primary" style="padding:6px 12px;font-size:11px" onclick="event.stopPropagation();${it.auction?`openOffer(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})`:`buyNow(${currentSeriesId},${it.edition},${it.year},'${it.rarity}',${it.price})`}">${it.auction?'出價':'購買'}</button></td>
-        </tr>`).join('')}
+        </tr>`; }).join('')}
       </tbody></table>`;
   }
   document.getElementById('loadMoreBtn').style.display = (visible.length<items.length)?'inline-block':'none';
@@ -5748,6 +5835,152 @@ function cancelMyListing(id){
   toast('掛單已取消', `${seriesCatalog[l.seriesId].n} #${l.edition}`,'success');
   if(nftBrowserTab==='listings') renderMyListings();
   else if(nftBrowserTab==='mine') renderMyHoldings();
+}
+
+/* ===== 批量掃地板 (Bulk Sweep Floor) ===== */
+let sweepMode = false;
+let sweepCart = [];   // [{seriesId, edition, year, rarity, price}]
+
+function toggleSweepMode(){
+  sweepMode = !sweepMode;
+  const btn = document.getElementById('sweepModeBtn');
+  if(btn) btn.classList.toggle('active', sweepMode);
+  if(!sweepMode){
+    sweepCart = [];
+    updateSweepBar();
+  }
+  renderSeriesItems();
+}
+
+function sweepFloor(n){
+  if(currentSeriesId == null) return;
+  const allItems = getSeriesListings(currentSeriesId)
+    .filter(x=>!x.auction)
+    .sort((a,b)=>a.price-b.price)
+    .slice(0, n);
+  sweepCart = allItems.map(x=>({seriesId:currentSeriesId, edition:x.edition, year:x.year, rarity:x.rarity, price:x.price}));
+  updateSweepBar();
+  renderSeriesItems();
+}
+
+function sweepToggleItem(seriesId, edition, year, rarity, price){
+  const idx = sweepCart.findIndex(x=>x.seriesId===seriesId && x.edition===edition);
+  if(idx>=0){
+    sweepCart.splice(idx,1);
+  } else {
+    sweepCart.push({seriesId, edition, year, rarity, price});
+  }
+  updateSweepBar();
+  renderSeriesItems();
+}
+
+function sweepClearCart(){
+  sweepCart = [];
+  updateSweepBar();
+  renderSeriesItems();
+}
+
+function updateSweepBar(){
+  const bar = document.getElementById('sweepBar');
+  if(!bar) return;
+  if(!sweepMode || sweepCart.length===0){
+    bar.classList.remove('show');
+  } else {
+    bar.classList.add('show');
+  }
+  const subtotal = sweepCart.reduce((s,x)=>s+x.price, 0);
+  const fee = subtotal * 0.015;
+  const royalty = subtotal * 0.05;
+  const total = subtotal + fee + royalty;
+  const countEl = document.getElementById('sweepBarCount');
+  const totalEl = document.getElementById('sweepBarTotal');
+  if(countEl) countEl.textContent = `已選 ${sweepCart.length} 件`;
+  if(totalEl) totalEl.textContent = `總支出 ${total.toLocaleString(undefined,{maximumFractionDigits:0})} ANYU (含手續費+版稅)`;
+  const confirmBtn = document.getElementById('sweepConfirmBtn');
+  if(confirmBtn) confirmBtn.disabled = sweepCart.length===0;
+}
+
+function openSweepConfirm(){
+  if(sweepCart.length===0){ toast('請先選擇商品','','error'); return; }
+  if(!walletConnected){ openModal('walletModal'); return; }
+  if(!kycVerified){ toast('需要完成 KYC','','error'); return; }
+  const subtotal = sweepCart.reduce((s,x)=>s+x.price,0);
+  const fee = subtotal*0.015;
+  const royalty = subtotal*0.05;
+  const total = subtotal+fee+royalty;
+  const fmt = n=>n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('sweepSubtotal').textContent   = fmt(subtotal)+' ANYU';
+  document.getElementById('sweepFeeAmt').textContent     = fmt(fee)+' ANYU';
+  document.getElementById('sweepRoyaltyAmt').textContent = fmt(royalty)+' ANYU';
+  document.getElementById('sweepTotalAmt').textContent   = fmt(total)+' ANYU';
+  document.getElementById('sweepWalletBal').textContent  = (walletBalances.ANYU||0).toLocaleString()+' ANYU';
+  const execBtn = document.getElementById('sweepExecBtn');
+  if(execBtn){
+    const canAfford = (walletBalances.ANYU||0) >= total;
+    execBtn.disabled = !canAfford;
+    execBtn.textContent = canAfford ? '⚡ 一鍵掃單' : '餘額不足';
+    execBtn.style.opacity = canAfford ? '1' : '0.5';
+  }
+  // render item list
+  const listEl = document.getElementById('sweepItemsList');
+  if(listEl){
+    listEl.innerHTML = sweepCart.map(x=>{
+      const s = seriesCatalog[x.seriesId];
+      if(!s) return '';
+      return `<div class="si-row">
+        <div class="si-thumb" style="background:linear-gradient(135deg,${s.c1},${s.c2})">${s.emoji}</div>
+        <div class="si-info">
+          <div class="si-name">${s.n} #${x.edition}</div>
+          <div class="si-meta">${x.year} · ${rarityName(x.rarity)}</div>
+        </div>
+        <div class="si-price">${x.price.toLocaleString()} ANYU</div>
+        <div class="si-remove" onclick="sweepRemoveItem(${x.seriesId},${x.edition})">✕</div>
+      </div>`;
+    }).join('');
+  }
+  openModal('sweepModal');
+}
+
+function sweepRemoveItem(seriesId, edition){
+  sweepCart = sweepCart.filter(x=>!(x.seriesId===seriesId && x.edition===edition));
+  updateSweepBar();
+  openSweepConfirm();
+  if(sweepCart.length===0) closeModal('sweepModal');
+}
+
+function confirmSweep(){
+  const subtotal = sweepCart.reduce((s,x)=>s+x.price,0);
+  const fee = subtotal*0.015;
+  const royalty = subtotal*0.05;
+  const total = subtotal+fee+royalty;
+  if((walletBalances.ANYU||0) < total){ toast('餘額不足','請先充值 ANYU','error'); return; }
+  const btn = document.getElementById('sweepExecBtn');
+  if(btn){ btn.textContent='處理中…'; btn.disabled=true; }
+  setTimeout(()=>{
+    walletBalances.ANYU -= total;
+    const purchased = [...sweepCart];
+    purchased.forEach(x=>{
+      if(allListings[x.seriesId]){
+        allListings[x.seriesId] = allListings[x.seriesId].filter(l=>l.edition!==x.edition);
+      }
+      myNFTHoldings.unshift({seriesId:x.seriesId, edition:x.edition, year:x.year, rarity:x.rarity, acquiredPrice:x.price, acquiredAt:new Date()});
+      nftActivity.unshift({seriesId:x.seriesId, type:'sale', edition:x.edition, year:x.year, price:x.price,
+        from:'0x'+Math.random().toString(16).substr(2,4)+'..', to:walletAddress?.substr(0,6)||'你', time:Date.now(),
+        tx:'0x'+Math.random().toString(16).substr(2,12)});
+      seriesCatalog[x.seriesId].listed = Math.max(0,(seriesCatalog[x.seriesId].listed||1)-1);
+      const sym = seriesCatalog[x.seriesId].sym;
+      if(sym) userNftHoldings[sym] = (userNftHoldings[sym]||0)+1;
+    });
+    sweepCart = [];
+    sweepMode = false;
+    const modeBtn = document.getElementById('sweepModeBtn');
+    if(modeBtn) modeBtn.classList.remove('active');
+    updateSweepBar();
+    closeModal('sweepModal');
+    toast('掃單完成 🎉', `成功購入 ${purchased.length} 件 NFT，共 ${total.toLocaleString(undefined,{maximumFractionDigits:0})} ANYU`,'success');
+    renderSeriesItems();
+    if(typeof renderPortfolioHero==='function') renderPortfolioHero();
+  }, 1800);
 }
 
 /* ===== 出價 ===== */
