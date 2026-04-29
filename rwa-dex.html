@@ -4180,7 +4180,7 @@ function renderSeriesBrowser(){
           <div><div class="l">24h 量</div><div class="v">$${formatNum(s.vol24h)}</div></div>
           <div><div class="l">掛單</div><div class="v">${s.listed.toLocaleString()}</div></div>
           <div><div class="l">持有人</div><div class="v">${s.holders.toLocaleString()}</div></div>
-          <div><div class="l">總供應</div><div class="v">30K</div></div>
+          <div><div class="l">總供應</div><div class="v">${s.totalSupply>=1000?(s.totalSupply/1000).toFixed(s.totalSupply%1000===0?0:1)+'K':s.totalSupply.toLocaleString()}</div></div>
         </div>
       </div>
     </div>`;
