@@ -979,6 +979,12 @@
 
   /* ====== 我的資產 passbook ====== */
   .md-section-label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;padding:8px 16px 4px;border-top:1px solid var(--line);margin-top:2px}
+  .md-section-label.accordion{cursor:pointer;display:flex;justify-content:space-between;align-items:center;padding:10px 16px;user-select:none}
+  .md-section-label.accordion:hover{color:var(--text)}
+  .md-section-label.accordion .acc-arrow{font-size:10px;transition:transform .2s;color:var(--muted)}
+  .md-section-label.accordion.open .acc-arrow{transform:rotate(90deg)}
+  .md-accordion-body{overflow:hidden;max-height:0;transition:max-height .25s ease}
+  .md-accordion-body.open{max-height:200px}
   .md-sub-item{display:flex;align-items:center;gap:10px;padding:8px 16px 8px 28px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--line);color:var(--muted)}
   .md-sub-item:hover{background:#241812;color:var(--text)}
   .md-sub-item .mi{font-size:14px;width:18px;text-align:center}
@@ -1181,11 +1187,15 @@
           </div>
         </div>
         <div class="md-item" onclick="setPage('wallet')"><span class="mi">🏦</span>我的錢包</div>
-        <div class="md-item" onclick="setPage('portfolio')"><span class="mi">📊</span>投資組合</div>
-        <div class="md-section-label">我的資產</div>
-        <div class="md-sub-item" onclick="openAssets('tree')"><span class="mi">🌳</span>樹存摺</div>
-        <div class="md-sub-item" onclick="openAssets('carbon')"><span class="mi">🌿</span>碳存摺</div>
-        <div class="md-sub-item" onclick="openAssets('energy')"><span class="mi">⚡</span>綠電存摺</div>
+        <div class="md-item" onclick="setPage('portfolio')"><span class="mi">📊</span>我的資產總價值</div>
+        <div class="md-section-label accordion" id="mdAssetsAccordion" onclick="toggleMdAccordion()">
+          我的資產<span class="acc-arrow">▶</span>
+        </div>
+        <div class="md-accordion-body" id="mdAssetsBody">
+          <div class="md-sub-item" onclick="openAssets('tree')"><span class="mi">🌳</span>樹存摺</div>
+          <div class="md-sub-item" onclick="openAssets('carbon')"><span class="mi">🌿</span>碳存摺</div>
+          <div class="md-sub-item" onclick="openAssets('energy')"><span class="mi">⚡</span>綠電存摺</div>
+        </div>
         <div class="md-item" onclick="openKYC()"><span class="mi">🪪</span>身份驗證 (KYC)</div>
         <div class="md-item" onclick="openModal('twoFALoginModal')"><span class="mi">🛡</span>雙重驗證設定</div>
         <div class="md-item" onclick="setPage('benefits')"><span class="mi">🎁</span>會員福利</div>
@@ -3142,6 +3152,14 @@ function renderMemberUI(){
 function toggleMemberDrop(e){
   e.stopPropagation();
   document.getElementById('memberNav').classList.toggle('open');
+}
+function toggleMdAccordion(e){
+  if(e) e.stopPropagation();
+  const hd = document.getElementById('mdAssetsAccordion');
+  const bd = document.getElementById('mdAssetsBody');
+  if(!hd||!bd) return;
+  const open = hd.classList.toggle('open');
+  bd.classList.toggle('open', open);
 }
 document.addEventListener('click',()=>{ const n=document.getElementById('memberNav'); if(n) n.classList.remove('open'); });
 
