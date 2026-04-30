@@ -1193,6 +1193,48 @@
     .stats-row{grid-template-columns:repeat(2,1fr)}
     nav{display:none}
   }
+  /* ── Echo Tree 限量商城 ── */
+  .etstore-hero{position:relative;overflow:hidden;padding:40px 24px 32px;text-align:center;background:linear-gradient(160deg,#0a1f0f 0%,#0d2b18 40%,#0a1a12 100%);border-bottom:1px solid rgba(34,197,94,.2)}
+  .etstore-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(34,197,94,.18),transparent 70%);pointer-events:none}
+  .etstore-hero-logo{font-size:48px;margin-bottom:10px;filter:drop-shadow(0 0 20px rgba(34,197,94,.6))}
+  .etstore-hero h1{margin:0 0 6px;font-size:26px;font-weight:900;background:linear-gradient(135deg,#4ade80,#22c55e,#86efac);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .etstore-hero p{margin:0 0 16px;color:#6ee7b7;font-size:13px}
+  .etstore-hero-tags{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+  .etstore-tag{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);color:#4ade80;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700}
+  .etstore-filters{padding:14px 20px;display:flex;gap:8px;overflow-x:auto;border-bottom:1px solid var(--line);background:var(--bg);position:sticky;top:52px;z-index:10;scrollbar-width:none}
+  .etstore-filters::-webkit-scrollbar{display:none}
+  .etstore-filter{padding:6px 16px;border-radius:20px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:12px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s}
+  .etstore-filter.active{background:var(--green);border-color:var(--green);color:#fff;font-weight:700}
+  .etstore-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0;padding:0}
+  .etstore-card{background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer;transition:background .15s;position:relative;overflow:hidden}
+  .etstore-card:hover{background:var(--panel-2,#1a100a)}
+  .etstore-card-img{width:100%;aspect-ratio:1/1;display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;overflow:hidden;flex-shrink:0}
+  .etstore-card-img .etstore-emoji{position:relative;z-index:1;filter:drop-shadow(0 4px 16px rgba(0,0,0,.5))}
+  .etstore-card-img .stock-badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.7);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;z-index:2;backdrop-filter:blur(4px)}
+  .etstore-card-img .sold-overlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;letter-spacing:2px;z-index:3}
+  .etstore-card-info{padding:12px 14px 14px}
+  .etstore-card-name{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:4px}
+  .etstore-card-sub{font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.4}
+  .etstore-card-price{display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .etstore-price-val{font-size:15px;font-weight:800;color:#4ade80;font-family:"SF Mono",monospace}
+  .etstore-price-orig{font-size:11px;color:var(--muted);text-decoration:line-through}
+  .etstore-buy-btn{padding:7px 14px;background:linear-gradient(135deg,#16a34a,#15803d);color:#fff;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;border:none}
+  .etstore-buy-btn:disabled{background:#2d2d2d;cursor:not-allowed;color:var(--muted)}
+  .etstore-card-new{position:absolute;top:10px;left:10px;background:#facc15;color:#000;font-size:9px;font-weight:900;padding:2px 7px;border-radius:4px;z-index:2}
+  .etstore-card-hot{position:absolute;top:10px;left:10px;background:#ef4444;color:#fff;font-size:9px;font-weight:900;padding:2px 7px;border-radius:4px;z-index:2}
+  /* 商品詳情 modal */
+  .etstore-detail{max-width:520px;width:95vw;background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin:auto}
+  .etstore-detail-img{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:80px}
+  .etstore-detail-body{padding:20px}
+  .etstore-detail-body h2{margin:0 0 6px;font-size:18px}
+  .etstore-detail-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0;font-size:12px}
+  .etstore-detail-meta .dm{background:#15100b;border-radius:6px;padding:8px 10px}
+  .etstore-detail-meta .dm .dl{color:var(--muted);font-size:10px;margin-bottom:2px}
+  .etstore-detail-meta .dm .dv{font-weight:700}
+  @media (max-width:600px){
+    .etstore-hero h1{font-size:21px}
+    .etstore-card-img{font-size:42px}
+  }
   @media (max-width:600px){
     .pledge-hero-stats{grid-template-columns:repeat(2,1fr)!important}
     .pledge-asset-grid{grid-template-columns:repeat(2,1fr)!important}
@@ -1270,6 +1312,7 @@
         <button data-page="agent">代理區</button>
         <button data-page="tokenize">資產上鏈</button>
         <button data-page="history">歷史紀錄</button>
+        <button data-page="etstore">🌲 限量商城</button>
         <button data-page="projects">上鏈項目介紹</button>
         <button data-page="learn">學習中心</button>
         <button data-page="announce">公告中心</button>
@@ -2630,6 +2673,28 @@
   <div class="proj-grid" id="projGrid"></div>
 </div>
 
+<!-- ===== 回音樹限量商城 (ETSTORE) ===== -->
+<div class="page" id="page-etstore">
+  <div class="etstore-hero">
+    <div class="etstore-hero-logo">🌲</div>
+    <h1>Echo Tree 限量商城</h1>
+    <p>回音樹 × Anydeee 聯名限量發售 · 每件商品皆對應鏈上憑證</p>
+    <div class="etstore-hero-tags">
+      <span class="etstore-tag">🔒 限量發售</span>
+      <span class="etstore-tag">✅ 鏈上存證</span>
+      <span class="etstore-tag">🚀 ANYU 支付</span>
+      <span class="etstore-tag">🌿 碳中和運送</span>
+    </div>
+  </div>
+  <div class="etstore-filters" id="etstoreFilters"></div>
+  <div class="etstore-grid" id="etstoreGrid"></div>
+</div>
+
+<!-- Echo Tree Store 商品詳情 Modal -->
+<div class="modal-bg" id="etstoreModal" onclick="if(event.target===this)this.style.display='none'">
+  <div class="etstore-detail" id="etstoreDetailContent"></div>
+</div>
+
 <!-- Whitepaper Modal -->
 <div class="modal-bg" id="wpModal">
   <div class="wp-modal" id="wpModalContent"></div>
@@ -2656,6 +2721,7 @@
       <a onclick="setPage('nft')">NFT 交易</a>
       <a onclick="setPage('earn')">質押</a>
       <a onclick="setPage('tokenize')">資產上鏈</a>
+      <a onclick="setPage('etstore')">🌲 限量商城</a>
       <a onclick="setPage('projects')">上鏈項目介紹</a>
     </div>
     <div class="footer-col">
@@ -3844,6 +3910,8 @@ function setPage(p){
   if(p==='trade'){ setTimeout(()=>chart && chart.timeScale().fitContent(), 100); }
   if(p==='portfolio'){ renderPortfolioHero(); renderHoldings(); }
   if(p==='history') renderHistory();
+  if(p==='etstore') renderEtstore();
+  if(p==='projects') renderProjectsPage();
 }
 document.querySelectorAll('#mainNav button').forEach(b=>b.onclick=()=>setPage(b.dataset.page));
 
@@ -5320,6 +5388,125 @@ function renderAnnounce(){
       <span class="ai-title">${a.title}</span>
       <div class="ai-meta">${a.date}</div>
     </div>`).join('');
+}
+
+/* ===== 回音樹限量商城 (ET STORE) ===== */
+let etstoreCatFilter = 'all';
+let etstoreSelectedId = null;
+
+const etstoreProducts = [
+  { id:0,  cat:'服飾', name:'Echo Tree 演唱會限量T恤',    sub:'2026 World Tour · 有機棉',      emoji:'👕', gradient:'linear-gradient(135deg,#052e16,#14532d)', price:880,  orig:1200, stock:127, total:300, tag:'HOT',  desc:'採用 100% GOTS 認證有機棉，印有 Echo Tree 2026 世界巡演限定圖案。每件均附有 NFT 數位認證，可在 Anydeee 平台驗真。尺寸 S–3XL，限量 300 件。' },
+  { id:1,  cat:'服飾', name:'回音樹帽T 聯名款',           sub:'Forest Hoodie · 再生材質',      emoji:'🧥', gradient:'linear-gradient(135deg,#1a2e05,#365314)', price:1280, orig:1680, stock:88,  total:200, tag:'NEW',  desc:'與台灣永續品牌聯名，使用 60% 再生聚酯纖維。胸口刺繡回音樹 Logo，附限量編號牌。' },
+  { id:2,  cat:'服飾', name:'Echo Tree 環保棒球帽',        sub:'Cap · 有機棉+回收扣',           emoji:'🧢', gradient:'linear-gradient(135deg,#052e16,#166534)', price:480,  orig:600,  stock:210, total:400, tag:'',     desc:'帽身採有機棉，金屬扣件以回收材製成。刺繡「ET」Logo，可調節後扣。一體式四季適用。' },
+  { id:3,  cat:'服飾', name:'森之守護者 限定外套',         sub:'Jacket · 防風潑水',             emoji:'🥋', gradient:'linear-gradient(135deg,#14532d,#052e16)', price:2480, orig:3200, stock:45,  total:100, tag:'HOT',  desc:'防風潑水面料，內裡印有森林圖騰。背部大幅 Echo Tree 印花，左胸口袋附 NFT 認證晶片貼片。僅限量 100 件。' },
+  { id:4,  cat:'音樂', name:'Echo Tree 首張 NFT 專輯',    sub:'數位+實體 · 限量黑膠',          emoji:'🎵', gradient:'linear-gradient(135deg,#1e1b4b,#312e81)', price:1580, orig:2000, stock:60,  total:150, tag:'NEW',  desc:'包含數位 NFT 專輯所有權 + 限量黑膠唱片。NFT 持有者可解鎖獨家 Behind-the-Scenes 影片及未發行曲目。' },
+  { id:5,  cat:'音樂', name:'演唱會 VIP 區通行 NFT',      sub:'2026/08/15 台北小巨蛋',         emoji:'🎤', gradient:'linear-gradient(135deg,#4a044e,#701a75)', price:3800, orig:4500, stock:30,  total:50,  tag:'HOT',  desc:'2026 年 8 月 15 日台北小巨蛋演唱會 VIP 前排通行。含 NFT 門票、後台巡覽資格及限定紀念品禮盒。' },
+  { id:6,  cat:'音樂', name:'回音樹 簽名海報 套裝',        sub:'A2 印刷 · 親筆簽名',            emoji:'🖼️', gradient:'linear-gradient(135deg,#1e3a5f,#1e40af)', price:680,  orig:880,  stock:150, total:300, tag:'',     desc:'三張 A2 演唱會海報親筆簽名版，採用 200g 無酸藝術紙印刷，附防刮保護膜。NFT 認證包含於套裝中。' },
+  { id:7,  cat:'音樂', name:'限定 USB 音樂碟',             sub:'Hi-Res 無損 · 木質外殼',        emoji:'💿', gradient:'linear-gradient(135deg,#292524,#57534e)', price:980,  orig:1200, stock:99,  total:200, tag:'NEW',  desc:'內含 Hi-Res 無損音源全專輯，木質雕刻外殼附回音樹圖騰，限量 200 個，每個均有序號雷射刻印。' },
+  { id:8,  cat:'藝術', name:'Echo Tree 生成藝術版畫',      sub:'AI × 手繪 · 限量版',            emoji:'🎨', gradient:'linear-gradient(135deg,#450a0a,#991b1b)', price:3200, orig:4000, stock:20,  total:30,  tag:'HOT',  desc:'結合 AI 生成與藝術家手繪修飾，每幅均為唯一作品。附實體版畫（50×70cm）+ NFT 所有權憑證，僅 30 幅。' },
+  { id:9,  cat:'藝術', name:'森林系列壓克力畫作',          sub:'20×20cm · 限量 50 幅',          emoji:'🖌️', gradient:'linear-gradient(135deg,#064e3b,#065f46)', price:1800, orig:2400, stock:38,  total:50,  tag:'',     desc:'藝術家親筆壓克力畫，主題取自亞洲四大原始森林生態。每幅附真品證書與 NFT 數位憑證。' },
+  { id:10, cat:'藝術', name:'回音樹 3D 立體 NFT 雕塑',     sub:'樹脂材質 · 20cm 高',            emoji:'🗿', gradient:'linear-gradient(135deg,#1c1917,#44403c)', price:2800, orig:3500, stock:15,  total:25,  tag:'NEW',  desc:'手工樹脂鑄造，主體為 20cm 高回音樹造型。底座嵌入 NFC 晶片，掃描即可查驗對應 NFT 資訊。' },
+  { id:11, cat:'收藏', name:'Echo Tree 徽章全套組',         sub:'琺瑯徽章 × 8 款',               emoji:'🏅', gradient:'linear-gradient(135deg,#78350f,#92400e)', price:880,  orig:1100, stock:180, total:300, tag:'',     desc:'8 款軟琺瑯徽章全套，涵蓋 Echo Tree 各巡演城市主題。附精裝收納盒，每套均有限量編號卡。' },
+  { id:12, cat:'收藏', name:'森林守護者 限定扭蛋',          sub:'盲盒 · 12 款隱藏款',            emoji:'🎰', gradient:'linear-gradient(135deg,#1e3a5f,#1e40af)', price:380,  orig:450,  stock:500, total:800, tag:'HOT',  desc:'12 款隱藏款隨機扭蛋，附 NFT 確認稀有度功能。集齊 12 款可兌換限定 ANYU 獎勵。' },
+  { id:13, cat:'收藏', name:'Echo Tree 紀念錢幣套裝',       sub:'鍍金銀 · 限量 200 套',          emoji:'🪙', gradient:'linear-gradient(135deg,#713f12,#92400e)', price:1580, orig:2000, stock:77,  total:200, tag:'NEW',  desc:'2 枚鍍金、2 枚鍍銀紀念幣套組，附木質展示盒。每枚鑄有回音樹 Logo 及限量序號。' },
+  { id:14, cat:'生活', name:'回音樹 有機香氛蠟燭組',        sub:'森林香調 · 3 入',               emoji:'🕯️', gradient:'linear-gradient(135deg,#052e16,#14532d)', price:680,  orig:880,  stock:220, total:400, tag:'',     desc:'以台灣原始森林為靈感，三款香調：雪松晨霧、檜木寧靜、翠竹微風。100% 天然大豆蠟，燃燒時長 45 小時。' },
+  { id:15, cat:'生活', name:'Echo Tree 永續保溫瓶',         sub:'316 不鏽鋼 · 500ml',            emoji:'🍶', gradient:'linear-gradient(135deg,#0f172a,#1e3a5f)', price:780,  orig:980,  stock:310, total:500, tag:'HOT',  desc:'316 不鏽鋼雙層真空，保溫 24 小時。雷射蝕刻回音樹圖騰，附竹木瓶蓋。購買即捐 50 ANYU 至森林保育基金。' },
+];
+
+const etstoreCats = ['all','服飾','音樂','藝術','收藏','生活'];
+
+function renderEtstore(){
+  const filters = document.getElementById('etstoreFilters');
+  const grid = document.getElementById('etstoreGrid');
+  if(!filters||!grid) return;
+
+  filters.innerHTML = etstoreCats.map(c=>`
+    <button class="etstore-filter${etstoreCatFilter===c?' active':''}" onclick="etstoreCatFilter='${c}';renderEtstore()">
+      ${c==='all'?'🛍️ 全部':c}
+    </button>`).join('');
+
+  const list = etstoreProducts.filter(p=> etstoreCatFilter==='all' || p.cat===etstoreCatFilter);
+
+  grid.innerHTML = list.map(p=>{
+    const pct = Math.round((p.stock/p.total)*100);
+    const soldPct = 100-pct;
+    return `<div class="etstore-card" onclick="openEtstoreDetail(${p.id})">
+      ${p.tag==='HOT'?'<div class="etstore-card-hot">🔥 HOT</div>':''}
+      ${p.tag==='NEW'?'<div class="etstore-card-new">✨ NEW</div>':''}
+      <div class="etstore-card-img" style="background:${p.gradient}">
+        <div style="font-size:64px;line-height:1">${p.emoji}</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.6);margin-top:8px">${p.sub}</div>
+      </div>
+      <div class="etstore-card-info">
+        <div class="etstore-card-name">${p.name}</div>
+        <div class="etstore-card-price">
+          <span class="etstore-price-val">${p.price.toLocaleString()} ANYU</span>
+          ${p.orig>p.price?`<span style="font-size:11px;color:rgba(255,255,255,.4);text-decoration:line-through">${p.orig.toLocaleString()}</span>`:''}
+        </div>
+        <div style="margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(255,255,255,.5);margin-bottom:4px">
+            <span>剩餘 ${p.stock} / ${p.total}</span><span>已售出 ${soldPct}%</span>
+          </div>
+          <div style="background:rgba(255,255,255,.1);border-radius:4px;height:4px">
+            <div style="background:${soldPct>80?'#ef4444':soldPct>50?'#f97316':'#4ade80'};width:${soldPct}%;height:100%;border-radius:4px;transition:.3s"></div>
+          </div>
+        </div>
+        <button class="etstore-buy-btn" onclick="event.stopPropagation();openEtstoreDetail(${p.id})">立即購買</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openEtstoreDetail(id){
+  const p = etstoreProducts.find(x=>x.id===id);
+  if(!p) return;
+  etstoreSelectedId = id;
+  const modal = document.getElementById('etstoreModal');
+  const pct = Math.round(((p.total-p.stock)/p.total)*100);
+  document.getElementById('etstoreDetailContent').innerHTML = `
+    <div class="etstore-detail-img" style="background:${p.gradient}">
+      <div style="font-size:96px;line-height:1">${p.emoji}</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.7);margin-top:12px">${p.sub}</div>
+      ${p.tag?`<div style="position:absolute;top:16px;right:16px;background:${p.tag==='HOT'?'#ef4444':'#8b5cf6'};color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px">${p.tag==='HOT'?'🔥 HOT':'✨ NEW'}</div>`:''}
+    </div>
+    <div class="etstore-detail-body">
+      <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:6px">${p.name}</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px">分類：${p.cat}</div>
+      <p style="font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin-bottom:20px">${p.desc}</p>
+      <div class="etstore-detail-meta">
+        <div><div style="font-size:11px;color:rgba(255,255,255,.4)">定價</div><div style="color:rgba(255,255,255,.4);text-decoration:line-through;font-size:13px">${p.orig.toLocaleString()} ANYU</div></div>
+        <div><div style="font-size:11px;color:rgba(255,255,255,.4)">特惠價</div><div style="color:#4ade80;font-size:18px;font-weight:700">${p.price.toLocaleString()} ANYU</div></div>
+        <div><div style="font-size:11px;color:rgba(255,255,255,.4)">剩餘庫存</div><div style="color:#fff;font-size:15px;font-weight:600">${p.stock} / ${p.total}</div></div>
+        <div><div style="font-size:11px;color:rgba(255,255,255,.4)">已售出</div><div style="color:${pct>80?'#ef4444':pct>50?'#f97316':'#4ade80'};font-size:15px;font-weight:600">${pct}%</div></div>
+      </div>
+      <div style="margin:16px 0;background:rgba(255,255,255,.08);border-radius:8px;padding:12px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,.5);margin-bottom:6px">
+          <span>銷售進度</span><span>${pct}%</span>
+        </div>
+        <div style="background:rgba(255,255,255,.1);border-radius:4px;height:6px">
+          <div style="background:${pct>80?'#ef4444':pct>50?'#f97316':'#4ade80'};width:${pct}%;height:100%;border-radius:4px"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button onclick="document.getElementById('etstoreModal').style.display='none'" style="flex:1;padding:14px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:12px;color:rgba(255,255,255,.7);font-size:14px;cursor:pointer">取消</button>
+        <button onclick="confirmEtBuy()" style="flex:2;padding:14px;background:linear-gradient(135deg,#16a34a,#15803d);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer${p.stock<=0?';opacity:.4;pointer-events:none':''}">${p.stock>0?'確認購買 '+p.price.toLocaleString()+' ANYU':'已售罄'}</button>
+      </div>
+    </div>`;
+  modal.style.display='flex';
+}
+
+function confirmEtBuy(){
+  const p = etstoreProducts.find(x=>x.id===etstoreSelectedId);
+  if(!p||p.stock<=0) return;
+  if(walletBalances.ANYU < p.price){
+    showToast('ANYU 餘額不足，無法購買','error'); return;
+  }
+  walletBalances.ANYU -= p.price;
+  p.stock = Math.max(0, p.stock-1);
+  document.getElementById('etstoreModal').style.display='none';
+  showToast(`🎉 購買成功！${p.name} 已加入您的收藏`,'success');
+  renderEtstore();
+  updateWalletDisplay();
 }
 
 /* ===== 上鏈項目介紹 (PROJECTS) ===== */
