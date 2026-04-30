@@ -1291,6 +1291,61 @@
   .wp-row:last-child{border-bottom:none}
   .wp-row .wk{color:var(--muted);flex-shrink:0;margin-right:12px}
   .wp-row .wv{font-family:"SF Mono",monospace;color:var(--text);font-weight:600;text-align:right;word-break:break-all}
+
+  /* ===== 會員後台 MEMBER PORTAL ===== */
+  .mportal-hero{padding:28px 20px 20px;background:linear-gradient(160deg,#0a1520,#0d1f35);border-bottom:1px solid var(--line);text-align:center}
+  .mportal-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#16a34a,#0d9488);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 10px;border:3px solid rgba(74,222,128,.4)}
+  .mportal-name{font-size:18px;font-weight:800;color:#fff;margin-bottom:2px}
+  .mportal-level{display:inline-block;padding:3px 12px;background:rgba(250,204,21,.15);border:1px solid rgba(250,204,21,.3);color:#facc15;font-size:11px;font-weight:700;border-radius:20px}
+  .mportal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-top:1px solid var(--line);margin-top:16px}
+  .mportal-stat{background:var(--bg);padding:14px 8px;text-align:center}
+  .mportal-stat-val{font-size:17px;font-weight:900;color:#4ade80;font-family:"SF Mono",monospace}
+  .mportal-stat-lbl{font-size:10px;color:var(--muted);margin-top:2px}
+  .mportal-section{padding:16px 20px 0}
+  .mportal-section-title{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
+  .mportal-order{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px}
+  .mportal-order-img{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+  .mportal-order-info{flex:1;min-width:0}
+  .mportal-order-name{font-size:13px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mportal-order-meta{font-size:11px;color:var(--muted);margin-top:2px}
+  .mportal-order-price{font-size:13px;font-weight:800;color:#4ade80;font-family:"SF Mono",monospace;white-space:nowrap}
+  .mportal-empty{text-align:center;padding:32px 20px;color:var(--muted);font-size:13px}
+  .mportal-not-login{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:14px;padding:40px 24px;text-align:center}
+  /* ===== 後台管理 ADMIN ===== */
+  .admin-lock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;padding:40px 24px;text-align:center}
+  .admin-lock-icon{font-size:64px;filter:drop-shadow(0 0 24px rgba(250,204,21,.4))}
+  .admin-lock h2{margin:0;font-size:22px;font-weight:900;color:#facc15}
+  .admin-lock p{margin:0;font-size:13px;color:var(--muted)}
+  .admin-lock-input{width:100%;max-width:320px;padding:14px 16px;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:12px;color:#fff;font-size:16px;text-align:center;letter-spacing:4px;outline:none}
+  .admin-lock-input:focus{border-color:#facc15}
+  .admin-lock-btn{padding:13px 40px;background:linear-gradient(135deg,#ca8a04,#a16207);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+  .admin-panel{padding:0 0 80px}
+  .admin-section{margin:0;border-bottom:1px solid var(--line)}
+  .admin-section-header{padding:16px 20px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+  .admin-section-header h3{margin:0;font-size:14px;font-weight:700}
+  .admin-section-body{padding:0 16px 16px;display:none}
+  .admin-section-body.open{display:block}
+  .admin-item-row{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:10px}
+  .admin-item-row:last-child{margin-bottom:0}
+  .admin-row-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .admin-row-preview{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden}
+  .admin-row-preview img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+  .admin-row-title{font-size:13px;font-weight:700;color:#fff}
+  .admin-row-sub{font-size:11px;color:var(--muted)}
+  .admin-field{margin-bottom:8px}
+  .admin-field label{display:block;font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+  .admin-field input,.admin-field textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:8px;color:#fff;font-size:12px;padding:8px 10px;outline:none;box-sizing:border-box;resize:vertical}
+  .admin-field input:focus,.admin-field textarea:focus{border-color:#facc15}
+  .admin-field textarea{min-height:60px;line-height:1.5}
+  .admin-save-btn{padding:8px 20px;background:linear-gradient(135deg,#16a34a,#15803d);border:none;border-radius:8px;color:#fff;font-size:12px;font-weight:700;cursor:pointer;margin-top:4px}
+  .admin-save-btn:active{opacity:.8}
+  .admin-add-btn{width:100%;padding:11px;background:rgba(255,255,255,.04);border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:12px;cursor:pointer;margin-top:4px}
+  .admin-add-btn:hover{border-color:#facc15;color:#facc15}
+  .admin-del-btn{padding:4px 10px;background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:6px;color:#ef4444;font-size:11px;cursor:pointer;margin-left:auto;flex-shrink:0}
+  .admin-top-bar{display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid var(--line);background:rgba(250,204,21,.06)}
+  .admin-top-bar span{font-size:13px;font-weight:700;color:#facc15}
+  .admin-top-bar small{font-size:11px;color:var(--muted)}
+  .admin-logout-btn{margin-left:auto;padding:6px 14px;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:8px;color:var(--muted);font-size:11px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -1316,6 +1371,8 @@
         <button data-page="projects">上鏈項目介紹</button>
         <button data-page="learn">學習中心</button>
         <button data-page="announce">公告中心</button>
+        <button data-page="member" style="color:#4ade80">👤 會員後台</button>
+        <button data-page="admin" style="color:#facc15">🔐 管理後台</button>
       </div>
     </div>
   </nav>
@@ -2695,6 +2752,103 @@
   <div class="etstore-detail" id="etstoreDetailContent"></div>
 </div>
 
+<!-- ===== 會員後台 MEMBER PORTAL ===== -->
+<div class="page" id="page-member">
+  <!-- Not logged in -->
+  <div class="mportal-not-login" id="mportalNotLogin">
+    <div style="font-size:56px">🔑</div>
+    <div style="font-size:18px;font-weight:800;color:#fff">請先登入</div>
+    <div style="font-size:13px;color:var(--muted)">登入後即可查看您的 Echo Tree 會員後台</div>
+    <button class="btn-primary" onclick="document.getElementById('loginModal').classList.add('show')">立即登入</button>
+  </div>
+  <!-- Logged in content -->
+  <div id="mportalContent" style="display:none;padding-bottom:80px">
+    <div class="mportal-hero">
+      <div class="mportal-avatar" id="mportalAvatar">👤</div>
+      <div class="mportal-name" id="mportalName">會員</div>
+      <div class="mportal-level" id="mportalLevel">🌱 一般會員</div>
+      <div class="mportal-stats">
+        <div class="mportal-stat">
+          <div class="mportal-stat-val" id="mportalAnyu">0</div>
+          <div class="mportal-stat-lbl">ANYU 餘額</div>
+        </div>
+        <div class="mportal-stat">
+          <div class="mportal-stat-val" id="mportalOrders">0</div>
+          <div class="mportal-stat-lbl">購買紀錄</div>
+        </div>
+        <div class="mportal-stat">
+          <div class="mportal-stat-val" id="mportalNfts">0</div>
+          <div class="mportal-stat-lbl">NFT 持倉</div>
+        </div>
+      </div>
+    </div>
+    <!-- Purchase history -->
+    <div class="mportal-section" style="margin-top:16px">
+      <div class="mportal-section-title">🛍️ Echo Tree 購買紀錄</div>
+      <div id="mportalOrderList"></div>
+    </div>
+    <!-- NFT holdings summary -->
+    <div class="mportal-section" style="margin-top:8px">
+      <div class="mportal-section-title">🏆 NFT 持倉總覽</div>
+      <div id="mportalNftList"></div>
+    </div>
+    <!-- Quick actions -->
+    <div class="mportal-section" style="margin-top:8px;padding-bottom:20px">
+      <div class="mportal-section-title">⚡ 快速操作</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button onclick="setPage('etstore')" style="padding:14px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:12px;color:#4ade80;font-size:13px;font-weight:700;cursor:pointer">🌲 前往商城</button>
+        <button onclick="setPage('earn')" style="padding:14px;background:rgba(91,140,255,.1);border:1px solid rgba(91,140,255,.25);border-radius:12px;color:#5b8cff;font-size:13px;font-weight:700;cursor:pointer">💎 質押賺幣</button>
+        <button onclick="setPage('wallet')" style="padding:14px;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.25);border-radius:12px;color:#facc15;font-size:13px;font-weight:700;cursor:pointer">💰 我的錢包</button>
+        <button onclick="setPage('nft')" style="padding:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);border-radius:12px;color:#a855f7;font-size:13px;font-weight:700;cursor:pointer">🎨 NFT 市場</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 後台管理 ADMIN ===== -->
+<div class="page" id="page-admin">
+  <!-- Lock screen -->
+  <div class="admin-lock" id="adminLock">
+    <div class="admin-lock-icon">🔐</div>
+    <h2>後台管理系統</h2>
+    <p>請輸入管理員密碼</p>
+    <input class="admin-lock-input" id="adminPwInput" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')adminLogin()">
+    <button class="admin-lock-btn" onclick="adminLogin()">登入後台</button>
+    <div id="adminPwErr" style="color:#ef4444;font-size:12px;min-height:16px"></div>
+  </div>
+  <!-- Main panel (hidden until login) -->
+  <div class="admin-panel" id="adminPanel" style="display:none">
+    <div class="admin-top-bar">
+      <span>🛠️ 後台管理</span>
+      <span id="adminRoleBadge" style="font-size:11px;font-weight:700;padding:3px 10px;background:rgba(255,255,255,.08);border-radius:20px"></span>
+      <small style="color:var(--muted)">變更即時生效</small>
+      <button class="admin-logout-btn" onclick="adminLogout()">登出</button>
+    </div>
+    <!-- Section 1: Echo Tree 商城商品 -->
+    <div class="admin-section" id="adminSecStore">
+      <div class="admin-section-header" onclick="adminToggle('adminSecStoreBody')">
+        <h3>🌲 限量商城商品管理</h3>
+        <span id="adminSecStoreArrow">▶</span>
+      </div>
+      <div class="admin-section-body" id="adminSecStoreBody">
+        <div id="adminStoreList"></div>
+        <div id="adminAddProductWrap"></div>
+      </div>
+    </div>
+    <!-- Section 2: 公告訊息 -->
+    <div class="admin-section" id="adminSecAnnounce">
+      <div class="admin-section-header" onclick="adminToggle('adminSecAnnounceBody')">
+        <h3>📢 公告訊息管理</h3>
+        <span id="adminSecAnnounceArrow">▶</span>
+      </div>
+      <div class="admin-section-body" id="adminSecAnnounceBody">
+        <div id="adminAnnounceList"></div>
+        <div id="adminAddAnnounceWrap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Whitepaper Modal -->
 <div class="modal-bg" id="wpModal">
   <div class="wp-modal" id="wpModalContent"></div>
@@ -2739,6 +2893,8 @@
       <a href="#">手續費標準</a>
       <a href="#">API 文件</a>
       <a href="#">驗證金</a>
+      <a onclick="setPage('member')" style="color:#4ade80;cursor:pointer">👤 會員後台</a>
+      <a onclick="setPage('admin')" style="color:#facc15;cursor:pointer">🔐 管理後台</a>
     </div>
     <div class="footer-col">
       <h5>關於</h5>
@@ -5504,6 +5660,7 @@ function confirmEtBuy(){
   walletBalances.ANYU -= p.price;
   p.stock = Math.max(0, p.stock-1);
   document.getElementById('etstoreModal').style.display='none';
+  memberRecordOrder(p);
   showToast(`🎉 購買成功！${p.name} 已加入您的收藏`,'success');
   renderEtstore();
   updateWalletDisplay();
@@ -7385,6 +7542,8 @@ setPage = function(p){
   if(p==='projects'){ renderProjectsPage(); }
   if(p==='forum'){ renderForum(); renderForumSidebar(); }
   if(p==='messages'){ renderConvList(); if(activeConvId) openConv(activeConvId); }
+  if(p==='admin'){ renderAdminPanel(); }
+  if(p==='member'){ renderMemberPortal(); }
 };
 
 /* ===================================================================
@@ -7668,6 +7827,337 @@ recalc();
 recalcBuy();
 renderLaunchPage();
 renderPredictions();
+
+/* ===== 後台管理 ADMIN ===== */
+/* 三級權限：super > manager > editor */
+const ADMIN_ROLES = {
+  'anydeee2026':  { role:'super',   label:'⭐ 超級管理員', color:'#facc15' },
+  'etstore888':   { role:'manager', label:'🏪 店長',       color:'#60a5fa' },
+  'etcontent888': { role:'editor',  label:'✏️ 內容編輯',  color:'#a78bfa' },
+};
+const ADMIN_STORE_KEY = 'anydeee_admin_store';
+const ADMIN_ANN_KEY   = 'anydeee_admin_ann';
+let adminAuthed = false;
+let adminRole   = null; // 'super' | 'manager' | 'editor'
+
+// Load persisted overrides into live data on startup
+(function adminBootstrap(){
+  try {
+    const sp = localStorage.getItem(ADMIN_STORE_KEY);
+    if(sp){
+      const saved = JSON.parse(sp);
+      saved.forEach(s=>{
+        const idx = etstoreProducts.findIndex(p=>p.id===s.id);
+        if(idx>=0) Object.assign(etstoreProducts[idx], s);
+        else etstoreProducts.push(s);
+      });
+    }
+    const ap = localStorage.getItem(ADMIN_ANN_KEY);
+    if(ap){
+      const saved = JSON.parse(ap);
+      announces.length = 0;
+      saved.forEach(a=>announces.push(a));
+    }
+  } catch(e){}
+})();
+
+function adminLogin(){
+  const v = document.getElementById('adminPwInput').value.trim();
+  const matched = ADMIN_ROLES[v];
+  if(matched){
+    adminAuthed = true;
+    adminRole   = matched.role;
+    document.getElementById('adminLock').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    // show role badge
+    document.getElementById('adminRoleBadge').textContent = matched.label;
+    document.getElementById('adminRoleBadge').style.color = matched.color;
+    renderAdminPanel();
+  } else {
+    document.getElementById('adminPwErr').textContent='密碼錯誤，請重試';
+    document.getElementById('adminPwInput').value='';
+  }
+}
+
+function adminLogout(){
+  adminAuthed = false;
+  adminRole   = null;
+  document.getElementById('adminLock').style.display='flex';
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('adminPwInput').value='';
+  document.getElementById('adminPwErr').textContent='';
+}
+
+/* permission helpers */
+function adminCan(action){
+  // super: all | manager: edit+price+stock, no delete-announce | editor: image+desc only
+  if(adminRole==='super') return true;
+  if(action==='editImage'||action==='editDesc') return true;
+  if(action==='editPrice'||action==='editStock'||action==='editTag') return adminRole==='manager';
+  if(action==='addProduct'||action==='delProduct') return adminRole==='manager'||adminRole==='super';
+  if(action==='editAnnounce') return adminRole==='super'||adminRole==='manager';
+  if(action==='addAnnounce'||action==='delAnnounce') return adminRole==='super';
+  return false;
+}
+
+function adminToggle(id){
+  const el = document.getElementById(id);
+  const arrow = document.getElementById(id.replace('Body','Arrow'));
+  const open = el.classList.toggle('open');
+  if(arrow) arrow.textContent = open ? '▼' : '▶';
+}
+
+function renderAdminPanel(){
+  if(!adminAuthed) return;
+  renderAdminStore();
+  renderAdminAnnounces();
+  // dynamic add buttons
+  const addProd = document.getElementById('adminAddProductWrap');
+  if(addProd) addProd.innerHTML = adminCan('addProduct')
+    ? `<button class="admin-add-btn" onclick="adminAddProduct()">＋ 新增商品</button>`
+    : `<div style="font-size:11px;color:var(--muted);padding:8px 4px">🔒 新增商品需店長以上權限</div>`;
+  const addAnn = document.getElementById('adminAddAnnounceWrap');
+  if(addAnn) addAnn.innerHTML = adminCan('addAnnounce')
+    ? `<button class="admin-add-btn" onclick="adminAddAnnounce()">＋ 新增公告</button>`
+    : `<div style="font-size:11px;color:var(--muted);padding:8px 4px">🔒 新增公告需超管權限</div>`;
+}
+
+/* ---------- Store ---------- */
+function renderAdminStore(){
+  const el = document.getElementById('adminStoreList');
+  if(!el) return;
+  el.innerHTML = etstoreProducts.map((p,i)=>`
+    <div class="admin-item-row" id="adminProd_${p.id}">
+      <div class="admin-row-head">
+        <div class="admin-row-preview" id="adminPrev_${p.id}" style="background:${p.gradient||'#1a1a1a'}">
+          ${p.imgUrl?`<img src="${p.imgUrl}" onerror="this.style.display='none'">`:`<span>${p.emoji||'🛍️'}</span>`}
+        </div>
+        <div>
+          <div class="admin-row-title">${p.name}</div>
+          <div class="admin-row-sub">${p.cat} · 剩餘 ${p.stock}/${p.total}</div>
+        </div>
+        ${adminCan('delProduct')?`<button class="admin-del-btn" onclick="adminDelProduct(${p.id})">刪除</button>`:''}
+      </div>
+      <div class="admin-field"><label>商品名稱</label><input id="ap_name_${p.id}" value="${p.name}"></div>
+      <div class="admin-field"><label>副標題</label><input id="ap_sub_${p.id}" value="${p.sub||''}"></div>
+      <div class="admin-field"><label>圖片 URL（留空則用 Emoji）</label><input id="ap_img_${p.id}" value="${p.imgUrl||''}" placeholder="https://..." oninput="adminPreviewImg(${p.id},this.value)"></div>
+      <div class="admin-field"><label>Emoji（無圖片時顯示）</label><input id="ap_emoji_${p.id}" value="${p.emoji||'🛍️'}" style="font-size:20px"></div>
+      <div class="admin-field"><label>背景漸層（CSS gradient）</label><input id="ap_grad_${p.id}" value="${p.gradient||''}" placeholder="linear-gradient(135deg,#111,#222)"></div>
+      ${adminCan('editPrice')?`
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="admin-field"><label>售價 (ANYU)</label><input type="number" id="ap_price_${p.id}" value="${p.price}"></div>
+        <div class="admin-field"><label>原價 (ANYU)</label><input type="number" id="ap_orig_${p.id}" value="${p.orig||p.price}"></div>
+        <div class="admin-field"><label>庫存</label><input type="number" id="ap_stock_${p.id}" value="${p.stock}"></div>
+        <div class="admin-field"><label>總量</label><input type="number" id="ap_total_${p.id}" value="${p.total}"></div>
+      </div>
+      <div class="admin-field"><label>標籤 (HOT / NEW / 空白)</label><input id="ap_tag_${p.id}" value="${p.tag||''}"></div>`
+      :`<div style="font-size:11px;color:var(--muted);padding:4px 0 8px">💡 售價/庫存/標籤需店長以上權限</div>`}
+      <div class="admin-field"><label>商品描述</label><textarea id="ap_desc_${p.id}">${p.desc||''}</textarea></div>
+      <button class="admin-save-btn" onclick="adminSaveProduct(${p.id})">💾 儲存此商品</button>
+    </div>`).join('');
+}
+
+function adminPreviewImg(id, url){
+  const prev = document.getElementById('adminPrev_'+id);
+  if(!prev) return;
+  if(url){
+    prev.innerHTML = `<img src="${url}" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;border-radius:10px">`;
+  } else {
+    const p = etstoreProducts.find(x=>x.id===id);
+    prev.innerHTML = `<span>${p?p.emoji:'🛍️'}</span>`;
+  }
+}
+
+function adminSaveProduct(id){
+  const p = etstoreProducts.find(x=>x.id===id);
+  if(!p) return;
+  const g = k => document.getElementById(`ap_${k}_${id}`)?.value ?? '';
+  // all roles can edit these
+  p.name    = g('name');
+  p.sub     = g('sub');
+  p.imgUrl  = g('img').trim();
+  p.emoji   = g('emoji');
+  p.gradient= g('grad');
+  p.desc    = g('desc');
+  // price/stock/tag: manager+ only
+  if(adminCan('editPrice')){
+    p.price = parseFloat(g('price'))||p.price;
+    p.orig  = parseFloat(g('orig'))||p.orig;
+    p.stock = parseInt(g('stock'))||p.stock;
+    p.total = parseInt(g('total'))||p.total;
+    p.tag   = g('tag').toUpperCase();
+  }
+  adminPersistStore();
+  showToast('✅ 商品已儲存：'+p.name,'success');
+  renderAdminStore();
+}
+
+function adminDelProduct(id){
+  const idx = etstoreProducts.findIndex(x=>x.id===id);
+  if(idx<0) return;
+  etstoreProducts.splice(idx,1);
+  adminPersistStore();
+  showToast('🗑️ 商品已刪除','');
+  renderAdminStore();
+}
+
+function adminAddProduct(){
+  const newId = Date.now();
+  etstoreProducts.push({
+    id:newId, cat:'服飾', name:'新商品', sub:'副標題', emoji:'🛍️',
+    gradient:'linear-gradient(135deg,#1a1a1a,#2a2a2a)',
+    price:500, orig:600, stock:100, total:100, tag:'NEW', desc:'商品描述'
+  });
+  adminPersistStore();
+  renderAdminStore();
+  showToast('✅ 已新增商品，請填寫資料後儲存','');
+  // scroll to new item
+  setTimeout(()=>{
+    const rows = document.querySelectorAll('.admin-item-row');
+    rows[rows.length-1]?.scrollIntoView({behavior:'smooth'});
+  },100);
+}
+
+function adminPersistStore(){
+  try { localStorage.setItem(ADMIN_STORE_KEY, JSON.stringify(etstoreProducts)); } catch(e){}
+}
+
+/* ---------- Announces ---------- */
+function renderAdminAnnounces(){
+  const el = document.getElementById('adminAnnounceList');
+  if(!el) return;
+  const typeOpts = ['event','update','warn','info'].map(t=>`<option value="${t}">${t}</option>`).join('');
+  el.innerHTML = announces.map((a,i)=>`
+    <div class="admin-item-row">
+      <div class="admin-row-head">
+        <div style="width:36px;height:36px;border-radius:8px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">📢</div>
+        <div>
+          <div class="admin-row-title" style="font-size:12px">${a.title.slice(0,40)}${a.title.length>40?'…':''}</div>
+          <div class="admin-row-sub">${a.date||''}</div>
+        </div>
+        ${adminCan('delAnnounce')?`<button class="admin-del-btn" onclick="adminDelAnnounce(${i})">刪除</button>`:''}
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div class="admin-field"><label>類型</label>
+          <select id="aa_type_${i}" style="width:100%;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:8px;color:#fff;font-size:12px;padding:8px 10px">
+            ${['event','update','warn','info'].map(t=>`<option value="${t}"${a.type===t?' selected':''}>${t}</option>`).join('')}
+          </select>
+        </div>
+        <div class="admin-field"><label>標籤</label><input id="aa_tag_${i}" value="${a.tag||''}"></div>
+      </div>
+      <div class="admin-field"><label>標題</label><input id="aa_title_${i}" value="${a.title}"></div>
+      <div class="admin-field"><label>日期</label><input id="aa_date_${i}" value="${a.date||''}"></div>
+      <button class="admin-save-btn" onclick="adminSaveAnnounce(${i})">💾 儲存此公告</button>
+    </div>`).join('');
+}
+
+function adminSaveAnnounce(i){
+  const g = k => document.getElementById(`aa_${k}_${i}`)?.value ?? '';
+  announces[i] = { type:g('type'), tag:g('tag'), title:g('title'), date:g('date') };
+  adminPersistAnnounces();
+  showToast('✅ 公告已儲存','success');
+  renderAdminAnnounces();
+  renderAnnounce();
+}
+
+function adminDelAnnounce(i){
+  announces.splice(i,1);
+  adminPersistAnnounces();
+  showToast('🗑️ 公告已刪除','');
+  renderAdminAnnounces();
+  renderAnnounce();
+}
+
+function adminAddAnnounce(){
+  announces.unshift({ type:'event', tag:'活動', title:'新公告標題', date:new Date().toISOString().slice(0,10) });
+  adminPersistAnnounces();
+  renderAdminAnnounces();
+  showToast('✅ 已新增公告','');
+}
+
+function adminPersistAnnounces(){
+  try { localStorage.setItem(ADMIN_ANN_KEY, JSON.stringify(announces)); } catch(e){}
+}
+
+/* ===== 會員後台 MEMBER PORTAL ===== */
+const MEMBER_ORDERS_KEY = 'anydeee_et_orders';
+
+// Call after every Echo Tree purchase to record order history
+function memberRecordOrder(product){
+  try {
+    const orders = JSON.parse(localStorage.getItem(MEMBER_ORDERS_KEY)||'[]');
+    orders.unshift({ id:Date.now(), productId:product.id, name:product.name,
+      emoji:product.emoji, imgUrl:product.imgUrl||'', gradient:product.gradient,
+      price:product.price, at:new Date().toLocaleString('zh-TW') });
+    localStorage.setItem(MEMBER_ORDERS_KEY, JSON.stringify(orders.slice(0,50)));
+  } catch(e){}
+}
+
+function renderMemberPortal(){
+  if(!isLoggedIn){
+    document.getElementById('mportalNotLogin').style.display='flex';
+    document.getElementById('mportalContent').style.display='none';
+    return;
+  }
+  document.getElementById('mportalNotLogin').style.display='none';
+  document.getElementById('mportalContent').style.display='block';
+
+  // Hero
+  document.getElementById('mportalName').textContent = currentUser||'會員';
+  const anyu = walletBalances.ANYU||0;
+  document.getElementById('mportalAnyu').textContent = anyu.toLocaleString();
+  const nftCount = Object.values(userNftHoldings).reduce((a,b)=>a+b,0);
+  document.getElementById('mportalNfts').textContent = nftCount;
+
+  // Member level by ANYU balance
+  let level = '🌱 一般會員';
+  if(anyu>=500000) level='💎 鑽石會員';
+  else if(anyu>=100000) level='🥇 黃金會員';
+  else if(anyu>=50000) level='🥈 白銀會員';
+  document.getElementById('mportalLevel').textContent = level;
+
+  // Orders
+  let orders = [];
+  try { orders = JSON.parse(localStorage.getItem(MEMBER_ORDERS_KEY)||'[]'); } catch(e){}
+  document.getElementById('mportalOrders').textContent = orders.length;
+  const orderList = document.getElementById('mportalOrderList');
+  if(orders.length===0){
+    orderList.innerHTML = `<div class="mportal-empty">📦 尚無購買紀錄<br><span style="font-size:11px">前往 Echo Tree 限量商城購買商品</span></div>`;
+  } else {
+    orderList.innerHTML = orders.slice(0,10).map(o=>`
+      <div class="mportal-order">
+        <div class="mportal-order-img" style="background:${o.gradient||'#1a1a1a'}">
+          ${o.imgUrl?`<img src="${o.imgUrl}" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.display='none'">`:`<span>${o.emoji||'🛍️'}</span>`}
+        </div>
+        <div class="mportal-order-info">
+          <div class="mportal-order-name">${o.name}</div>
+          <div class="mportal-order-meta">${o.at}</div>
+        </div>
+        <div class="mportal-order-price">-${o.price.toLocaleString()} ANYU</div>
+      </div>`).join('');
+  }
+
+  // NFT holdings
+  const nftList = document.getElementById('mportalNftList');
+  const held = Object.entries(userNftHoldings).filter(([,q])=>q>0);
+  if(held.length===0){
+    nftList.innerHTML = `<div class="mportal-empty">🎨 尚無 NFT 持倉</div>`;
+  } else {
+    nftList.innerHTML = held.slice(0,8).map(([sym,qty])=>{
+      const s = seriesCatalog.find(x=>x.sym===sym);
+      return `<div class="mportal-order">
+        <div class="mportal-order-img" style="background:linear-gradient(135deg,${s?s.c1:'#1a1a1a'},${s?s.c2:'#2a2a2a'})">
+          <span style="font-size:22px">${s?s.emoji:'🎨'}</span>
+        </div>
+        <div class="mportal-order-info">
+          <div class="mportal-order-name">${s?s.n:sym}</div>
+          <div class="mportal-order-meta">${sym} · 地板 ${s?s.floor.toLocaleString():'-'} ANYU</div>
+        </div>
+        <div class="mportal-order-price">×${qty}</div>
+      </div>`;
+    }).join('') + (held.length>8?`<div style="text-align:center;font-size:12px;color:var(--muted);padding:10px">還有 ${held.length-8} 個系列...</div>`:'');
+  }
+}
 </script>
 </body>
 </html>
