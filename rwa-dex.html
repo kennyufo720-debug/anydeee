@@ -335,10 +335,10 @@
   .ad-slot .ad-content p{margin:0 0 14px;font-size:13px;opacity:.92;max-width:60%}
   .ad-slot .ad-content button{background:#fff;color:#1a0a02;padding:9px 18px;border-radius:8px;font-weight:700;font-size:13px;border:none;cursor:pointer}
   .hero-ad-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
-  .hero-ad-main{height:220px;background:linear-gradient(160deg,rgba(40,25,15,.78),rgba(15,10,5,.52)),url('ziyu-forest.jpeg');background-size:cover;background-position:center top}
-  .hero-ad-side{height:220px;background:linear-gradient(160deg,rgba(30,40,30,.78),rgba(10,15,10,.45)),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop&q=80');background-size:cover;background-position:center}
-  .hero-ad-psy{height:220px;background:linear-gradient(160deg,rgba(20,10,25,.80),rgba(10,5,15,.5)),url('Gangnam_Style_Official_Cover.png');background-size:cover;background-position:center top}
-  .hero-ad-wood{height:220px;background:linear-gradient(160deg,rgba(25,10,20,.80),rgba(15,5,10,.5)),url('黃子弘凡.jpeg');background-size:cover;background-position:center top}
+  .hero-ad-main{height:220px;background:linear-gradient(160deg,rgba(40,25,15,.65),rgba(15,10,5,.35)),url('ziyu-forest.jpeg');background-size:cover;background-position:center 35%}
+  .hero-ad-side{height:220px;background:linear-gradient(160deg,rgba(30,40,30,.75),rgba(10,15,10,.45)),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop&q=80');background-size:cover;background-position:center center}
+  .hero-ad-psy{height:220px;background:linear-gradient(160deg,rgba(20,10,25,.60),rgba(10,5,15,.35)),url('Gangnam_Style_Official_Cover.png');background-size:cover;background-position:center 25%}
+  .hero-ad-wood{height:220px;background:linear-gradient(160deg,rgba(25,10,20,.60),rgba(15,5,10,.35)),url('黃子弘凡.jpeg');background-size:cover;background-position:center 30%}
   /* 折疊 section */
   .acc-section{border-bottom:1px solid var(--line)}
   .acc-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;user-select:none;transition:background .15s}
@@ -1443,36 +1443,36 @@
 
   <!-- 四格廣告 Banner -->
   <div class="hero-ad-row">
-    <div class="ad-slot hero-ad-main">
+    <div class="ad-slot hero-ad-main" onclick="goToSeries('RTEAK')" style="cursor:pointer">
       <span class="ad-tag">名人堂 · 子瑜森林</span>
       <div class="ad-content">
         <h3 style="font-size:18px">🌳 子瑜森林</h3>
         <p style="max-width:100%;font-size:12px">紅柚木 RWA 產權代幣・FSC 認證・限量發行・鑄造價 $1,800 ANYU</p>
-        <button onclick="setPage('nft')">立即認購</button>
+        <button onclick="event.stopPropagation();goToSeries('RTEAK')">立即認購</button>
       </div>
     </div>
-    <div class="ad-slot hero-ad-psy">
+    <div class="ad-slot hero-ad-psy" onclick="goToSeries('GTEAK')" style="cursor:pointer">
       <span class="ad-tag">名人堂 · PSY 森林</span>
       <div class="ad-content">
         <h3 style="font-size:18px">🎤 PSY 森林</h3>
         <p style="max-width:100%;font-size:12px">金絲柚木 RWA 產權代幣・印尼原產地・鑄造價 $1,240 ANYU</p>
-        <button onclick="setPage('nft')">立即認購</button>
+        <button onclick="event.stopPropagation();goToSeries('GTEAK')">立即認購</button>
       </div>
     </div>
-    <div class="ad-slot hero-ad-wood">
+    <div class="ad-slot hero-ad-wood" onclick="goToSeries('PWOOD')" style="cursor:pointer">
       <span class="ad-tag">名人堂 · 黃子弘凡森林</span>
       <div class="ad-content">
         <h3 style="font-size:18px">🌳 黃子弘凡森林</h3>
         <p style="max-width:100%;font-size:12px">非洲珍稀木材 RWA 產權代幣・限量 30,000 枚・鑄造價 $4,280 ANYU</p>
-        <button onclick="setPage('nft')">立即認購</button>
+        <button onclick="event.stopPropagation();goToSeries('PWOOD')">立即認購</button>
       </div>
     </div>
-    <div class="ad-slot hero-ad-side">
+    <div class="ad-slot hero-ad-side" onclick="setPage('nft')" style="cursor:pointer">
       <span class="ad-tag">即將推出</span>
       <div class="ad-content">
         <h3 style="font-size:18px">🌴 永利皇宮森林</h3>
         <p style="max-width:100%;font-size:12px">頂級奢華園林 RWA・限量編號・認購即獲 NFT 身份憑證・即將開放</p>
-        <button onclick="setPage('nft')">了解詳情</button>
+        <button onclick="event.stopPropagation();setPage('nft')">了解詳情</button>
       </div>
     </div>
   </div>
@@ -3824,6 +3824,12 @@ function switchPfTab(tab){
 function toggleAcc(id){
   const sec = document.getElementById(id);
   if(sec) sec.classList.toggle('open');
+}
+function goToSeries(sym){
+  const s = typeof seriesCatalog!=='undefined' && seriesCatalog.find(x=>x.sym===sym);
+  if(!s) { setPage('nft'); return; }
+  setPage('nft');
+  setTimeout(()=>openSeries(s.id), 180);
 }
 function syncAllAssets(){
   if(typeof renderWalletPage==='function') renderWalletPage();
