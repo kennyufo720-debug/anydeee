@@ -3355,25 +3355,13 @@
 
 <!-- Wallet modal -->
 <div class="modal-bg" id="walletModal">
-  <div class="modal">
-    <div class="modal-head"><h3>連接錢包</h3><button class="close" onclick="closeModal('walletModal')">✕</button></div>
-    <div class="modal-body">
-      <div class="wallet-opt" onclick="connectWallet('metamask')">
-        <div class="ico">M</div>
-        <div><div class="nm">MetaMask</div><div class="ds">瀏覽器擴充 / App</div></div>
-      </div>
-      <div class="wallet-opt" onclick="connectWallet('walletconnect')">
-        <div class="ico" style="background:linear-gradient(135deg,#3b99fc,#1a73e8)">W</div>
-        <div><div class="nm">WalletConnect</div><div class="ds">300+ 行動錢包</div></div>
-      </div>
-      <div class="wallet-opt" onclick="connectWallet('coinbase')">
-        <div class="ico" style="background:linear-gradient(135deg,#0052ff,#003ecb)">C</div>
-        <div><div class="nm">Coinbase Wallet</div><div class="ds">自託管錢包</div></div>
-      </div>
-      <div class="wallet-opt" onclick="connectWallet('ledger')">
-        <div class="ico" style="background:#000">L</div>
-        <div><div class="nm">Ledger</div><div class="ds">硬體錢包</div></div>
-      </div>
+  <div class="modal" style="max-width:360px">
+    <div class="modal-head"><h3>🏦 站內錢包</h3><button class="close" onclick="closeModal('walletModal')">✕</button></div>
+    <div class="modal-body" style="padding:24px;text-align:center">
+      <div style="font-size:40px;margin-bottom:12px">✅</div>
+      <div style="font-weight:700;font-size:16px;margin-bottom:8px">已使用站內錢包</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px">Anydeee 統一使用站內錢包進行交易，無需連結外部錢包。</div>
+      <button class="btn-primary" style="width:100%" onclick="closeModal('walletModal');setPage('portfolio')">前往我的資產</button>
     </div>
   </div>
 </div>
@@ -3405,16 +3393,16 @@
       </div>
       <div class="et-steps">
         <div class="et-step done"><span class="sn">Step 1</span>票券驗證 ✓</div>
-        <div class="et-step active"><span class="sn">Step 2</span>連接錢包</div>
+        <div class="et-step active"><span class="sn">Step 2</span>站內錢包入帳</div>
         <div class="et-step"><span class="sn">Step 3</span>NFT 入帳</div>
       </div>
       <div class="et-actions">
         <button class="btn-cancel" onclick="document.getElementById('etClaimModal').classList.remove('show')">稍後再說</button>
-        <button class="btn-connect" onclick="openModal('walletModal')">
-          <span style="font-size:16px">👛</span> 連接錢包領取 NFT
+        <button class="btn-connect" onclick="completeEchoTreeClaim()">
+          <span style="font-size:16px">🏦</span> 站內錢包直接領取
         </button>
       </div>
-      <p class="et-note">連接錢包後，NFT 將自動存入你的 Anydeee 持倉。<br>每張票券限兌換一次，不可轉讓。</p>
+      <p class="et-note">NFT 將自動存入你的 Anydeee 站內錢包持倉。<br>每張票券限兌換一次，不可轉讓。</p>
     </div>
   </div>
 </div>
@@ -3544,7 +3532,7 @@ function completeLogin(user){
   toast('登入成功', `歡迎回來，${user.name}！`,'success');
 }
 function doLogout(){
-  isLoggedIn = false; currentUser = null; walletConnected = false; walletAddress = null; kycVerified = true;
+  isLoggedIn = false; currentUser = null; kycVerified = true;
   document.getElementById('memberNav').style.display = 'none';
   document.getElementById('guestNav').style.display = 'flex';
   document.getElementById('memberNav').classList.remove('open');
@@ -3911,8 +3899,8 @@ function togglePwd(inputId){
 
 /* ===== State ===== */
 let currentPair = assets[0];
-let walletConnected = false;
-let walletAddress = null;
+let walletConnected = true;
+let walletAddress = 'anydeee-internal';
 let kycVerified = true;
 let openOrders = [];
 let orderHistory = [];
@@ -4366,15 +4354,7 @@ function renderHistory(){
 function openModal(id){document.getElementById(id).classList.add('show')}
 function closeModal(id){document.getElementById(id).classList.remove('show')}
 const _walletBtnEl = document.getElementById('walletBtn');
-if(_walletBtnEl) _walletBtnEl.onclick = ()=>{
-  if(walletConnected){
-    walletConnected=false;walletAddress=null;
-    _walletBtnEl.textContent='連接錢包';
-    toast('錢包已斷開','','success');
-  } else {
-    openModal('walletModal');
-  }
-};
+if(_walletBtnEl){ _walletBtnEl.textContent='站內錢包'; _walletBtnEl.onclick=()=>setPage('portfolio'); }
 
 async function connectWallet(type){
   closeModal('walletModal');
