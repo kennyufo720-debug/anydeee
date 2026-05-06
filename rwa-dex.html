@@ -334,9 +334,21 @@
   .ad-slot .ad-content h3{margin:0 0 6px;font-size:22px;font-weight:800}
   .ad-slot .ad-content p{margin:0 0 14px;font-size:13px;opacity:.92;max-width:60%}
   .ad-slot .ad-content button{background:#fff;color:#1a0a02;padding:9px 18px;border-radius:8px;font-weight:700;font-size:13px;border:none;cursor:pointer}
-  .hero-ad-row{display:grid;grid-template-columns:2fr 1fr;gap:14px;padding:18px 20px;border-bottom:1px solid var(--line)}
-  .hero-ad-main{height:280px;background:linear-gradient(135deg,rgba(40,25,15,.78),rgba(15,10,5,.45)),url('ziyu-forest.jpeg');background-size:cover;background-position:center top}
-  .hero-ad-side{height:280px;background:linear-gradient(135deg,rgba(30,40,30,.78),rgba(10,15,10,.45)),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop&q=80');background-size:cover;background-position:center}
+  .hero-ad-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px 20px;border-bottom:1px solid var(--line)}
+  .hero-ad-main{height:220px;background:linear-gradient(160deg,rgba(40,25,15,.78),rgba(15,10,5,.52)),url('ziyu-forest.jpeg');background-size:cover;background-position:center top}
+  .hero-ad-side{height:220px;background:linear-gradient(160deg,rgba(30,40,30,.78),rgba(10,15,10,.45)),url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop&q=80');background-size:cover;background-position:center}
+  .hero-ad-psy{height:220px;background:linear-gradient(160deg,rgba(20,10,25,.80),rgba(10,5,15,.5)),url('Gangnam_Style_Official_Cover.png');background-size:cover;background-position:center top}
+  .hero-ad-wood{height:220px;background:linear-gradient(160deg,rgba(25,10,20,.80),rgba(15,5,10,.5)),url('黃子弘凡.jpeg');background-size:cover;background-position:center top}
+  /* 折疊 section */
+  .acc-section{border-bottom:1px solid var(--line)}
+  .acc-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;user-select:none;transition:background .15s}
+  .acc-header:hover{background:#1a130e}
+  .acc-header .acc-title{font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .acc-header .acc-title .b{display:inline-block;width:4px;height:14px;background:var(--accent);border-radius:2px}
+  .acc-header .acc-arrow{font-size:12px;color:var(--muted);transition:transform .25s}
+  .acc-section.open .acc-arrow{transform:rotate(180deg)}
+  .acc-body{display:none}
+  .acc-section.open .acc-body{display:block}
   .ad-banner-mid{padding:14px 20px;background:linear-gradient(90deg,rgba(217,119,87,.08),rgba(217,119,87,0));border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;border-left:3px solid var(--accent)}
   .ad-banner-mid .ico{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
   .ad-banner-mid .body{flex:1}
@@ -1428,90 +1440,117 @@
 
 <!-- ===== MARKET PAGE ===== -->
 <div class="page active" id="page-market">
-  <div class="launch-hero">
-    <h1>RWA 資產認購進度 & 價格預估</h1>
-    <p>追蹤 100 系列 RWA 資產憑證的認購進度。每一系列代表一類真實世界資產的鏈上化里程碑——完成認購，即同步獲得對應的環保貢獻 NFT 成就徽章。先上車、贏在起跑點。</p>
-  </div>
 
-  <!-- 廣告位 1：主橫幅 + 側欄 -->
+  <!-- 四格廣告 Banner -->
   <div class="hero-ad-row">
     <div class="ad-slot hero-ad-main">
-      <span class="ad-tag">廣告 AD · 子瑜森林</span>
+      <span class="ad-tag">名人堂 · 子瑜森林</span>
       <div class="ad-content">
-        <h3>🌳 子瑜森林 — 紅柚木 RWA 產權代幣限量發行</h3>
-        <p>緬甸 Bago 原產地直供紅柚木。每份 <strong>RWA 產權代幣</strong>對應一棵具唯一編號的實體樹木，由 FSC 認證機構確權，可交易、可贖回、可傳承。認購完成後同步頒發「🌳 林木守護者」NFT 成就憑證。鑄造價 $1,200 ANYU，VIP 享 9 折。</p>
-        <button onclick="setPage('nft')">立即查看</button>
+        <h3 style="font-size:18px">🌳 子瑜森林</h3>
+        <p style="max-width:100%;font-size:12px">紅柚木 RWA 產權代幣・FSC 認證・限量發行・鑄造價 $1,800 ANYU</p>
+        <button onclick="setPage('nft')">立即認購</button>
+      </div>
+    </div>
+    <div class="ad-slot hero-ad-psy">
+      <span class="ad-tag">名人堂 · PSY 森林</span>
+      <div class="ad-content">
+        <h3 style="font-size:18px">🎤 PSY 森林</h3>
+        <p style="max-width:100%;font-size:12px">金絲柚木 RWA 產權代幣・印尼原產地・鑄造價 $1,240 ANYU</p>
+        <button onclick="setPage('nft')">立即認購</button>
+      </div>
+    </div>
+    <div class="ad-slot hero-ad-wood">
+      <span class="ad-tag">名人堂 · 黃子弘凡森林</span>
+      <div class="ad-content">
+        <h3 style="font-size:18px">🌳 黃子弘凡森林</h3>
+        <p style="max-width:100%;font-size:12px">非洲珍稀木材 RWA 產權代幣・限量 30,000 枚・鑄造價 $4,280 ANYU</p>
+        <button onclick="setPage('nft')">立即認購</button>
       </div>
     </div>
     <div class="ad-slot hero-ad-side">
-      <span class="ad-tag">推廣 · 永利皇宮</span>
+      <span class="ad-tag">即將推出</span>
       <div class="ad-content">
         <h3 style="font-size:18px">🌴 永利皇宮森林</h3>
-        <p style="max-width:100%;font-size:12px">頂級奢華園林 RWA 資產代幣・限量編號・認購即獲 NFT 身份憑證・即將開放</p>
-        <button onclick="setPage('nft')">了解</button>
+        <p style="max-width:100%;font-size:12px">頂級奢華園林 RWA・限量編號・認購即獲 NFT 身份憑證・即將開放</p>
+        <button onclick="setPage('nft')">了解詳情</button>
       </div>
     </div>
   </div>
 
-  <!-- 發行狀況統計 -->
-  <div style="padding:18px 20px 0">
-    <div class="stats-row">
-      <div class="stat"><div class="lab">本週發行</div><div class="val num">12</div><div class="delta up">系列</div></div>
-      <div class="stat"><div class="lab">即將開放</div><div class="val num">8</div><div class="delta">7 天內</div></div>
-      <div class="stat"><div class="lab">本週鑄造額</div><div class="val num">$24.8M</div><div class="delta up">+18.4%</div></div>
-      <div class="stat"><div class="lab">參與用戶</div><div class="val num">8,420</div><div class="delta up">+1,240</div></div>
+  <!-- 折疊：發行狀況統計 -->
+  <div class="acc-section open" id="acc-stats">
+    <div class="acc-header" onclick="toggleAcc('acc-stats')">
+      <div class="acc-title"><span class="b"></span>發行狀況統計</div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" style="padding:0 20px 18px">
+      <div class="stats-row">
+        <div class="stat"><div class="lab">本週發行</div><div class="val num">12</div><div class="delta up">系列</div></div>
+        <div class="stat"><div class="lab">即將開放</div><div class="val num">8</div><div class="delta">7 天內</div></div>
+        <div class="stat"><div class="lab">本週鑄造額</div><div class="val num">$24.8M</div><div class="delta up">+18.4%</div></div>
+        <div class="stat"><div class="lab">參與用戶</div><div class="val num">8,420</div><div class="delta up">+1,240</div></div>
+      </div>
     </div>
   </div>
 
-  <!-- 發行狀況分頁 -->
-  <div class="mk-tabs">
-    <div class="mkt active" data-launch="all">全部</div>
-    <div class="mkt" data-launch="live">🔴 進行中</div>
-    <div class="mkt" data-launch="upcoming">⏰ 即將開放</div>
-    <div class="mkt" data-launch="ended">✓ 已結束</div>
-  </div>
-
-  <div class="lc-section-h"><span class="b"></span>發行進度看板</div>
-  <div class="launch-grid" id="launchGrid"></div>
-
-  <!-- 廣告位 2：中段橫幅 -->
-  <div class="ad-banner-mid">
-    <div class="ico">🎁</div>
-    <div class="body">
-      <h4>新用戶完成 KYC + 首次充值即送 100 ANYU 平台代幣</h4>
-      <p>限量 10,000 名，立即註冊並驗證。</p>
+  <!-- 折疊：發行進度看板 -->
+  <div class="acc-section" id="acc-launch">
+    <div class="acc-header" onclick="toggleAcc('acc-launch')">
+      <div class="acc-title"><span class="b"></span>發行進度看板</div>
+      <span class="acc-arrow">▼</span>
     </div>
-    <button onclick="setPage('buy')">立即充值</button>
-  </div>
-
-  <!-- 價格預估表 -->
-  <div class="lc-section-h"><span class="b"></span>AI 價格預估（7D / 30D / 90D）<span class="more" onclick="setPage('nft')">查看全部 →</span></div>
-  <table class="pred-table">
-    <thead>
-      <tr>
-        <th>系列</th>
-        <th>類別</th>
-        <th style="text-align:right">當前地板價</th>
-        <th style="text-align:right">7D 預估</th>
-        <th style="text-align:right">30D 預估</th>
-        <th style="text-align:right">90D 預估</th>
-        <th>趨勢強度</th>
-        <th>信心度</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="predBody"></tbody>
-  </table>
-
-  <!-- 廣告位 3：底部橫幅 -->
-  <div class="ad-banner-mid" style="margin:20px 0;border-left-color:var(--gold);background:linear-gradient(90deg,rgba(232,153,104,.10),transparent)">
-    <div class="ico" style="background:linear-gradient(135deg,var(--gold),#f59e0b)">★</div>
-    <div class="body">
-      <h4>升級 VIP 4，享空投額度 ×2、合規保險、線下高峰會邀請</h4>
-      <p>30 日累積交易量達 $1M 即可升級。當前 VIP 3，距離下一級 51.8%。</p>
+    <div class="acc-body">
+      <div class="mk-tabs">
+        <div class="mkt active" data-launch="all">全部</div>
+        <div class="mkt" data-launch="live">🔴 進行中</div>
+        <div class="mkt" data-launch="upcoming">⏰ 即將開放</div>
+        <div class="mkt" data-launch="ended">✓ 已結束</div>
+      </div>
+      <div class="launch-grid" id="launchGrid"></div>
     </div>
-    <button style="background:var(--gold);color:#000" onclick="setPage('benefits')">查看福利</button>
   </div>
+
+  <!-- 折疊：AI 價格預估 -->
+  <div class="acc-section" id="acc-pred">
+    <div class="acc-header" onclick="toggleAcc('acc-pred')">
+      <div class="acc-title"><span class="b"></span>AI 價格預估（7D / 30D / 90D）</div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body" style="padding:0 0 16px">
+      <table class="pred-table">
+        <thead>
+          <tr>
+            <th>系列</th><th>類別</th>
+            <th style="text-align:right">當前地板價</th>
+            <th style="text-align:right">7D 預估</th>
+            <th style="text-align:right">30D 預估</th>
+            <th style="text-align:right">90D 預估</th>
+            <th>趨勢強度</th><th>信心度</th><th></th>
+          </tr>
+        </thead>
+        <tbody id="predBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 折疊：VIP 福利 -->
+  <div class="acc-section" id="acc-vip">
+    <div class="acc-header" onclick="toggleAcc('acc-vip')">
+      <div class="acc-title"><span class="b"></span>VIP 升級福利</div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="ad-banner-mid" style="border-left-color:var(--gold);background:linear-gradient(90deg,rgba(232,153,104,.10),transparent);border-bottom:none">
+        <div class="ico" style="background:linear-gradient(135deg,var(--gold),#f59e0b)">★</div>
+        <div class="body">
+          <h4>升級 VIP 4，享空投額度 ×2、合規保險、線下高峰會邀請</h4>
+          <p>30 日累積交易量達 $1M 即可升級。當前 VIP 3，距離下一級 51.8%。</p>
+        </div>
+        <button style="background:var(--gold);color:#000" onclick="setPage('benefits')">查看福利</button>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- ===== TRADE PAGE ===== -->
@@ -3782,6 +3821,10 @@ function switchPfTab(tab){
 }
 
 /* ── 全站買賣後統一同步 UI ── */
+function toggleAcc(id){
+  const sec = document.getElementById(id);
+  if(sec) sec.classList.toggle('open');
+}
 function syncAllAssets(){
   if(typeof renderWalletPage==='function') renderWalletPage();
   if(typeof renderPortfolioHero==='function') renderPortfolioHero();
