@@ -5862,7 +5862,7 @@ const seriesCatalog = (function(){
     ['緬甸柚木','MTEAK','🪵','#8b5a2b','#4a2e15', 1620, [2015,2026]],
     ['印尼柚木','ITEAK','🪵','#c97a3a','#7a3f17', 980, [2019,2026]],
     ['巴西紅木','BWOOD','🌳','#7a1f0f','#3d0f08', 2840, [2014,2024]],
-    ['非洲紫檀','PWOOD','🌳','#5b2a4c','#2e1326', 4280, [2012,2024]],
+    ['黃子弘凡森林專屬','PWOOD','🌳','#5b2a4c','#2e1326', 4280, [2012,2024]],
     ['黑檀木','EBONY','🌑','#1a1a1a','#0a0a0a', 6420, [2010,2025]],
     ['玫瑰木','ROSEW','🌹','#8b3a3a','#4a1c1c', 3420, [2014,2026]],
     ['北美橡木','OAK','🌲','#6b4423','#3a2412', 420, [2018,2026]],
@@ -5884,6 +5884,7 @@ const seriesCatalog = (function(){
   const seriesImages = {
     'RTEAK': 'ziyu-forest.jpeg',  // 紅柚木產權 — 子瑜森林實景
     'GTEAK': 'Gangnam_Style_Official_Cover.png',  // 金絲柚木產權 — PSY 森林專屬
+    'PWOOD': '黃子弘凡.jpeg',  // 黃子弘凡森林專屬產權
   };
   forests.forEach(([n,s,e,c1,c2,fl,yr,isN])=>out.push({n:n+'產權',sym:s,emoji:e,c1,c2,floor:fl,yearMin:yr[0],yearMax:yr[1],cat:'forest',desc:`${n}實體木材鏈上產權憑證，每枚對應一棵編號樹`,img:seriesImages[s]||null,isNew:!!isN}));
   // 房地產 (20)
