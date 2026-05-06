@@ -1632,17 +1632,29 @@
 
 <!-- ===== 我的資產（錢包 + 持倉合併）PAGE ===== -->
 <div class="page" id="page-portfolio">
-  <!-- Hero：總覽 -->
-  <div class="wallet-hero" style="padding-bottom:0">
-    <h1 style="font-size:16px;font-weight:700;margin-bottom:6px">我的資產</h1>
-    <div style="font-size:12px;color:var(--muted)">總資產估值（ANYU）</div>
-    <div class="wallet-total" id="walletTotal">$0.00</div>
-    <div style="font-size:12px;color:var(--muted);margin-bottom:4px" id="walletChange">—</div>
-    <div style="font-size:11px;color:var(--muted)">NFT 持倉：<span id="pfTotalVal" style="color:var(--text);font-weight:700">—</span>　<span id="pfTodayDelta" style="color:var(--muted)"></span></div>
-    <div class="wallet-actions-row" style="margin-top:14px">
-      <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('dep')"><div class="wai">⬇</div>充值</button>
-      <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('wd')"><div class="wai">⬆</div>提領</button>
-      <button class="wallet-act-btn" onclick="setPage('benefits')"><div class="wai">🎁</div>空投</button>
+  <!-- Hero Banner -->
+  <div style="position:relative;overflow:hidden;min-height:240px;border-bottom:1px solid var(--line)">
+    <!-- 背景圖 -->
+    <img src="字體消除_2K_202604291737.jpeg" alt=""
+      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:.55;pointer-events:none;user-select:none" />
+    <!-- 漸層遮罩 -->
+    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,10,8,.85) 0%,rgba(26,19,14,.6) 60%,rgba(13,10,8,.82) 100%)"></div>
+    <!-- 內容 -->
+    <div style="position:relative;z-index:2;padding:28px 24px 24px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent)"></div>
+        <span style="font-size:12px;color:var(--muted);letter-spacing:.8px;text-transform:uppercase">我的資產</span>
+      </div>
+      <div style="font-size:11px;color:rgba(163,148,135,.7);margin-bottom:4px;letter-spacing:.4px">總資產估值（ANYU）</div>
+      <div class="wallet-total" id="walletTotal" style="font-size:38px;font-weight:800;letter-spacing:-1px;text-shadow:0 2px 20px rgba(217,119,87,.3)">$0.00</div>
+      <div style="font-size:12px;color:var(--muted);margin:6px 0 2px" id="walletChange">—</div>
+      <div style="font-size:11px;color:rgba(163,148,135,.8)">NFT 持倉：<span id="pfTotalVal" style="color:var(--text);font-weight:700">—</span>　<span id="pfTodayDelta"></span></div>
+      <!-- 操作按鈕 -->
+      <div class="wallet-actions-row" style="margin-top:20px">
+        <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('dep')"><div class="wai">⬇</div>充值</button>
+        <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('wd')"><div class="wai">⬆</div>提領</button>
+        <button class="wallet-act-btn" onclick="setPage('benefits')"><div class="wai">🎁</div>空投</button>
+      </div>
     </div>
   </div>
 
