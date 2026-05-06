@@ -1642,7 +1642,6 @@
     <div class="wallet-actions-row" style="margin-top:14px">
       <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('dep')"><div class="wai">⬇</div>充值</button>
       <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('wd')"><div class="wai">⬆</div>提領</button>
-      <button class="wallet-act-btn" onclick="setPage('nft')"><div class="wai">🛒</div>交易</button>
       <button class="wallet-act-btn" onclick="setPage('benefits')"><div class="wai">🎁</div>空投</button>
     </div>
     <!-- Tab 切換 -->
@@ -3723,11 +3722,6 @@ function renderWalletPage(){
       </div>
       <div class="wac-bal">${bal.toLocaleString(undefined,{maximumFractionDigits:sym==='PAXG'?4:2})}</div>
       <div class="wac-usd">≈ $${(bal*walletPrices[sym]).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})} USD</div>
-      <div class="wac-actions">
-        <button class="wac-btn" onclick="openModal('depositModal');switchDW('dep')">充值</button>
-        <button class="wac-btn" onclick="openModal('depositModal');switchDW('wd')">提領</button>
-        <button class="wac-btn" onclick="openTrade('${sym==='ANYU'||sym==='USDC'||sym==='USDT'?'PAXG':sym}')">交易</button>
-      </div>
     </div>`).join('');
   const txList = document.getElementById('walletTxList');
   txList.innerHTML = txHistory.map(t=>`
