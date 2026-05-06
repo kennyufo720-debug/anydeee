@@ -3816,6 +3816,20 @@ function switchPfTab(tab){
     btn.style.borderBottomColor = t===tab?'var(--accent)':'transparent';
   });
 }
+
+/* ── 全站買賣後統一同步 UI ── */
+function syncAllAssets(){
+  if(typeof renderWalletPage==='function') renderWalletPage();
+  if(typeof renderPortfolioHero==='function') renderPortfolioHero();
+  if(typeof renderHoldings==='function') renderHoldings();
+  const tag = document.getElementById('myCountTag');
+  if(tag) tag.textContent = (myNFTHoldings&&myNFTHoldings.length>0)?`(${myNFTHoldings.length})`:'';
+  if(typeof nftBrowserTab!=='undefined'&&nftBrowserTab==='mine'&&typeof nftView!=='undefined'&&nftView==='browser'){
+    if(typeof renderMyHoldings==='function') renderMyHoldings();
+  }
+  if(typeof renderAssetsPage==='function') renderAssetsPage();
+  if(typeof renderPledgePage==='function' && document.getElementById('page-earn')?.classList.contains('active')) renderPledgePage();
+}
 function switchPbTab(tab){
   _pbTab = tab;
   document.querySelectorAll('.pb-tab').forEach(b=>b.classList.toggle('active', b.dataset.pbt===tab));
@@ -4050,9 +4064,7 @@ function confirmPfTrade(){
     toast('賣出成功', s.n+' × '+qty+' 枚 · +'+Math.round(gain).toLocaleString()+' ANYU', 'success');
   }
   closeModal('pfTradeModal');
-  renderHoldings();
-  renderPortfolioHero();
-  if(typeof renderAssetsPage==='function') renderAssetsPage();
+  syncAllAssets();
 }
 
 /* ===== Render Market ===== */
@@ -5494,6 +5506,7 @@ function confirmPledgeBorrow(){
     btn.textContent='確認借款';
     toast('借款成功 🎉',`${amt.toLocaleString()} ANYU 已存入錢包，質押資產已鎖倉`,'success');
     renderPledgePage();
+    syncAllAssets();
   },1500);
 }
 
@@ -5509,6 +5522,7 @@ function repayLoan(loanId){
   pledgeActiveLoanS=pledgeActiveLoanS.filter(l=>l.id!==loanId);
   toast('還款成功',`${total.toFixed(2)} ANYU 已還清，資產解鎖`,'success');
   renderPledgePage();
+  syncAllAssets();
 }
 
 function renderPledgeLoans(){
@@ -5697,7 +5711,7 @@ function confirmEtBuy(){
   memberRecordOrder(p);
   showToast(`🎉 購買成功！${p.name} 已加入您的收藏`,'success');
   renderEtstore();
-  updateWalletDisplay();
+  syncAllAssets();
 }
 
 /* ===== 上鏈項目介紹 (PROJECTS) ===== */
@@ -6617,8 +6631,7 @@ function buyNow(seriesId, edition, year, rarity, price){
     seriesCatalog[seriesId].listed--;
     toast('購買成功', `${seriesCatalog[seriesId].n} #${edition} 已入錢包`,'success');
     if(nftView==='series') renderSeriesItems();
-    if(nftBrowserTab==='mine' && nftView==='browser') renderMyHoldings();
-    if(typeof renderPortfolioHero==='function') renderPortfolioHero();
+    syncAllAssets();
   }, 1800);
 }
 
@@ -6819,7 +6832,7 @@ function confirmSweep(){
     closeModal('sweepModal');
     toast('掃單完成 🎉', `成功購入 ${purchased.length} 件 NFT，共 ${total.toLocaleString(undefined,{maximumFractionDigits:0})} ANYU`,'success');
     renderSeriesItems();
-    if(typeof renderPortfolioHero==='function') renderPortfolioHero();
+    syncAllAssets();
   }, 1800);
 }
 
