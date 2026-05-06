@@ -6130,35 +6130,36 @@ function pickRarity(){
   return 'common';
 }
 
-// 程序化生成某系列的掛單（cached）
+// 程序化生成某系列的掛單（每個品相各 5 個，共 20 個）
 function getSeriesListings(seriesId){
   if(allListings[seriesId]) return allListings[seriesId];
   const s = seriesCatalog[seriesId];
   const arr = [];
-  // 為了顯示效能：只生成 200 個示例掛單
-  const generateCount = Math.min(s.listed, 300);
-  for(let i=0;i<generateCount;i++){
-    const r = Math.random();
-    let rar; let priceMul;
-    if(r<0.01){ rar='legendary'; priceMul = 3 + Math.random()*5; }
-    else if(r<0.10){ rar='epic'; priceMul = 1.5 + Math.random()*2; }
-    else if(r<0.30){ rar='rare'; priceMul = 1.05 + Math.random()*0.5; }
-    else { rar='common'; priceMul = 1 + Math.random()*0.3; }
-    const isAuction = Math.random()<0.12;
-    arr.push({
-      seriesId,
-      edition: Math.floor(Math.random()*30000)+1,
-      year: s.yearMin + Math.floor(Math.random()*(s.yearMax-s.yearMin+1)),
-      rarity: rar,
-      price: Math.round(s.floor * priceMul),
-      lastSale: Math.round(s.floor * priceMul * (0.85 + Math.random()*0.25)),
-      seller: '0x'+Math.random().toString(16).substr(2,4)+'..'+Math.random().toString(16).substr(2,4),
-      listedAt: Date.now() - Math.random()*86400000*7,
-      auction: isAuction,
-      auctionEnd: isAuction ? Date.now()+Math.random()*86400000*5 : 0,
-      bids: isAuction ? Math.floor(Math.random()*12) : 0,
-    });
-  }
+  const tiers = [
+    {rar:'legendary', mul:()=>3+Math.random()*5},
+    {rar:'epic',      mul:()=>1.5+Math.random()*2},
+    {rar:'rare',      mul:()=>1.05+Math.random()*0.5},
+    {rar:'common',    mul:()=>1+Math.random()*0.3},
+  ];
+  tiers.forEach(({rar, mul})=>{
+    for(let i=0;i<5;i++){
+      const priceMul = mul();
+      const isAuction = Math.random()<0.15;
+      arr.push({
+        seriesId,
+        edition: Math.floor(Math.random()*30000)+1,
+        year: s.yearMin + Math.floor(Math.random()*(s.yearMax-s.yearMin+1)),
+        rarity: rar,
+        price: Math.round(s.floor * priceMul),
+        lastSale: Math.round(s.floor * priceMul * (0.85+Math.random()*0.25)),
+        seller: '0x'+Math.random().toString(16).substr(2,4)+'..'+Math.random().toString(16).substr(2,4),
+        listedAt: Date.now() - Math.random()*86400000*7,
+        auction: isAuction,
+        auctionEnd: isAuction ? Date.now()+Math.random()*86400000*5 : 0,
+        bids: isAuction ? Math.floor(Math.random()*12) : 0,
+      });
+    }
+  });
   allListings[seriesId] = arr;
   return arr;
 }
