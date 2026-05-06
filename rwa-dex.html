@@ -1521,7 +1521,7 @@
         <thead>
           <tr>
             <th>系列</th><th>類別</th>
-            <th style="text-align:right">當前地板價</th>
+            <th style="text-align:right">當前發行價</th>
             <th style="text-align:right">7D 預估</th>
             <th style="text-align:right">30D 預估</th>
             <th style="text-align:right">90D 預估</th>
@@ -1716,7 +1716,7 @@
             <th>資產</th>
             <th style="text-align:right">持有數量</th>
             <th style="text-align:right">均價</th>
-            <th style="text-align:right">當前地板價</th>
+            <th style="text-align:right">當前發行價</th>
             <th style="text-align:right">市值</th>
             <th style="text-align:right">未實現損益</th>
             <th style="text-align:right">操作</th>
@@ -2320,8 +2320,8 @@
       <div class="nft-chip" data-scat="energy">綠色能源</div>
       <select class="sort" id="seriesSort">
         <option value="vol">24h 成交量</option>
-        <option value="floor-asc">地板價：低到高</option>
-        <option value="floor-desc">地板價：高到低</option>
+        <option value="floor-asc">發行價：低到高</option>
+        <option value="floor-desc">發行價：高到低</option>
         <option value="listed">掛單數</option>
         <option value="holders">持有人數</option>
       </select>
@@ -2350,7 +2350,7 @@
                   '<div class=\'sn\'>' + s.n + (s.verified?' <span class=\'v\'>✓</span>':'') + '</div>' +
                   '<div class=\'sd\'>' + s.sym + ' · ' + s.yearMin + '–' + s.yearMax + '</div>' +
                   '<div class=\'sgrid\'>' +
-                    '<div><div class=\'l\'>地板價</div><div class=\'v\'>$' + s.floor.toLocaleString() + '</div></div>' +
+                    '<div><div class=\'l\'>發行價</div><div class=\'v\'>$' + s.floor.toLocaleString() + '</div></div>' +
                     '<div><div class=\'l\'>24h 漲跌</div><div class=\'v ' + (s.floorChange>=0?'up':'dn') + '\'>' + (s.floorChange>=0?'+':'') + s.floorChange.toFixed(2) + '%</div></div>' +
                     '<div><div class=\'l\'>24h 量</div><div class=\'v\'>$' + formatN(s.vol24h) + '</div></div>' +
                     '<div><div class=\'l\'>掛單</div><div class=\'v\'>' + s.listed.toLocaleString() + '</div></div>' +
@@ -2384,7 +2384,7 @@
           <div class="series-title" id="seriesTitle">系列名稱</div>
           <div class="series-sub" id="seriesSub">符號 · 描述</div>
           <div class="series-stats">
-            <div class="ss"><div class="l">地板價</div><div class="v num" id="ssFloor">—</div></div>
+            <div class="ss"><div class="l">發行價</div><div class="v num" id="ssFloor">—</div></div>
             <div class="ss"><div class="l">24h 量</div><div class="v num" id="ssVol">—</div></div>
             <div class="ss"><div class="l">掛單</div><div class="v num" id="ssListed">—</div></div>
             <div class="ss"><div class="l">持有人</div><div class="v num" id="ssHolders">—</div></div>
@@ -2554,7 +2554,7 @@
           <option value="90">90 天</option>
         </select>
       </div>
-      <div class="summary"><span>地板價對比</span><span class="num" id="floorCompare">—</span></div>
+      <div class="summary"><span>發行價對比</span><span class="num" id="floorCompare">—</span></div>
       <div class="summary"><span>平台手續費 (2%)</span><span class="num" id="sellFee">—</span></div>
       <div class="summary"><span>創作者版稅 (5%)</span><span class="num" id="sellRoyalty">—</span></div>
       <div class="summary" style="border-top:1px solid var(--line);padding-top:8px;margin-top:6px;font-weight:700"><span>實得</span><span class="num up" id="sellNet">—</span></div>
@@ -2578,7 +2578,7 @@
         </select>
       </div>
       <div class="summary"><span>當前掛單價</span><span class="num" id="offerCurrentPrice">—</span></div>
-      <div class="summary"><span>地板價</span><span class="num" id="offerFloor">—</span></div>
+      <div class="summary"><span>發行價</span><span class="num" id="offerFloor">—</span></div>
       <button class="submit-btn buy" style="margin-top:14px" onclick="confirmOffer()">提交出價</button>
     </div>
   </div>
@@ -3750,7 +3750,7 @@ function doWithdraw(){
 /* ─ 錢包頁面 ─ */
 function renderWalletPage(){
   const anyuBal = walletBalances.ANYU || 0;
-  // NFT 持倉以地板價 ANYU 計算，1 NFT = 1 ANYU（1:1）
+  // NFT 持倉以發行價 ANYU 計算，1 NFT = 1 ANYU（1:1）
   let nftAnyu = 0;
   if(typeof getPfRows === 'function'){
     getPfRows('all').forEach(({qty, s})=>{ nftAnyu += (s.floor||0)*qty; });
@@ -3874,7 +3874,7 @@ function renderPbContent(){
         <div class="pb-card-icon" style="background:${meta.bg};font-size:20px">${s.emoji}</div>
         <div class="pb-card-info">
           <div class="title">${s.n}<span class="pb-badge ${meta.badge}">${s.sym}</span></div>
-          <div class="sub">地板價 $${s.floor.toLocaleString()} · 24h 量 $${Math.round(s.vol24h/1000)}K · 持有人 ${s.holders.toLocaleString()}</div>
+          <div class="sub">發行價 $${s.floor.toLocaleString()} · 24h 量 $${Math.round(s.vol24h/1000)}K · 持有人 ${s.holders.toLocaleString()}</div>
         </div>
         <div class="pb-card-val">
           <div class="v" style="color:${meta.accentColor}">${disp}</div>
@@ -3905,7 +3905,7 @@ function renderPbContent(){
       <table style="width:100%;border-collapse:collapse;font-size:11px">
         <thead><tr style="color:var(--muted);border-bottom:1px solid var(--line)">
           <th style="text-align:left;padding:6px 16px">系列</th>
-          <th style="text-align:right;padding:6px 8px">地板價</th>
+          <th style="text-align:right;padding:6px 8px">發行價</th>
           <th style="text-align:right;padding:6px 8px">漲跌</th>
           <th style="text-align:right;padding:6px 8px">24h 量</th>
           <th style="text-align:right;padding:6px 8px">持有人</th>
@@ -4028,7 +4028,7 @@ function openPfTrade(sym, side){
       <div><div style="font-weight:700">${s.n}</div><div style="font-size:11px;color:var(--muted)">${s.sym}</div></div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px">
-      <div><div style="color:var(--muted)">地板價</div><div style="font-weight:700">$${s.floor.toLocaleString()}</div></div>
+      <div><div style="color:var(--muted)">發行價</div><div style="font-weight:700">$${s.floor.toLocaleString()}</div></div>
       <div><div style="color:var(--muted)">24h 漲跌</div><div class="${(s.floorChange||0)>=0?'up':'dn'}" style="font-weight:700">${(s.floorChange||0)>=0?'+':''}${(s.floorChange||0).toFixed(1)}%</div></div>
       <div><div style="color:var(--muted)">目前持有</div><div style="font-weight:700">${have.toLocaleString()} 枚</div></div>
       <div><div style="color:var(--muted)">ANYU 餘額</div><div style="font-weight:700">${(walletBalances.ANYU||0).toLocaleString()} ANYU</div></div>
@@ -4550,7 +4550,7 @@ setInterval(()=>{
     a.price = a.price * (1+drift);
     a.ch = a.ch + drift*100;
   });
-  // 系列地板價即時微浮動
+  // 系列發行價即時微浮動
   if(typeof seriesCatalog !== 'undefined'){
     seriesCatalog.forEach(s=>{
       s.floor = Math.max(1, Math.round(s.floor * (1+(Math.random()-0.5)*0.005)));
@@ -5783,7 +5783,7 @@ function renderProjectsPage(){
       </div>
       <div class="proj-card-desc">${s.desc}</div>
       <div class="proj-card-stats">
-        <div class="pcs"><div class="l">地板價</div><div class="v">${fmt(s.floor)} ANYU</div></div>
+        <div class="pcs"><div class="l">發行價</div><div class="v">${fmt(s.floor)} ANYU</div></div>
         <div class="pcs"><div class="l">總供應</div><div class="v">${fmt(s.totalSupply||30000)}</div></div>
         <div class="pcs"><div class="l">掛單數</div><div class="v">${fmt(s.listed||0)}</div></div>
         <div class="pcs"><div class="l">持有人</div><div class="v">${fmt(s.holders||0)}</div></div>
@@ -5806,7 +5806,7 @@ function openWhitepaper(id){
   const basic = `<div class="wp-section"><h4>基本資訊</h4>
     ${row('項目名稱',s.n)}${row('代幣符號',s.sym)}
     ${row('資產類別',cm.label)}${row('總供應量',fmt(s.totalSupply||30000)+' 枚')}
-    ${row('地板價',fmt(s.floor)+' ANYU')}${row('上鏈年份',s.yearMin+'年')}
+    ${row('發行價',fmt(s.floor)+' ANYU')}${row('上鏈年份',s.yearMin+'年')}
     ${row('驗證狀態',s.verified?'✓ 鏈上已驗證':'待驗證')}
     ${row('合約網絡','Polygon (ERC-1155)')}
   </div>`;
@@ -6227,7 +6227,7 @@ function renderSeriesBrowser(){
         <div class="sn">${s.n} ${s.verified?'<span class="v">✓</span>':''}</div>
         <div class="sd">${s.sym} · ${s.yearMin}–${s.yearMax}</div>
         <div class="sgrid">
-          <div><div class="l">地板價</div><div class="v">$${s.floor.toLocaleString()}</div></div>
+          <div><div class="l">發行價</div><div class="v">$${s.floor.toLocaleString()}</div></div>
           <div><div class="l">24h 漲跌</div><div class="v ${s.floorChange>=0?'up':'dn'}">${s.floorChange>=0?'+':''}${s.floorChange.toFixed(2)}%</div></div>
           <div><div class="l">24h 量</div><div class="v">$${formatNum(s.vol24h)}</div></div>
           <div><div class="l">掛單</div><div class="v">${s.listed.toLocaleString()}</div></div>
@@ -6289,7 +6289,7 @@ function renderMyListings(){
     return;
   }
   c.innerHTML = `<div style="padding:20px"><table class="items-list">
-    <thead><tr><th>商品</th><th>編號</th><th>年份</th><th>稀有度</th><th style="text-align:right">售價</th><th style="text-align:right">地板價</th><th>掛單時間</th><th>到期</th><th></th></tr></thead>
+    <thead><tr><th>商品</th><th>編號</th><th>年份</th><th>稀有度</th><th style="text-align:right">售價</th><th style="text-align:right">發行價</th><th>掛單時間</th><th>到期</th><th></th></tr></thead>
     <tbody>${myListings.map(l=>{
       const s = seriesCatalog[l.seriesId];
       const diff = ((l.price/s.floor)-1)*100;
@@ -6546,7 +6546,7 @@ function renderSeriesStats(){
     </div>
     <div class="vip-card"><h3>價格區間</h3>
       <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span>最低</span><span class="num">$${Math.min(...list.map(x=>x.price)).toLocaleString()}</span></div>
-      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span>地板價</span><span class="num up">$${s.floor.toLocaleString()}</span></div>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span>發行價</span><span class="num up">$${s.floor.toLocaleString()}</span></div>
       <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span>中位價</span><span class="num">$${list.sort((a,b)=>a.price-b.price)[Math.floor(list.length/2)]?.price.toLocaleString()||0}</span></div>
       <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span>平均</span><span class="num">$${Math.floor(list.reduce((a,x)=>a+x.price,0)/list.length||0).toLocaleString()}</span></div>
       <div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span>最高</span><span class="num">$${Math.max(...list.map(x=>x.price)).toLocaleString()}</span></div>
@@ -6667,7 +6667,7 @@ function openListSell(seriesId, edition, year, rarity){
   const s = seriesCatalog[seriesId];
   document.getElementById('listSellPreview').innerHTML = `
     <div style="width:50px;height:50px;border-radius:8px;background:linear-gradient(135deg,${s.c1},${s.c2});display:flex;align-items:center;justify-content:center;font-size:24px">${s.emoji}</div>
-    <div><div style="font-weight:700">${s.n} #${edition}</div><div style="font-size:11px;color:var(--muted)">${year} 年 · ${rarityName(rarity)} · 地板價 $${s.floor.toLocaleString()}</div></div>`;
+    <div><div style="font-weight:700">${s.n} #${edition}</div><div style="font-size:11px;color:var(--muted)">${year} 年 · ${rarityName(rarity)} · 發行價 $${s.floor.toLocaleString()}</div></div>`;
   document.getElementById('sellPrice').value = s.floor;
   recalcSell();
   openModal('listSellModal');
@@ -7082,7 +7082,7 @@ function renderNewListings(){
         <h4>${s.n} ${s.verified?'<span style="color:var(--accent);font-size:11px">✓</span>':''}</h4>
         <div class="ls">${s.sym} · ${s.yearMin}–${s.yearMax}</div>
         <div class="lh-meta">
-          <div class="lm"><div class="l">地板價</div><div class="v">$${s.floor.toLocaleString()}</div></div>
+          <div class="lm"><div class="l">發行價</div><div class="v">$${s.floor.toLocaleString()}</div></div>
           <div class="lm"><div class="l">24h 量</div><div class="v">$${formatNum(s.vol24h)}</div></div>
           <div class="lm"><div class="l">掛單</div><div class="v">${s.listed.toLocaleString()}</div></div>
           <div class="lm"><div class="l">持有人</div><div class="v">${s.holders.toLocaleString()}</div></div>
@@ -7146,8 +7146,8 @@ let postType = 'buy';
 function initForum(){
   const samples = [
     {type:'buy',cat:'forest',title:'求購紅柚木 #100–500 編號區間，預算每枚 $2,000 內',content:'長期持有，看好 5–10 年增值。希望能找到品相完整、年份在 2018–2022 之間的編號。\n\n需求：\n• 編號 #100–500\n• 年份 2018–2022\n• 稀有度：稀有以上\n• 預算上限：每枚 $2,000\n\n有意者請站內信聯繫，可拆售也可整批接手。',tags:['紅柚木','求購','長期持有'],pin:true},
-    {type:'sell',cat:'gem',title:'出售緬甸鴿血紅寶石 #042，2018 年認證，傳奇等級',content:'本人持有兩枚同等級，因資金需求出讓一枚。\n\n• 編號 #042\n• 年份 2018\n• 稀有度：傳奇 (Top 1%)\n• GIA 鑑定書齊全\n• 售價 $28,000（地板價 $24,820，溢價合理）\n\n限現金交易，可走平台託管。',tags:['紅寶石','緬甸','傳奇','出售']},
-    {type:'discuss',cat:'realestate',title:'台北 101 商辦持分 vs 信義豪宅，五年回報率分析',content:'最近研究了 TPE-101 與信義豪宅兩個系列的歷史走勢，整理一些數據分享：\n\nTPE-101：\n• 5 年地板價漲幅：+182%\n• 平均年化租金分潤：4.2%\n• 流動性：每月平均 240 件成交\n\n信義豪宅：\n• 5 年地板價漲幅：+248%\n• 平均年化租金分潤：3.8%\n• 流動性：每月平均 80 件成交\n\n結論：豪宅漲幅較高但流動性差，商辦勝在穩定收租。歡迎大家討論！',tags:['REIT','TPE-101','信義','分析'],hot:true},
+    {type:'sell',cat:'gem',title:'出售緬甸鴿血紅寶石 #042，2018 年認證，傳奇等級',content:'本人持有兩枚同等級，因資金需求出讓一枚。\n\n• 編號 #042\n• 年份 2018\n• 稀有度：傳奇 (Top 1%)\n• GIA 鑑定書齊全\n• 售價 $28,000（發行價 $24,820，溢價合理）\n\n限現金交易，可走平台託管。',tags:['紅寶石','緬甸','傳奇','出售']},
+    {type:'discuss',cat:'realestate',title:'台北 101 商辦持分 vs 信義豪宅，五年回報率分析',content:'最近研究了 TPE-101 與信義豪宅兩個系列的歷史走勢，整理一些數據分享：\n\nTPE-101：\n• 5 年發行價漲幅：+182%\n• 平均年化租金分潤：4.2%\n• 流動性：每月平均 240 件成交\n\n信義豪宅：\n• 5 年發行價漲幅：+248%\n• 平均年化租金分潤：3.8%\n• 流動性：每月平均 80 件成交\n\n結論：豪宅漲幅較高但流動性差，商辦勝在穩定收租。歡迎大家討論！',tags:['REIT','TPE-101','信義','分析'],hot:true},
     {type:'help',cat:'art',title:'求助：Banksy 編號 #018 突然下架，這算違約嗎？',content:'前天看上一枚 Banksy #018，跟賣家談好 $2,400，今天上去發現賣家取消掛單了。\n\n沒走託管所以沒有實際損失，但氣不過。請教各位老手：\n\n1. 平台有沒有對賣家的約束？\n2. 之後可以拒絕跟同個賣家交易嗎？\n3. 這種情況平台能介入嗎？\n\n謝謝大家',tags:['Banksy','客訴','求助']},
     {type:'sell',cat:'collectible',title:'Macallan 1926 #001（編號 1）開價 $200K，附原箱與所有證書',content:'家中長輩珍藏，2008 年購入。實體酒已存放於倫敦 Berkeley 酒窖（合規認證），鏈上憑證可即時轉移。\n\n• 編號 #001（系列首枚）\n• 年份：1926（瓶裝 1986）\n• 品相：完美（未開封）\n• 證書齊全\n\n售價 $200,000（地板 $184,200）',tags:['威士忌','Macallan','編號001','傳奇']},
     {type:'discuss',cat:'forest',title:'森林產權的法律風險：原產國突然立法限制怎麼辦？',content:'最近緬甸軍政府傳出考慮對外資柚木出口加徵 30% 關稅。我手上 12 件紅柚木會不會受影響？\n\n看了 Anydeee 的法律文件，似乎是把實體木材移到新加坡保稅倉做緩衝，但具體執行細節還是不清楚。\n\n有沒有專業人士可以解釋一下？',tags:['法律','緬甸','關稅','風險']},
