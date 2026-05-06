@@ -3735,9 +3735,16 @@ function doWithdraw(){
 
 /* ─ 錢包頁面 ─ */
 function renderWalletPage(){
-  const total = Object.entries(walletBalances).reduce((s,[k,v])=>s+v*walletPrices[k],0);
-  document.getElementById('walletTotal').textContent = '$'+total.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('walletChange').textContent = '+$1,284.10 (+2.7%) 今日';
+  const anyuBal = walletBalances.ANYU || 0;
+  // NFT 持倉以地板價 ANYU 計算，1 NFT = 1 ANYU（1:1）
+  let nftAnyu = 0;
+  if(typeof getPfRows === 'function'){
+    getPfRows('all').forEach(({qty, s})=>{ nftAnyu += (s.floor||0)*qty; });
+  }
+  const grandTotal = anyuBal + nftAnyu;
+  const el = document.getElementById('walletTotal');
+  if(el) el.textContent = grandTotal.toLocaleString(undefined,{maximumFractionDigits:0}) + ' ANYU';
+  document.getElementById('walletChange').textContent = '錢包 '+anyuBal.toLocaleString()+' ＋ 持倉 '+nftAnyu.toLocaleString()+' ANYU';
   const grid = document.getElementById('walletAssetGrid');
   grid.innerHTML = Object.entries(walletBalances).map(([sym,bal])=>`
     <div class="wallet-asset-card">
