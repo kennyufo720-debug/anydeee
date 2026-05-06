@@ -1363,7 +1363,6 @@
     <div class="more-wrap">
       <button class="more-btn">更多 ▾</button>
       <div class="more-menu">
-        <button data-page="wallet">站內錢包</button>
         <button data-page="agent">代理區</button>
         <button data-page="tokenize">資產上鏈</button>
         <button data-page="history">歷史紀錄</button>
@@ -1651,45 +1650,65 @@
   <div class="pb-content" id="pbContent"></div>
 </div>
 
-<!-- ===== PORTFOLIO PAGE ===== -->
+<!-- ===== 我的資產（錢包 + 持倉合併）PAGE ===== -->
 <div class="page" id="page-portfolio">
-  <div class="pf-hero">
-    <div class="pf-balance">
-      <div class="lab">投資組合總價值（NFT 資產）</div>
-      <div class="val num" id="pfTotalVal">—</div>
-      <div class="delta" id="pfTodayDelta">計算中…</div>
+  <!-- Hero：總覽 -->
+  <div class="wallet-hero" style="padding-bottom:0">
+    <h1 style="font-size:16px;font-weight:700;margin-bottom:6px">我的資產</h1>
+    <div style="font-size:12px;color:var(--muted)">總資產估值（ANYU）</div>
+    <div class="wallet-total" id="walletTotal">$0.00</div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:4px" id="walletChange">—</div>
+    <div style="font-size:11px;color:var(--muted)">NFT 持倉：<span id="pfTotalVal" style="color:var(--text);font-weight:700">—</span>　<span id="pfTodayDelta" style="color:var(--muted)"></span></div>
+    <div class="wallet-actions-row" style="margin-top:14px">
+      <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('dep')"><div class="wai">⬇</div>充值</button>
+      <button class="wallet-act-btn" onclick="openModal('depositModal');switchDW('wd')"><div class="wai">⬆</div>提領</button>
+      <button class="wallet-act-btn" onclick="setPage('nft')"><div class="wai">🛒</div>交易</button>
+      <button class="wallet-act-btn" onclick="setPage('benefits')"><div class="wai">🎁</div>空投</button>
     </div>
-    <div class="pf-actions">
-      <button class="btn-ghost" onclick="openModal('depositModal');switchDW('dep')">充值</button>
-      <button class="btn-ghost" onclick="openModal('depositModal');switchDW('wd')">提領</button>
-      <button class="btn-primary" onclick="setPage('nft')">前往市場</button>
+    <!-- Tab 切換 -->
+    <div style="display:flex;border-top:1px solid var(--line);margin-top:16px">
+      <button id="pfTab-wallet" onclick="switchPfTab('wallet')" style="flex:1;padding:12px 6px;font-size:13px;font-weight:600;color:var(--accent);border-bottom:2px solid var(--accent);background:none;cursor:pointer">🏦 錢包</button>
+      <button id="pfTab-holdings" onclick="switchPfTab('holdings')" style="flex:1;padding:12px 6px;font-size:13px;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;background:none;cursor:pointer">📊 持倉</button>
     </div>
   </div>
-  <div class="holdings-section">
-    <div class="section-h" style="display:flex;justify-content:space-between;align-items:center">
-      <span>我的資產</span>
-      <div style="display:flex;gap:6px">
-        <button class="nft-chip active" id="pfFilterAll"  onclick="setPfFilter('all')">全部</button>
-        <button class="nft-chip" id="pfFilterForest" onclick="setPfFilter('forest')">🌳 森林</button>
-        <button class="nft-chip" id="pfFilterCarbon" onclick="setPfFilter('carbon')">🌿 碳權</button>
-        <button class="nft-chip" id="pfFilterEnergy" onclick="setPfFilter('energy')">⚡ 綠電</button>
-      </div>
+
+  <!-- 錢包 Tab -->
+  <div id="pfPane-wallet">
+    <div class="wallet-grid" id="walletAssetGrid"></div>
+    <div class="tx-section">
+      <h3>最近交易紀錄</h3>
+      <div id="walletTxList"></div>
     </div>
-    <div style="overflow-x:auto">
-    <table class="market-table" style="margin-top:10px;min-width:680px">
-      <thead>
-        <tr>
-          <th>資產</th>
-          <th style="text-align:right">持有數量</th>
-          <th style="text-align:right">均價</th>
-          <th style="text-align:right">當前地板價</th>
-          <th style="text-align:right">市值</th>
-          <th style="text-align:right">未實現損益</th>
-          <th style="text-align:right">操作</th>
-        </tr>
-      </thead>
-      <tbody id="holdingsBody"></tbody>
-    </table>
+  </div>
+
+  <!-- 持倉 Tab -->
+  <div id="pfPane-holdings" style="display:none">
+    <div class="holdings-section">
+      <div class="section-h" style="display:flex;justify-content:space-between;align-items:center">
+        <span>RWA 持倉</span>
+        <div style="display:flex;gap:6px">
+          <button class="nft-chip active" id="pfFilterAll"  onclick="setPfFilter('all')">全部</button>
+          <button class="nft-chip" id="pfFilterForest" onclick="setPfFilter('forest')">🌳 森林</button>
+          <button class="nft-chip" id="pfFilterCarbon" onclick="setPfFilter('carbon')">🌿 碳權</button>
+          <button class="nft-chip" id="pfFilterEnergy" onclick="setPfFilter('energy')">⚡ 綠電</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="market-table" style="margin-top:10px;min-width:680px">
+        <thead>
+          <tr>
+            <th>資產</th>
+            <th style="text-align:right">持有數量</th>
+            <th style="text-align:right">均價</th>
+            <th style="text-align:right">當前地板價</th>
+            <th style="text-align:right">市值</th>
+            <th style="text-align:right">未實現損益</th>
+            <th style="text-align:right">操作</th>
+          </tr>
+        </thead>
+        <tbody id="holdingsBody"></tbody>
+      </table>
+      </div>
     </div>
   </div>
 </div>
@@ -3780,6 +3799,15 @@ function openAssets(tab){
   if(!isLoggedIn){ openModal('loginModal'); return; }
   _pbTab = tab || 'tree';
   setPage('assets');
+}
+function switchPfTab(tab){
+  ['wallet','holdings'].forEach(t=>{
+    document.getElementById('pfPane-'+t).style.display = t===tab?'block':'none';
+    const btn = document.getElementById('pfTab-'+t);
+    if(!btn) return;
+    btn.style.color = t===tab?'var(--accent)':'var(--muted)';
+    btn.style.borderBottomColor = t===tab?'var(--accent)':'transparent';
+  });
 }
 function switchPbTab(tab){
   _pbTab = tab;
@@ -7503,7 +7531,8 @@ const _origSetPage = setPage;
 setPage = function(p){
   _origSetPage(p);
   if(p==='benefits'){ renderAirdrops(); }
-  if(p==='wallet'){ renderWalletPage(); }
+  if(p==='wallet'){ _origSetPage('portfolio'); renderWalletPage(); switchPfTab('wallet'); return; }
+  if(p==='portfolio'){ renderWalletPage(); renderPortfolioHero(); renderHoldings(); }
   if(p==='assets'){ renderAssetsPage(); }
   if(p==='agent'){ renderAgent(); }
   if(p==='buy'){ recalcBuy(); }
