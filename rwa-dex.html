@@ -2265,13 +2265,14 @@
     <div class="nft-toolbar">
       <input type="text" id="seriesSearch" placeholder="搜尋系列名稱、符號..." style="background:#241812;border:1px solid var(--line);border-radius:8px;padding:8px 12px;color:var(--text);font-size:13px;outline:none;flex:1;max-width:280px" />
       <div class="nft-chip active" data-scat="all">全部</div>
-      <div class="nft-chip" data-scat="forest">🌳 森林</div>
-      <div class="nft-chip" data-scat="realestate">🏢 房地產</div>
-      <div class="nft-chip" data-scat="art">🎨 藝術</div>
-      <div class="nft-chip" data-scat="collectible">🍷 收藏品</div>
-      <div class="nft-chip" data-scat="gem">💎 寶石</div>
-      <div class="nft-chip" data-scat="carbon">🌱 碳權</div>
-      <div class="nft-chip" data-scat="energy">⚡ 綠色能源</div>
+      <div class="nft-chip" data-scat="hall">名人堂森林</div>
+      <div class="nft-chip" data-scat="forest">森林</div>
+      <div class="nft-chip" data-scat="realestate">房地產</div>
+      <div class="nft-chip" data-scat="art">藝術</div>
+      <div class="nft-chip" data-scat="collectible">收藏品</div>
+      <div class="nft-chip" data-scat="gem">寶石</div>
+      <div class="nft-chip" data-scat="carbon">碳權</div>
+      <div class="nft-chip" data-scat="energy">綠色能源</div>
       <select class="sort" id="seriesSort">
         <option value="vol">24h 成交量</option>
         <option value="floor-asc">地板價：低到高</option>
@@ -5679,6 +5680,7 @@ let projCatFilter = 'all';
 let projSearchVal = '';
 
 const projCatMeta = {
+  hall:       {label:'名人堂森林', color:'#d97757', bg:'rgba(217,119,87,.15)'},
   forest:     {label:'森林木材',  color:'#4ade80', bg:'rgba(74,222,128,.15)'},
   realestate: {label:'房地產',    color:'#5b8cff', bg:'rgba(91,140,255,.15)'},
   art:        {label:'藝術品',    color:'#a855f7', bg:'rgba(168,85,247,.15)'},
@@ -5773,7 +5775,17 @@ function openWhitepaper(id){
   </div>`;
 
   let detail = '';
-  if(s.cat==='forest') detail=`<div class="wp-section"><h4>資產詳情 — 實體木材</h4>
+  if(s.cat==='hall') detail=`<div class="wp-section"><h4>資產詳情 — 名人堂森林</h4>
+    ${row('系列',s.n.replace('產權',''))}${row('認證標準','FSC 國際森林管理委員會')}
+    ${row('每枚對應','1 棵編號實體樹木')}${row('年均成長率',(4+Math.random()*8).toFixed(1)+'%')}
+    ${row('碳匯能力',Math.floor(s.floor/40)+' kg CO₂/年')}
+    ${row('採伐年限',s.yearMax+'年後可申請')}${row('保險','實體資產全額財產險')}
+    ${row('GPS坐標','已鏈上公開，可驗證')}
+  </div><div class="wp-section"><h4>名人授權聲明</h4>
+    ${row('授權類型','獨家冠名森林產權')}${row('上鏈架構','合規森林管理機構托管')}
+    ${row('實地審計','每年一次第三方審計')}${row('所有權轉移','鏈上即時生效')}
+  </div>`;
+  else if(s.cat==='forest') detail=`<div class="wp-section"><h4>資產詳情 — 實體木材</h4>
     ${row('品種',s.n.replace('產權',''))}${row('認證標準','FSC 國際森林管理委員會')}
     ${row('每枚對應','1 棵編號實體樹木')}${row('年均成長率',(2+Math.random()*8).toFixed(1)+'%')}
     ${row('碳匯能力',Math.floor(s.floor/50)+' kg CO₂/年')}
@@ -5886,7 +5898,8 @@ const seriesCatalog = (function(){
     'GTEAK': 'Gangnam_Style_Official_Cover.png',  // 金絲柚木產權 — PSY 森林專屬
     'PWOOD': '黃子弘凡.jpeg',  // 黃子弘凡森林專屬產權
   };
-  forests.forEach(([n,s,e,c1,c2,fl,yr,isN])=>out.push({n:n+'產權',sym:s,emoji:e,c1,c2,floor:fl,yearMin:yr[0],yearMax:yr[1],cat:'forest',desc:`${n}實體木材鏈上產權憑證，每枚對應一棵編號樹`,img:seriesImages[s]||null,isNew:!!isN}));
+  const hallSyms = new Set(['RTEAK','GTEAK','PWOOD']);
+  forests.forEach(([n,s,e,c1,c2,fl,yr,isN])=>out.push({n:n+'產權',sym:s,emoji:e,c1,c2,floor:fl,yearMin:yr[0],yearMax:yr[1],cat:hallSyms.has(s)?'hall':'forest',desc:`${n}實體木材鏈上產權憑證，每枚對應一棵編號樹`,img:seriesImages[s]||null,isNew:hallSyms.has(s)||!!isN}));
   // 房地產 (20)
   const realestate = [
     ['台北101商辦','TPE101','🏢','#5b8cff','#1e40af', 8420, [2008,2026]],
@@ -6022,6 +6035,11 @@ seriesCatalog.forEach((s,i)=>{
 // 特定系列供應量覆寫
 const _bzTree = seriesCatalog.find(s=>s.sym==='BZTREE');
 if(_bzTree){ _bzTree.totalSupply=2500; _bzTree.listed=Math.floor(2500*0.12); _bzTree.holders=Math.floor(2500*0.38); _bzTree.vol24h=Math.floor(_bzTree.floor*_bzTree.listed*0.25); _bzTree.verified=true; }
+// 名人堂森林固定高流量，確保出現在熱門
+['RTEAK','GTEAK','PWOOD'].forEach(sym=>{
+  const s = seriesCatalog.find(x=>x.sym===sym);
+  if(s){ s.vol24h=Math.max(s.vol24h, Math.floor(s.floor*s.listed*0.4)+500000); s.verified=true; }
+});
 
 // 用戶持有的 NFT（隨機分配 5 件作為起始）
 let myNFTHoldings = [];
