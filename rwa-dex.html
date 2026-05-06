@@ -7020,10 +7020,13 @@ function renderNewListings(){
     const s = d.s;
     const tag = d.presale ? '🔥 預售中' : d.hot ? '🚀 熱門新品' : `📅 ${d.daysAgo} 天前上架`;
     const tagColor = d.presale?'var(--red)':d.hot?'var(--gold)':'var(--accent)';
+    const bannerStyle = s.img
+      ? `background:linear-gradient(135deg,rgba(40,25,15,.45),rgba(15,10,5,.25)),url('${s.img}') center/cover no-repeat`
+      : `background:linear-gradient(135deg,${s.c1},${s.c2})`;
     return `<div class="launch-card" onclick="openSeries(${s.id})">
-      <div class="lh-banner" style="background:linear-gradient(135deg,${s.c1},${s.c2})">
+      <div class="lh-banner" style="${bannerStyle}">
         <span class="lh-state" style="background:${tagColor};color:#1a0a02">${tag}</span>
-        ${s.emoji}
+        ${s.img?'':s.emoji}
       </div>
       <div class="lh-body">
         <h4>${s.n} ${s.verified?'<span style="color:var(--accent);font-size:11px">✓</span>':''}</h4>
