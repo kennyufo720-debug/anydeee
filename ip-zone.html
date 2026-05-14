@@ -515,7 +515,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
               </div>
               <div class="stat-chip">
                 <span class="val" id="stat-usdc">--</span>
-                <span class="lbl">累計結算 USDC</span>
+                <span class="lbl">累計結算 ANYU</span>
               </div>
               <div class="stat-chip">
                 <span class="val">5%</span>
@@ -660,8 +660,8 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
             </select>
           </div>
           <div style="flex:1;min-width:180px">
-            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">金額 USDC</label>
-            <input type="number" id="calc-amount" placeholder="輸入USDC金額" step="0.01" min="0"
+            <label style="font-size:12px;color:var(--muted);display:block;margin-bottom:6px">金額 ANYU</label>
+            <input type="number" id="calc-amount" placeholder="輸入ANYU金額" step="0.01" min="0"
               style="width:100%;padding:8px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:13px"
               oninput="updateCalc()">
           </div>
@@ -669,17 +669,17 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
         <div class="calc-row">
           <div class="split-card">
             <div class="split-label">版稅方獲得</div>
-            <div class="split-amount" id="calc-creator">0.00 USDC</div>
+            <div class="split-amount" id="calc-creator">0.00 ANYU</div>
             <div class="split-pct" id="calc-creator-pct">0%</div>
           </div>
           <div class="split-card">
             <div class="split-label">平台手續費</div>
-            <div class="split-amount" id="calc-platform">0.00 USDC</div>
+            <div class="split-amount" id="calc-platform">0.00 ANYU</div>
             <div class="split-pct">5%</div>
           </div>
           <div class="split-card">
             <div class="split-label">被授權方保留</div>
-            <div class="split-amount" id="calc-reserve">0.00 USDC</div>
+            <div class="split-amount" id="calc-reserve">0.00 ANYU</div>
             <div class="split-pct" id="calc-reserve-pct">0%</div>
           </div>
         </div>
@@ -691,7 +691,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
               <div class="pie-legend-item"><div class="pie-dot" style="background:var(--yellow)"></div>平台手續費</div>
               <div class="pie-legend-item"><div class="pie-dot" style="background:#3a3a3a"></div>被授權方</div>
             </div>
-            <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px">1 USDC ≈ 32.5 TWD</div>
+            <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px">1 ANYU ≈ 0.42 USD</div>
           </div>
           <div style="flex:1;min-width:200px">
             <button class="btn-accent btn-full" style="margin-top:8px" onclick="handlePayment()">確認分潤並執行</button>
@@ -768,13 +768,13 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
             </select>
           </div>
           <div class="form-group">
-            <label>預期總收益 USDC</label>
+            <label>預期總收益 ANYU</label>
             <input type="number" id="rwa-revenue" min="0" step="0.01" oninput="updateRwaPreview()">
           </div>
           <div class="form-group">
             <label>代幣發行數量</label>
             <input type="number" id="rwa-supply" min="1" oninput="updateRwaPreview()">
-            <div style="font-size:11px;color:var(--muted);margin-top:4px" id="rwa-per-token">每枚 = -- USDC</div>
+            <div style="font-size:11px;color:var(--muted);margin-top:4px" id="rwa-per-token">每枚 = -- ANYU</div>
           </div>
           <div class="form-group">
             <label>認購截止日</label>
@@ -798,7 +798,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
           <div class="preview-card" id="rwa-preview">
             <div class="preview-watermark">預覽模式</div>
             <div class="preview-name" id="prev-name">資產名稱</div>
-            <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="prev-price">-- USDC / 枚</div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:8px" id="prev-price">-- ANYU / 枚</div>
             <div class="progress-track" style="margin-bottom:8px"><div class="progress-fill" style="width:0%"></div></div>
             <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted)">
               <span id="prev-countdown">距截止 -- 天</span>
@@ -831,7 +831,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
         <div class="table-wrap">
           <table class="data-table">
             <thead>
-              <tr><th>資產名稱</th><th>持有代幣數</th><th>成本 USDC</th><th>預期收益日</th><th>狀態</th></tr>
+              <tr><th>資產名稱</th><th>持有代幣數</th><th>成本 ANYU</th><th>預期收益日</th><th>狀態</th></tr>
             </thead>
             <tbody id="holdings-body">
               <tr><td colspan="5" class="empty-state">尚無持倉</td></tr>
@@ -845,7 +845,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
     <div class="stats-grid">
       <div class="stat-box">
         <span class="val" id="rwa-total-invest">--</span>
-        <span class="lbl">總投資 USDC</span>
+        <span class="lbl">總投資 ANYU</span>
       </div>
       <div class="stat-box">
         <span class="val">-- %</span>
@@ -921,7 +921,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
         style="width:100%;padding:8px 12px;background:var(--panel-2);border:1px solid var(--line);border-radius:8px;color:var(--text);font-size:13px"
         oninput="updateSubCost()">
     </div>
-    <div style="font-size:13px;margin-bottom:4px">需支付：<span id="sub-cost" style="color:var(--accent);font-weight:700">-- USDC</span></div>
+    <div style="font-size:13px;margin-bottom:4px">需支付：<span id="sub-cost" style="color:var(--accent);font-weight:700">-- ANYU</span></div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:16px">預期收益：視授權結算結果而定</div>
     <div style="background:rgba(245,176,74,.08);border:1px solid rgba(245,176,74,.3);border-radius:8px;padding:12px;margin-bottom:16px;font-size:12px;color:var(--yellow)">
       ⚠️ 高風險提示
@@ -962,7 +962,7 @@ button{font-family:inherit;cursor:pointer;border:none;outline:none}
 // ===== CONSTANTS =====
 const API_BASE = "http://localhost:3001/api"
 const CONTRACT_ADDRESS = "DEPLOY_AFTER_HARDHAT"
-const USDC_ADDRESS = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359"
+const ANYU_ADDRESS = "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359"
 const POLYGONSCAN = "https://polygonscan.com/tx/"
 let connectedWallet = localStorage.getItem("anydeee_wallet") || null
 let userRole = localStorage.getItem("anydeee_role") || "licensee"
@@ -1527,9 +1527,9 @@ function updateCalc(){
   const reserve=amount-creatorShare-platformShare
   const royaltyPct=royaltyBps/100
   const platformPct=platformBps/100
-  document.getElementById('calc-creator').textContent=fmtUsdc(creatorShare)+' USDC'
-  document.getElementById('calc-platform').textContent=fmtUsdc(platformShare)+' USDC'
-  document.getElementById('calc-reserve').textContent=fmtUsdc(reserve)+' USDC'
+  document.getElementById('calc-creator').textContent=fmtUsdc(creatorShare)+' ANYU'
+  document.getElementById('calc-platform').textContent=fmtUsdc(platformShare)+' ANYU'
+  document.getElementById('calc-reserve').textContent=fmtUsdc(reserve)+' ANYU'
   document.getElementById('calc-creator-pct').textContent=royaltyPct.toFixed(1)+'%'
   document.getElementById('calc-reserve-pct').textContent=(100-royaltyPct-platformPct).toFixed(1)+'%'
   const reservePct=100-royaltyPct-platformPct
@@ -1551,10 +1551,10 @@ function handlePayment(){
   const licenseId=selEl.value
   pendingPaymentData={amount, royaltyBps, creatorShare, platformShare, reserve, licenseId, licensorWallet}
   document.getElementById('modal-tx-content').innerHTML=`
-    <div style="font-size:14px;font-weight:600;margin-bottom:12px">您即將支付 ${fmtUsdc(amount)} USDC</div>
-    <div class="modal-confirm-row"><span class="lbl">版稅方 ${shortAddr(licensorWallet)}</span><span style="color:var(--accent)">${fmtUsdc(creatorShare)} USDC</span></div>
-    <div class="modal-confirm-row"><span class="lbl">平台手續費</span><span style="color:var(--yellow)">${fmtUsdc(platformShare)} USDC</span></div>
-    <div class="modal-confirm-row"><span class="lbl">保留金額</span><span>${fmtUsdc(reserve)} USDC</span></div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:12px">您即將支付 ${fmtUsdc(amount)} ANYU</div>
+    <div class="modal-confirm-row"><span class="lbl">版稅方 ${shortAddr(licensorWallet)}</span><span style="color:var(--accent)">${fmtUsdc(creatorShare)} ANYU</span></div>
+    <div class="modal-confirm-row"><span class="lbl">平台手續費</span><span style="color:var(--yellow)">${fmtUsdc(platformShare)} ANYU</span></div>
+    <div class="modal-confirm-row"><span class="lbl">保留金額</span><span>${fmtUsdc(reserve)} ANYU</span></div>
     <div class="modal-confirm-row"><span class="lbl">預估 Gas</span><span style="color:var(--muted)">< 0.01 MATIC</span></div>
   `
   document.getElementById('modal-tx-result').style.display='none'
@@ -1570,7 +1570,7 @@ async function executePayment(){
     if(CONTRACT_ADDRESS!=='DEPLOY_AFTER_HARDHAT'){
       const provider=new ethers.providers.Web3Provider(window.ethereum)
       const signer=provider.getSigner()
-      const usdc=new ethers.Contract(USDC_ADDRESS,["function approve(address,uint256)"],signer)
+      const usdc=new ethers.Contract(ANYU_ADDRESS,["function approve(address,uint256)"],signer)
       await usdc.approve(CONTRACT_ADDRESS,ethers.utils.parseUnits(amount.toString(),6))
       const vault=new ethers.Contract(CONTRACT_ADDRESS,["function distributePayment(bytes32,uint256)"],signer)
       const tx=await vault.distributePayment(ethers.utils.id(licenseId),ethers.utils.parseUnits(amount.toString(),6))
@@ -1608,16 +1608,16 @@ function renderPaymentHistory(payments){
     return `<tr>
       <td>${fmtDate(p.createdAt)}</td>
       <td>${p.ipName||'--'}</td>
-      <td>${fmtUsdc(p.amount)} USDC</td>
-      <td style="color:var(--accent)">${fmtUsdc(p.creatorShare)} USDC</td>
-      <td style="color:var(--yellow)">${fmtUsdc(p.platformShare)} USDC</td>
+      <td>${fmtUsdc(p.amount)} ANYU</td>
+      <td style="color:var(--accent)">${fmtUsdc(p.creatorShare)} ANYU</td>
+      <td style="color:var(--yellow)">${fmtUsdc(p.platformShare)} ANYU</td>
       <td>${p.txHash?`<a href="${POLYGONSCAN+p.txHash}" target="_blank" style="font-family:monospace;font-size:11px">${p.txHash.substring(0,10)}...</a>`:'--'}</td>
     </tr>`
   }).join('')
   tbody.innerHTML+=`<tr class="tx-row-total">
     <td colspan="2">累計已結算</td>
-    <td>${fmtUsdc(totalAmount)} USDC</td>
-    <td>${fmtUsdc(totalCreator)} USDC</td>
+    <td>${fmtUsdc(totalAmount)} ANYU</td>
+    <td>${fmtUsdc(totalCreator)} ANYU</td>
     <td colspan="2"></td>
   </tr>`
 }
@@ -1635,9 +1635,9 @@ function updateRwaPreview(){
   const type=document.getElementById('rwa-type').value
   const price=supply>0?(revenue/supply).toFixed(4):'--'
   document.getElementById('prev-name').textContent=name
-  document.getElementById('prev-price').textContent=price+' USDC / 枚'
+  document.getElementById('prev-price').textContent=price+' ANYU / 枚'
   document.getElementById('prev-type').textContent=type
-  document.getElementById('rwa-per-token').textContent='每枚 = '+(supply>0&&revenue>0?(revenue/supply).toFixed(4):'--')+' USDC'
+  document.getElementById('rwa-per-token').textContent='每枚 = '+(supply>0&&revenue>0?(revenue/supply).toFixed(4):'--')+' ANYU'
   if(deadline){
     const days=Math.ceil((new Date(deadline)-Date.now())/86400000)
     document.getElementById('prev-countdown').textContent='距截止 '+(days>0?days:'0')+' 天'
@@ -1690,7 +1690,7 @@ async function loadRwaList(){
         <div class="rwa-card-name">${a.assetName||'--'}</div>
         <div style="margin-bottom:8px"><span class="badge badge-accent">${a.assetType||'--'}</span></div>
         <div class="rwa-card-info">發行方：<span style="font-family:monospace">${shortAddr(a.issuerWallet)}</span></div>
-        <div class="rwa-card-info">代幣價格：<strong>${a.tokenPrice||((a.totalRevenue||0)/(a.tokenSupply||1)).toFixed(4)} USDC / 枚</strong></div>
+        <div class="rwa-card-info">代幣價格：<strong>${a.tokenPrice||((a.totalRevenue||0)/(a.tokenSupply||1)).toFixed(4)} ANYU / 枚</strong></div>
         <div class="progress-track" style="margin:8px 0"><div class="progress-fill" style="width:${pct}%"></div></div>
         <div style="font-size:11px;color:var(--muted);margin-bottom:8px">${a.tokensSold||0}/${a.tokenSupply||0} 枚已認購 (${pct}%)</div>
         <div class="rwa-card-info ${daysClass}">${daysTxt}</div>
@@ -1708,7 +1708,7 @@ function openSubscribeModal(asset){
   currentRwaAsset=asset
   document.getElementById('modal-sub-title').textContent='認購：'+asset.assetName
   document.getElementById('sub-qty').value=''
-  document.getElementById('sub-cost').textContent='-- USDC'
+  document.getElementById('sub-cost').textContent='-- ANYU'
   document.getElementById('risk-check').checked=false
   document.getElementById('sub-confirm-btn').disabled=true
   document.getElementById('sub-result').style.display='none'
@@ -1719,7 +1719,7 @@ function updateSubCost(){
   if(!currentRwaAsset) return
   const qty=parseInt(document.getElementById('sub-qty').value)||0
   const price=(currentRwaAsset.tokenPrice||(currentRwaAsset.totalRevenue/currentRwaAsset.tokenSupply))||0
-  document.getElementById('sub-cost').textContent=fmtUsdc(qty*price)+' USDC'
+  document.getElementById('sub-cost').textContent=fmtUsdc(qty*price)+' ANYU'
 }
 
 function toggleSubBtn(){
@@ -1743,7 +1743,7 @@ async function confirmSubscribe(){
     } else {
       const provider=new ethers.providers.Web3Provider(window.ethereum)
       const signer=provider.getSigner()
-      const usdc=new ethers.Contract(USDC_ADDRESS,["function approve(address,uint256)"],signer)
+      const usdc=new ethers.Contract(ANYU_ADDRESS,["function approve(address,uint256)"],signer)
       await usdc.approve(CONTRACT_ADDRESS,ethers.utils.parseUnits(totalCost.toString(),6))
       const data=await apiFetch('/rwa/subscribe',{method:'POST',body:JSON.stringify({assetId:currentRwaAsset.assetId||currentRwaAsset.id, qty, totalCost, subscriberWallet:connectedWallet})})
       res.style.display='block'; res.className='banner banner-success'
@@ -1773,7 +1773,7 @@ async function loadRwaHoldings(){
       return `<tr>
         <td>${h.assetName||'--'}</td>
         <td>${h.tokenCount||0}</td>
-        <td>${fmtUsdc(h.cost)} USDC</td>
+        <td>${fmtUsdc(h.cost)} ANYU</td>
         <td>${h.expectedDate?new Date(h.expectedDate).toLocaleDateString('zh-TW'):'--'}</td>
         <td>${statusHtml}</td>
       </tr>`
@@ -1791,7 +1791,7 @@ function updateRwaTotalInvest(total){
 async function loadRwaStats(){
   try {
     const data=await apiFetch('/rwa/stats')
-    if(data.tvl!=null) document.getElementById('rwa-tvl').textContent=fmtUsdc(data.tvl)+' USDC'
+    if(data.tvl!=null) document.getElementById('rwa-tvl').textContent=fmtUsdc(data.tvl)+' ANYU'
   } catch(e){}
 }
 
