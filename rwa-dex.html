@@ -1415,7 +1415,7 @@
             <span class="md-badge vip" id="mdVipBadge">VIP 0</span>
           </div>
         </div>
-        <div class="md-item" onclick="setPage('wallet')"><span class="mi">🏦</span>我的錢包</div>
+        <div class="md-item" onclick="setPage('portfolio')"><span class="mi">🏦</span>我的錢包</div>
         <div class="md-item" onclick="setPage('portfolio')"><span class="mi">📊</span>我的資產總價值</div>
         <div class="md-section-label accordion" id="mdAssetsAccordion" onclick="toggleMdAccordion()">
           我的資產<span class="acc-arrow">▶</span>
@@ -2843,7 +2843,7 @@
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <button onclick="setPage('etstore')" style="padding:14px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:12px;color:#4ade80;font-size:13px;font-weight:700;cursor:pointer">🌲 前往商城</button>
         <button onclick="setPage('earn')" style="padding:14px;background:rgba(91,140,255,.1);border:1px solid rgba(91,140,255,.25);border-radius:12px;color:#5b8cff;font-size:13px;font-weight:700;cursor:pointer">💎 質押賺幣</button>
-        <button onclick="setPage('wallet')" style="padding:14px;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.25);border-radius:12px;color:#facc15;font-size:13px;font-weight:700;cursor:pointer">💰 我的錢包</button>
+        <button onclick="setPage('portfolio')" style="padding:14px;background:rgba(250,204,21,.1);border:1px solid rgba(250,204,21,.25);border-radius:12px;color:#facc15;font-size:13px;font-weight:700;cursor:pointer">💰 我的錢包</button>
         <button onclick="setPage('nft')" style="padding:14px;background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);border-radius:12px;color:#a855f7;font-size:13px;font-weight:700;cursor:pointer">🎨 NFT 市場</button>
       </div>
     </div>
@@ -4240,8 +4240,11 @@ function formatNum(n){
 
 /* ===== Navigation ===== */
 function setPage(p){
+  // null 保護：找不到頁面不崩潰
+  const target = document.getElementById('page-'+p);
+  if(!target){ console.warn('[setPage] page-'+p+' 不存在'); return; }
   document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
+  target.classList.add('active');
   document.querySelectorAll('#mainNav button').forEach(b=>b.classList.toggle('active', b.dataset.page===p));
   if(p==='trade' && !chartInited){ initChart(); chartInited=true; }
   if(p==='trade'){ setTimeout(()=>chart && chart.timeScale().fitContent(), 100); }
@@ -4498,8 +4501,8 @@ function renderHistory(){
 }
 
 /* ===== Wallet ===== */
-function openModal(id){document.getElementById(id).classList.add('show')}
-function closeModal(id){document.getElementById(id).classList.remove('show')}
+function openModal(id){ const el=document.getElementById(id); if(el) el.classList.add('show'); else console.warn('[openModal] #'+id+' 不存在'); }
+function closeModal(id){ const el=document.getElementById(id); if(el) el.classList.remove('show');}
 const _walletBtnEl = document.getElementById('walletBtn');
 if(_walletBtnEl){ _walletBtnEl.textContent='站內錢包'; _walletBtnEl.onclick=()=>setPage('portfolio'); }
 
@@ -8497,6 +8500,12 @@ function copyRefLink(){
 
 /* ── 初始化完成（session 還原在 DOMContentLoaded 裡執行）── */
 console.log('%c[Anydeee] JS 載入完成 v2.0', 'color:#c9a84c;font-weight:bold');
+
+/* ── resetAll：清空 localStorage 並重整（debug 用）── */
+function resetAll(){
+  try { localStorage.clear(); } catch(e) {}
+  location.reload();
+}
 
 </script>
 </body>
