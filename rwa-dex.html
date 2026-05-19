@@ -8454,7 +8454,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const nb = document.getElementById('notifBtn');
   if(nb && !nb.dataset.anydBound){ nb.dataset.anydBound='1'; nb.onclick = toggleNotifPanel; }
   // 補綁「我的訂單」sidebar 跳轉
-  document.querySelectorAll('[onclick*="setPage('member')"]').forEach(el=>{
+  document.querySelectorAll('[onclick*="member"]').forEach(el=>{
     el.addEventListener('click', ()=>{ if(isLoggedIn) goToAccount(); });
   });
 });
