@@ -3,12 +3,37 @@
   "outputDirectory": ".",
   "framework": null,
   "rewrites": [
-    { "source": "/", "destination": "/rwa-dex.html" },
-    { "source": "/home", "destination": "/assetum-home.html" },
-    { "source": "/account", "destination": "/account.html" },
-    { "source": "/ip-zone", "destination": "/ip-zone.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/exchange", "destination": "/rwa-exchange.html" },
-    { "source": "/dex", "destination": "/rwa-dex.html" }
+    {
+      "source": "/",
+      "destination": "/rwa-dex.html"
+    },
+    {
+      "source": "/home",
+      "destination": "/assetum-home.html"
+    },
+    {
+      "source": "/account",
+      "destination": "/account.html"
+    },
+    {
+      "source": "/ip-zone",
+      "destination": "/ip-zone.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/exchange",
+      "destination": "/rwa-exchange.html"
+    },
+    {
+      "source": "/dex",
+      "destination": "/rwa-dex.html"
+    },
+    {
+      "source": "/echo-tree-esg",
+      "destination": "/echo-tree-esg.html"
+    }
   ]
 }
