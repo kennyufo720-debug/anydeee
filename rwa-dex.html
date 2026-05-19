@@ -3500,11 +3500,76 @@ const assets = [
   {sym:'CYPRS', name:'阿里山扁柏保育林', cat:'forest', catName:'森林', icon:'🌲', color:'#166534', price:482.20, ch:1.04, vol:240000, mc:18000000, verified:true},
 ];
 
-/* ===== 會員系統 ===== */
-let isLoggedIn = false;
-let currentUser = null; // {name, email, avatar}
-let memberKYCStatus = false;
-let member2FAEnabled = false;
+/* ===== 會員系統 + localStorage 持久化 ===== */
+
+/* ── DB helpers ── */
+const _DB = {
+  getUsers:    () => JSON.parse(localStorage.getItem('anyd_users') || '{}'),
+  saveUsers:   u  => localStorage.setItem('anyd_users', JSON.stringify(u)),
+  getSess:     () => JSON.parse(localStorage.getItem('anyd_sess') || 'null'),
+  saveSess:    s  => localStorage.setItem('anyd_sess', JSON.stringify(s)),
+  clearSess:   ()  => localStorage.removeItem('anyd_sess'),
+  getOrders:   () => JSON.parse(localStorage.getItem('anyd_orders') || '[]'),
+  saveOrders:  o  => localStorage.setItem('anyd_orders', JSON.stringify(o)),
+  getNotifs:   () => JSON.parse(localStorage.getItem('anyd_notifs') || '[]'),
+  addNotif:    (msg) => {
+    const n = _DB.getNotifs();
+    n.unshift({ msg, time: new Date().toLocaleString('zh-TW'), read: false });
+    localStorage.setItem('anyd_notifs', JSON.stringify(n.slice(0,30)));
+    _renderNotifDot();
+  }
+};
+function _renderNotifDot(){
+  const unread = _DB.getNotifs().filter(n=>!n.read).length;
+  const dot = document.getElementById('notifDot');
+  if(dot){ dot.textContent = unread||''; dot.style.display = unread?'':'none'; }
+}
+
+/* ── OTP 模擬 ── */
+let _otpCode = null, _otpEmail = null;
+function _sendOTP(email){
+  _otpCode  = Math.floor(100000 + Math.random() * 900000).toString();
+  _otpEmail = email;
+  console.log(`%c[Anydeee OTP] ${email} → ${_otpCode}`, 'color:#c9a84c;font-size:14px;font-weight:bold');
+  toast('OTP 已發送', `驗證碼已發送至 ${email}（Demo：請看 Console F12）`, 'success');
+}
+function _verifyOTP(code){ return code === _otpCode; }
+
+/* ── OTP 彈窗（不用 prompt）── */
+function _showOTPDialog(email, onOK){
+  const old = document.getElementById('_anydOTPDlg');
+  if(old) old.remove();
+  const dlg = document.createElement('div');
+  dlg.id = '_anydOTPDlg';
+  dlg.innerHTML = `<div style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center">
+    <div style="background:#0d1018;border:1px solid rgba(201,168,76,.3);border-radius:16px;padding:32px;width:360px;max-width:92vw">
+      <div style="font-size:18px;font-weight:700;color:#f8fafc;margin-bottom:4px">✉️ OTP 驗證</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:20px">已發送至 ${email}（Demo 請看 Console F12）</div>
+      <input id="_otpIn" maxlength="6" placeholder="請輸入 6 位驗證碼"
+        style="width:100%;padding:12px;background:#111620;border:1px solid rgba(255,255,255,.12);border-radius:10px;
+               color:#f8fafc;font-size:22px;letter-spacing:.2em;text-align:center;outline:none;font-family:monospace;margin-bottom:14px"/>
+      <button id="_otpOK" style="width:100%;padding:12px;border-radius:10px;font-size:14px;font-weight:700;
+               background:linear-gradient(135deg,#c9a84c,#a07828);color:#1c1917;border:none;cursor:pointer">驗證並登入</button>
+      <div style="text-align:center;margin-top:10px;font-size:12px;color:#c9a84c;cursor:pointer"
+           onclick="_sendOTP('${email}')">重新發送 OTP</div>
+    </div></div>`;
+  document.body.appendChild(dlg);
+  const inp = document.getElementById('_otpIn');
+  inp.focus();
+  const go = () => {
+    if(!_verifyOTP(inp.value.trim())){ inp.style.borderColor='#ef4444'; toast('OTP 錯誤','請重新輸入','error'); return; }
+    dlg.remove(); onOK();
+  };
+  document.getElementById('_otpOK').onclick = go;
+  inp.onkeydown = e => { if(e.key==='Enter') go(); };
+}
+
+/* 狀態（從 session 還原） */
+const _savedSess = _DB.getSess();
+let isLoggedIn     = !!_savedSess;
+let currentUser    = _savedSess ? { name:_savedSess.name, email:_savedSess.email, avatar:_savedSess.avatar } : null;
+let memberKYCStatus  = _savedSess?.kyc  || false;
+let member2FAEnabled = _savedSess?.fa2  || false;
 let _kycStep = 1;
 let _pendingLoginUser = null;
 
@@ -3528,18 +3593,30 @@ const txHistory = [
 
 /* ─ 登入/登出 ─ */
 function doLogin(){
-  const email = document.getElementById('loginEmail').value.trim();
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
   const pwd   = document.getElementById('loginPwd').value;
   if(!email || !pwd){ toast('請填寫完整','請輸入電子郵件與密碼','error'); return; }
-  const name = email.split('@')[0].replace(/[^a-zA-Z0-9一-龥]/g,'') || '會員';
-  _pendingLoginUser = { name, email, avatar: name.charAt(0).toUpperCase() };
-  closeModal('loginModal');
-  // 若已設 2FA，先驗 OTP
-  if(member2FAEnabled){
-    openModal('twoFALoginModal');
-  } else {
-    completeLogin(_pendingLoginUser);
+
+  const users = _DB.getUsers();
+
+  // 若帳號不存在，自動建立（首次登入即註冊）
+  if(!users[email]){
+    const name = email.split('@')[0].replace(/[^a-zA-Z0-9一-鿿]/g,'') || '會員';
+    users[email] = { name, email, password: pwd, kyc: false, fa2: false, avatar: name.charAt(0).toUpperCase(), vip:0, anyu:128400, role:'USER', createdAt: Date.now() };
+    _DB.saveUsers(users);
   }
+
+  const u = users[email];
+  if(u.password && u.password !== pwd){ toast('密碼錯誤','請確認密碼後再試','error'); return; }
+
+  _pendingLoginUser = { name: u.name, email, avatar: u.avatar||u.name.charAt(0).toUpperCase(), kyc:u.kyc, fa2:u.fa2 };
+  closeModal('loginModal');
+
+  // 送 OTP 驗證
+  _sendOTP(email);
+  _showOTPDialog(email, () => {
+    completeLogin(_pendingLoginUser);
+  });
 }
 function verify2FA(){
   const row = document.getElementById('otpRowLogin');
@@ -3552,18 +3629,29 @@ function verify2FA(){
 function completeLogin(user){
   isLoggedIn = true;
   currentUser = user;
+  memberKYCStatus  = user.kyc  || false;
+  member2FAEnabled = user.fa2  || false;
   walletConnected = true;
   walletAddress = '0x' + Math.random().toString(16).slice(2,10) + '...' + Math.random().toString(16).slice(2,8);
-  kycVerified = true;
+  kycVerified = memberKYCStatus;
+  // 儲存 session
+  _DB.saveSess({ ...user, loginAt: Date.now() });
+  _DB.addNotif(`登入成功：${new Date().toLocaleString('zh-TW')}`);
   renderMemberUI();
   toast('登入成功', `歡迎回來，${user.name}！`,'success');
+  // 恢復 ANYU 餘額
+  const users = _DB.getUsers();
+  if(users[user.email]){ walletBalances.ANYU = users[user.email].anyu || 128400; renderWalletPage && renderWalletPage(); }
 }
 function doLogout(){
-  isLoggedIn = false; currentUser = null; kycVerified = true;
+  _DB.clearSess();
+  isLoggedIn = false; currentUser = null; kycVerified = false;
+  memberKYCStatus = false; member2FAEnabled = false;
   document.getElementById('memberNav').style.display = 'none';
   document.getElementById('guestNav').style.display = 'flex';
   document.getElementById('memberNav').classList.remove('open');
   toast('已登出','期待再見！','success');
+  setTimeout(() => location.href = '/', 800);
 }
 function socialLogin(provider){
   const names  = {google:'Google 用戶', apple:'Apple 用戶', line:'LINE 用戶'};
@@ -3575,7 +3663,7 @@ function socialLogin(provider){
 }
 function doRegister(){
   const name  = document.getElementById('regName').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
+  const email = document.getElementById('regEmail').value.trim().toLowerCase();
   const pwd   = document.getElementById('regPwd').value;
   const pwd2  = document.getElementById('regPwd2').value;
   const terms = document.getElementById('regTerms').checked;
@@ -3583,9 +3671,17 @@ function doRegister(){
   if(pwd!==pwd2){ toast('密碼不一致','請確認兩次密碼相同','error'); return; }
   if(!terms){ toast('請同意服務條款','','error'); return; }
   if(pwd.length<8){ toast('密碼太短','至少需要 8 個字元','error'); return; }
-  _pendingLoginUser = { name, email, avatar: name.charAt(0).toUpperCase() };
+
+  const users = _DB.getUsers();
+  if(users[email]){ toast('Email 已註冊','此 Email 已有帳號，請直接登入','error'); return; }
+
+  const newUser = { name, email, password: pwd, kyc:false, fa2:false, avatar: name.charAt(0).toUpperCase(), vip:0, anyu:128400, role:'USER', createdAt: Date.now() };
+  users[email] = newUser;
+  _DB.saveUsers(users);
+  _pendingLoginUser = { name, email, avatar: name.charAt(0).toUpperCase(), kyc:false, fa2:false };
   closeModal('registerModal');
   completeLogin(_pendingLoginUser);
+  _DB.addNotif('帳號建立成功！歡迎加入 Anydeee 生態系');
   setTimeout(()=>toast('帳號已建立', '建議完成 KYC 驗證以解鎖所有功能','success'), 800);
 }
 function switchToRegister(){ closeModal('loginModal'); setTimeout(()=>openModal('registerModal'),200); }
@@ -3661,6 +3757,15 @@ function kycNext(step){
     document.getElementById('kycDone2FABadge').style.display = member2FAEnabled ? 'inline-block' : 'none';
     renderMemberUI();
     document.getElementById('kycBanner').style.display = 'none';
+    // 儲存 KYC 狀態到 localStorage
+    if(currentUser){
+      const users = _DB.getUsers();
+      if(users[currentUser.email]){ users[currentUser.email].kyc = true; users[currentUser.email].fa2 = member2FAEnabled; _DB.saveUsers(users); }
+      const sess = _DB.getSess();
+      if(sess){ sess.kyc = true; sess.fa2 = member2FAEnabled; _DB.saveSess(sess); }
+    }
+    _DB.addNotif('KYC 驗證完成！VIP 1 已解鎖');
+    toast('KYC 完成', '身份驗證成功，VIP 1 已解鎖！', 'success');
   }
 }
 function kycBack(step){ _kycStep = step - 1; renderKYCSteps(); document.querySelectorAll('.kyc-panel').forEach(p=>p.classList.remove('active')); document.getElementById(`kyc-s${_kycStep}`).classList.add('active'); }
@@ -8235,7 +8340,135 @@ function renderMemberPortal(){
     }).join('') + (held.length>8?`<div style="text-align:center;font-size:12px;color:var(--muted);padding:10px">還有 ${held.length-8} 個系列...</div>`:'');
   }
 }
+/* ===== PDF 流程補全 ===== */
+
+/* ── 頁面載入：自動還原登入狀態 ── */
+(function _restoreSession(){
+  const s = _DB.getSess();
+  if(!s) return;
+  // session 超過 7 天自動登出
+  if(Date.now() - (s.loginAt||0) > 7*24*60*60*1000){ _DB.clearSess(); return; }
+  _pendingLoginUser = { name:s.name, email:s.email, avatar:s.avatar, kyc:s.kyc, fa2:s.fa2 };
+  completeLogin(_pendingLoginUser);
+  console.log('%c[Anydeee] Session 已還原：' + s.email, 'color:#c9a84c');
+})();
+
+/* ── 流程三：瀏覽與購買（立即認購）加訂單邏輯 ── */
+function buyNFT(seriesId, seriesName, price){
+  if(!isLoggedIn){ toast('請先登入','認購前需要先登入帳號','error'); openModal('loginModal'); return; }
+  if(!memberKYCStatus){ toast('需要 KYC','請先完成身份驗證','error'); openKYC(); return; }
+
+  const orderId = 'ORD-' + Date.now().toString().slice(-8);
+  const order = {
+    id: orderId, user: currentUser.email,
+    item: seriesName || seriesId, price: price || '—',
+    zone: 'RWA交易所', qty: 1,
+    status: '待付款',
+    refCode: document.getElementById('promoInput')?.value?.trim() || '',
+    createdAt: new Date().toLocaleString('zh-TW'),
+  };
+  const orders = _DB.getOrders();
+  orders.unshift(order);
+  _DB.saveOrders(orders);
+  _DB.addNotif(`訂單建立 #${orderId}：${order.item}`);
+
+  toast('訂單建立', `#${orderId} 已建立，請至帳戶完成付款`, 'success');
+  setTimeout(()=>{
+    if(confirm(`訂單 #${orderId} 已建立！
+商品：${order.item}
+
+前往帳戶完成付款？`)){
+      location.href = '/account#orders';
+    }
+  }, 600);
+}
+
+/* ── 流程四：訂單付款（ANYU 點數付款）── */
+function payOrderAnyu(orderId){
+  if(!isLoggedIn){ openModal('loginModal'); return; }
+  const orders = _DB.getOrders();
+  const idx = orders.findIndex(o => o.id === orderId);
+  if(idx < 0){ toast('找不到訂單','','error'); return; }
+  const order = orders[idx];
+
+  // 扣款
+  const cost = parseInt((order.price||'0').toString().replace(/[^0-9]/g,'')) || 0;
+  if(cost > 0 && walletBalances.ANYU < cost){ toast('ANYU 不足','請先充值','error'); openModal('depositModal'); return; }
+  walletBalances.ANYU -= cost;
+
+  // 更新訂單狀態
+  orders[idx].status = '等待鑄造';
+  orders[idx].paidAt = new Date().toLocaleString('zh-TW');
+  _DB.saveOrders(orders);
+
+  // 更新 user ANYU 餘額
+  const users = _DB.getUsers();
+  if(users[currentUser.email]){ users[currentUser.email].anyu = walletBalances.ANYU; _DB.saveUsers(users); }
+
+  // 加分潤記錄
+  if(order.refCode){
+    _DB.addNotif(`分潤計算中：訂單 #${orderId} 推薦碼 ${order.refCode}`);
+  }
+
+  _DB.addNotif(`訂單 #${orderId} 付款完成，等待鑄造`);
+  toast('付款完成', `訂單 #${orderId} 已付款，等待管理員鑄造`, 'success');
+  renderWalletPage && renderWalletPage();
+}
+
+/* ── 流程五：帳戶管理 —— 連結到 account.html ── */
+function goToAccount(tab){
+  if(!isLoggedIn){ openModal('loginModal'); return; }
+  const url = '/account' + (tab ? '#' + tab : '');
+  location.href = url;
+}
+
+/* ── 通知中心 ── */
+function toggleNotifPanel(){
+  const old = document.getElementById('_notifPanel');
+  if(old){ old.remove(); return; }
+  const notifs = _DB.getNotifs();
+  // 標為已讀
+  notifs.forEach(n => n.read = true);
+  localStorage.setItem('anyd_notifs', JSON.stringify(notifs));
+  _renderNotifDot();
+
+  const panel = document.createElement('div');
+  panel.id = '_notifPanel';
+  panel.style.cssText = 'position:fixed;top:64px;right:16px;z-index:9000;background:#0d1018;border:1px solid rgba(201,168,76,.25);border-radius:14px;width:320px;max-height:400px;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.6)';
+  panel.innerHTML = `
+    <div style="padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px;font-weight:700;color:#f8fafc">
+      🔔 通知中心 <span style="font-size:11px;color:#64748b;float:right">${notifs.length} 則</span>
+    </div>
+    ${notifs.length === 0 ? '<div style="padding:24px;text-align:center;color:#64748b;font-size:13px">暫無通知</div>' :
+      notifs.map(n=>`
+        <div style="padding:12px 18px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;color:#94a3b8">
+          <div style="color:#f1f5f9;margin-bottom:2px">${n.msg}</div>
+          <div>${n.time}</div>
+        </div>`).join('')}`;
+  document.body.appendChild(panel);
+  document.addEventListener('click', function _cls(e){ if(!panel.contains(e.target)){ panel.remove(); document.removeEventListener('click',_cls); }}, { once: false });
+}
+
+/* ── 補綁 notifBtn ── */
+document.addEventListener('DOMContentLoaded', ()=>{
+  const nb = document.getElementById('notifBtn');
+  if(nb && !nb.dataset.anydBound){ nb.dataset.anydBound='1'; nb.onclick = toggleNotifPanel; }
+  // 補綁「我的訂單」sidebar 跳轉
+  document.querySelectorAll('[onclick*="setPage('member')"]').forEach(el=>{
+    el.addEventListener('click', ()=>{ if(isLoggedIn) goToAccount(); });
+  });
+});
+
+/* ── 推薦碼複製 ── */
+function copyRefLink(){
+  const code = currentUser ? 'ANYU-' + currentUser.email.split('@')[0].toUpperCase().slice(0,6) : 'ANYU-DEMO';
+  const url = 'https://anydeee.vercel.app/?ref=' + code;
+  navigator.clipboard?.writeText(url).then(()=>toast('已複製','推薦連結已複製','success')).catch(()=>toast('推薦連結', url, 'info'));
+}
+
+/* ── 初始化通知徽章 ── */
+_renderNotifDot();
+
 </script>
-<script src="anydeee-core.js"></script>
 </body>
 </html>

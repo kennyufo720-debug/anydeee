@@ -1035,7 +1035,123 @@ if (window.location.hash) {
     if (btn) showPage(map[hash], btn);
   }
 }
+/* ── 從 localStorage 還原 session ── */
+(function _accountInit(){
+  const _DB = {
+    getSess:   () => JSON.parse(localStorage.getItem('anyd_sess') || 'null'),
+    getOrders: () => JSON.parse(localStorage.getItem('anyd_orders') || '[]'),
+    getUsers:  () => JSON.parse(localStorage.getItem('anyd_users') || '{}'),
+  };
+
+  const s = _DB.getSess();
+  if(!s){ location.href = '/'; return; }
+
+  const email   = s.email || 'demo@anydeee.com';
+  const initial = (email[0]||'U').toUpperCase();
+
+  // 更新 Nav
+  const navEmail  = document.getElementById('navUserEmail');
+  const navAvatar = document.getElementById('navAvatarLetter');
+  if(navEmail)  navEmail.textContent  = email;
+  if(navAvatar) navAvatar.textContent = initial;
+
+  // 更新個人資料
+  const profileAvatar = document.getElementById('profileAvatar');
+  const profileName   = document.getElementById('profileName');
+  const profileEmail  = document.getElementById('profileEmail');
+  const fieldEmail    = document.getElementById('fieldEmail');
+  const fieldName     = document.getElementById('fieldName');
+  const lastLogin     = document.getElementById('lastLogin');
+  if(profileAvatar) profileAvatar.textContent = initial;
+  if(profileName)   profileName.textContent   = s.name || email.split('@')[0];
+  if(profileEmail)  profileEmail.textContent  = email;
+  if(fieldEmail)    fieldEmail.value           = email;
+  if(fieldName)     fieldName.value            = s.name || email.split('@')[0];
+  if(lastLogin)     lastLogin.textContent      = s.loginAt ? new Date(s.loginAt).toLocaleString('zh-TW') : '—';
+
+  // DEALER 角色
+  const role = s.role || 'USER';
+  const roleBadge = document.getElementById('roleBadge');
+  const roleDesc  = document.getElementById('roleDesc');
+  if(roleBadge) roleBadge.textContent = role;
+  if(roleDesc)  roleDesc.textContent  = role === 'DEALER' ? '一級經銷商' : role === 'SUPPLIER' ? '供應商' : '一般用戶';
+  if(role === 'DEALER' || role === 'SUPPLIER'){
+    const dl = document.getElementById('dealerLabel');
+    const cb = document.getElementById('commissionBtn');
+    const dc = document.getElementById('dealerIncomeCard');
+    if(dl) dl.style.display = 'block';
+    if(cb) cb.style.display = 'flex';
+    if(dc) dc.style.display = 'block';
+  }
+
+  // 從 localStorage 渲染真實訂單
+  const ordersContainer = document.getElementById('page-orders');
+  if(ordersContainer){
+    const myOrders = _DB.getOrders().filter(o => o.user === email);
+    if(myOrders.length > 0){
+      const header = ordersContainer.querySelector('.page-header');
+      const statusColor = {'待付款':'#f59e0b','等待鑄造':'#60a5fa','鑄造中':'#818cf8','已鑄造':'#34d399','已取消':'#f87171'};
+      const statusBg    = {'待付款':'rgba(245,158,11,.12)','等待鑄造':'rgba(96,165,250,.12)','鑄造中':'rgba(129,140,248,.12)','已鑄造':'rgba(52,211,153,.12)','已取消':'rgba(248,113,113,.12)'};
+
+      // 插入真實訂單（最前面）
+      const frag = document.createDocumentFragment();
+      const divider = document.createElement('div');
+      divider.style.cssText = 'font-size:12px;color:#64748b;padding:0 0 8px 0;letter-spacing:.08em';
+      divider.textContent = '▸ 我的訂單記錄';
+      frag.appendChild(divider);
+
+      myOrders.forEach(o => {
+        const card = document.createElement('div');
+        card.className = 'order-card';
+        card.style.borderColor = 'rgba(201,168,76,.2)';
+        const sc = statusColor[o.status]||'#94a3b8';
+        const sb = statusBg[o.status]||'rgba(100,116,139,.12)';
+        card.innerHTML = `
+          <div class="order-header">
+            <div>
+              <div class="order-id">#${o.id} · ${o.createdAt}</div>
+              <div class="order-name">${o.item}</div>
+              <div class="order-zone">${o.zone||'RWA 交易所'} · 數量：${o.qty||1}</div>
+            </div>
+            <span class="badge" style="background:${sb};color:${sc};border:1px solid ${sc}">${o.status}</span>
+          </div>
+          <div class="order-meta">
+            <div class="order-meta-item"><div class="lab">訂單金額</div><div class="val" style="color:#c9a84c">${o.price}</div></div>
+            <div class="order-meta-item"><div class="lab">推薦碼</div><div class="val" style="font-size:11px">${o.refCode||'—'}</div></div>
+            <div class="order-meta-item"><div class="lab">建立時間</div><div class="val" style="font-size:11px">${o.createdAt}</div></div>
+          </div>
+          ${o.status==='待付款' ? `<div class="order-actions">
+            <button class="btn-sm btn-pay" onclick="alert('請回到主站使用 ANYU 付款')">💳 前往付款</button>
+            <button class="btn-sm btn-cancel" onclick="cancelOrder('${o.id}')">取消訂單</button>
+          </div>` : `<div class="order-actions"><button class="btn-sm btn-view" onclick="viewOrder('${o.id}')">🔍 查看詳情</button></div>`}`;
+        frag.appendChild(card);
+      });
+
+      if(header) header.after(frag);
+    }
+  }
+
+  // hash 導航
+  if(window.location.hash){
+    const h = window.location.hash.replace('#','');
+    const btn = document.querySelector(`[data-page="${h}"]`);
+    if(btn) showPage(h, btn);
+  }
+})();
+
+/* ── 帳戶功能 ── */
+function cancelOrder(id){
+  if(!confirm('確定要取消這筆訂單？')) return;
+  const orders = JSON.parse(localStorage.getItem('anyd_orders')||'[]');
+  const idx = orders.findIndex(o=>o.id===id);
+  if(idx>=0){ orders[idx].status='已取消'; localStorage.setItem('anyd_orders', JSON.stringify(orders)); location.reload(); }
+}
+function viewOrder(id){
+  const orders = JSON.parse(localStorage.getItem('anyd_orders')||'[]');
+  const o = orders.find(o=>o.id===id);
+  if(o) alert(JSON.stringify(o,null,2));
+}
+
 </script>
-<script src="anydeee-core.js"></script>
 </body>
 </html>
