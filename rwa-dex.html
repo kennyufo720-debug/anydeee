@@ -3502,20 +3502,23 @@ const assets = [
 
 /* ===== 會員系統 + localStorage 持久化 ===== */
 
-/* ── DB helpers ── */
+/* ── DB helpers（加 try-catch，Safari 無痕模式安全）── */
 const _DB = {
-  getUsers:    () => JSON.parse(localStorage.getItem('anyd_users') || '{}'),
-  saveUsers:   u  => localStorage.setItem('anyd_users', JSON.stringify(u)),
-  getSess:     () => JSON.parse(localStorage.getItem('anyd_sess') || 'null'),
-  saveSess:    s  => localStorage.setItem('anyd_sess', JSON.stringify(s)),
-  clearSess:   ()  => localStorage.removeItem('anyd_sess'),
-  getOrders:   () => JSON.parse(localStorage.getItem('anyd_orders') || '[]'),
-  saveOrders:  o  => localStorage.setItem('anyd_orders', JSON.stringify(o)),
-  getNotifs:   () => JSON.parse(localStorage.getItem('anyd_notifs') || '[]'),
+  _get: (k, def) => { try { return JSON.parse(localStorage.getItem(k) || def); } catch(e) { return JSON.parse(def); } },
+  _set: (k, v)   => { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) { console.warn('[DB]', e); } },
+  _del: (k)      => { try { localStorage.removeItem(k); } catch(e) {} },
+  getUsers:    () => _DB._get('anyd_users', '{}'),
+  saveUsers:   u  => _DB._set('anyd_users', u),
+  getSess:     () => _DB._get('anyd_sess', 'null'),
+  saveSess:    s  => _DB._set('anyd_sess', s),
+  clearSess:   ()  => _DB._del('anyd_sess'),
+  getOrders:   () => _DB._get('anyd_orders', '[]'),
+  saveOrders:  o  => _DB._set('anyd_orders', o),
+  getNotifs:   () => _DB._get('anyd_notifs', '[]'),
   addNotif:    (msg) => {
     const n = _DB.getNotifs();
     n.unshift({ msg, time: new Date().toLocaleString('zh-TW'), read: false });
-    localStorage.setItem('anyd_notifs', JSON.stringify(n.slice(0,30)));
+    _DB._set('anyd_notifs', n.slice(0,30));
     _renderNotifDot();
   }
 };
@@ -3647,9 +3650,10 @@ function doLogout(){
   _DB.clearSess();
   isLoggedIn = false; currentUser = null; kycVerified = false;
   memberKYCStatus = false; member2FAEnabled = false;
-  document.getElementById('memberNav').style.display = 'none';
-  document.getElementById('guestNav').style.display = 'flex';
-  document.getElementById('memberNav').classList.remove('open');
+  const mn = document.getElementById('memberNav');
+  const gn = document.getElementById('guestNav');
+  if(mn){ mn.style.display = 'none'; mn.classList.remove('open'); }
+  if(gn) gn.style.display = 'flex';
   toast('已登出','期待再見！','success');
   setTimeout(() => location.href = '/', 800);
 }
@@ -3689,21 +3693,33 @@ function switchToLogin(){ closeModal('registerModal'); setTimeout(()=>openModal(
 
 /* ─ 會員 UI ─ */
 function renderMemberUI(){
-  if(!isLoggedIn) return;
+  if(!isLoggedIn || !currentUser) return;
   const u = currentUser;
-  document.getElementById('guestNav').style.display  = 'none';
-  document.getElementById('memberNav').style.display = 'flex';
-  document.getElementById('memberAv').textContent   = u.avatar;
-  document.getElementById('memberNameLabel').textContent = u.name;
-  document.getElementById('mdName').textContent  = u.name;
-  document.getElementById('mdEmail').textContent = u.email;
-  const kycB = document.getElementById('mdKycBadge');
-  kycB.textContent = memberKYCStatus ? '✓ KYC 已驗證' : 'KYC 未驗證';
-  kycB.className   = 'md-badge ' + (memberKYCStatus ? 'kyc-ok' : 'kyc-no');
-  const fa2B = document.getElementById('md2faBadge');
-  fa2B.style.display = member2FAEnabled ? 'inline-block' : 'none';
-  document.getElementById('mdVipBadge').textContent = memberKYCStatus ? 'VIP 1' : 'VIP 0';
-  const _kycSt = document.getElementById('kycStatus'); if(_kycSt) _kycSt.textContent = memberKYCStatus ? '已驗證 ✓' : '未驗證';
+  // 安全取得元素（null 保護，避免別台電腦/瀏覽器崩潰）
+  const $ = id => document.getElementById(id);
+  const set = (id, prop, val) => { const el = $(id); if(el) el[prop] = val; };
+  const setStyle = (id, prop, val) => { const el = $(id); if(el) el.style[prop] = val; };
+  const setClass = (id, cls) => { const el = $(id); if(el) el.className = cls; };
+
+  setStyle('guestNav',  'display', 'none');
+  setStyle('memberNav', 'display', 'flex');
+  set('memberAv',         'textContent', u.avatar || (u.name||'U')[0].toUpperCase());
+  set('memberNameLabel',  'textContent', u.name || u.email?.split('@')[0] || '會員');
+  set('mdName',           'textContent', u.name || '—');
+  set('mdEmail',          'textContent', u.email || '—');
+
+  const kycText = memberKYCStatus ? '✓ KYC 已驗證' : 'KYC 未驗證';
+  const kycCls  = 'md-badge ' + (memberKYCStatus ? 'kyc-ok' : 'kyc-no');
+  set('mdKycBadge',  'textContent', kycText);
+  setClass('mdKycBadge', kycCls);
+
+  setStyle('md2faBadge', 'display', member2FAEnabled ? 'inline-block' : 'none');
+  set('mdVipBadge', 'textContent', memberKYCStatus ? 'VIP 1' : 'VIP 0');
+  set('kycStatus',  'textContent', memberKYCStatus ? '已驗證 ✓' : '未驗證');
+
+  // KYC 橫幅
+  const banner = $('kycBanner');
+  if(banner) banner.style.display = memberKYCStatus ? 'none' : 'flex';
 }
 function toggleMemberDrop(e){
   e.stopPropagation();
@@ -8342,16 +8358,19 @@ function renderMemberPortal(){
 }
 /* ===== PDF 流程補全 ===== */
 
-/* ── 頁面載入：自動還原登入狀態 ── */
-(function _restoreSession(){
-  const s = _DB.getSess();
-  if(!s) return;
-  // session 超過 7 天自動登出
-  if(Date.now() - (s.loginAt||0) > 7*24*60*60*1000){ _DB.clearSess(); return; }
-  _pendingLoginUser = { name:s.name, email:s.email, avatar:s.avatar, kyc:s.kyc, fa2:s.fa2 };
-  completeLogin(_pendingLoginUser);
-  console.log('%c[Anydeee] Session 已還原：' + s.email, 'color:#c9a84c');
-})();
+/* ── 頁面載入：自動還原登入狀態（等 DOM ready）── */
+function _restoreSession(){
+  try {
+    const s = _DB.getSess();
+    if(!s) return;
+    if(Date.now() - (s.loginAt||0) > 7*24*60*60*1000){ _DB.clearSess(); return; }
+    _pendingLoginUser = { name:s.name, email:s.email, avatar:s.avatar, kyc:s.kyc, fa2:s.fa2 };
+    completeLogin(_pendingLoginUser);
+    console.log('%c[Anydeee] Session 已還原：' + s.email, 'color:#c9a84c');
+  } catch(e) {
+    console.warn('[Anydeee] Session 還原失敗:', e);
+  }
+}
 
 /* ── 流程三：瀏覽與購買（立即認購）加訂單邏輯 ── */
 function buyNFT(seriesId, seriesName, price){
@@ -8451,12 +8470,22 @@ function toggleNotifPanel(){
 
 /* ── 補綁 notifBtn ── */
 document.addEventListener('DOMContentLoaded', ()=>{
+  // 1. 通知按鈕綁定
   const nb = document.getElementById('notifBtn');
   if(nb && !nb.dataset.anydBound){ nb.dataset.anydBound='1'; nb.onclick = toggleNotifPanel; }
-  // 補綁「我的訂單」sidebar 跳轉
-  document.querySelectorAll('[onclick*="member"]').forEach(el=>{
-    el.addEventListener('click', ()=>{ if(isLoggedIn) goToAccount(); });
-  });
+
+  // 2. 還原 session（DOM ready 後才執行）
+  _restoreSession();
+
+  // 3. 初始化通知徽章
+  _renderNotifDot();
+
+  // 4. 從 URL 參數讀推薦碼
+  const ref = new URLSearchParams(location.search).get('ref');
+  if(ref){
+    const pi = document.getElementById('promoInput');
+    if(pi) pi.value = ref;
+  }
 });
 
 /* ── 推薦碼複製 ── */
@@ -8466,8 +8495,8 @@ function copyRefLink(){
   navigator.clipboard?.writeText(url).then(()=>toast('已複製','推薦連結已複製','success')).catch(()=>toast('推薦連結', url, 'info'));
 }
 
-/* ── 初始化通知徽章 ── */
-_renderNotifDot();
+/* ── 初始化完成（session 還原在 DOMContentLoaded 裡執行）── */
+console.log('%c[Anydeee] JS 載入完成 v2.0', 'color:#c9a84c;font-weight:bold');
 
 </script>
 </body>
