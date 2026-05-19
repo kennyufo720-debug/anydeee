@@ -251,7 +251,8 @@
     </div>
 
     <div class="nav-section">
-      <div class="lab">NFT</div>
+      <div class="lab">專區 / NFT</div>
+      <button class="nav-item" data-page="zones"><span class="ico">🗂️</span> 專區管理</button>
       <button class="nav-item" data-page="mint"><span class="ico">✨</span> NFT 鑄造（上鏈）<span class="badge">主</span></button>
       <button class="nav-item" data-page="series"><span class="ico">📦</span> 系列管理</button>
       <button class="nav-item" data-page="listings"><span class="ico">🏷️</span> 掛單管理</button>
@@ -259,16 +260,19 @@
     </div>
 
     <div class="nav-section">
-      <div class="lab">用戶</div>
-      <button class="nav-item" data-page="users"><span class="ico">👥</span> 用戶管理 <span class="badge" style="background:var(--yellow)">12</span></button>
-      <button class="nav-item" data-page="kyc"><span class="ico">🪪</span> KYC 審核 <span class="badge" style="background:var(--red)">8</span></button>
-      <button class="nav-item" data-page="agents"><span class="ico">🤝</span> 代理管理</button>
+      <div class="lab">訂單 / 財務</div>
+      <button class="nav-item" data-page="orders"><span class="ico">📋</span> 訂單管理 <span class="badge" style="background:var(--yellow)">7</span></button>
+      <button class="nav-item" data-page="recharge"><span class="ico">💳</span> 點數充值審核 <span class="badge" style="background:var(--red)">4</span></button>
+      <button class="nav-item" data-page="finance"><span class="ico">💰</span> 財務管理</button>
+      <button class="nav-item" data-page="withdraw"><span class="ico">💸</span> 提領審核 <span class="badge" style="background:var(--red)">5</span></button>
+      <button class="nav-item" data-page="commission"><span class="ico">💎</span> 分潤查詢</button>
     </div>
 
     <div class="nav-section">
-      <div class="lab">財務</div>
-      <button class="nav-item" data-page="finance"><span class="ico">💰</span> 財務管理</button>
-      <button class="nav-item" data-page="withdraw"><span class="ico">💸</span> 提領審核 <span class="badge" style="background:var(--red)">5</span></button>
+      <div class="lab">用戶 / 合作夥伴</div>
+      <button class="nav-item" data-page="users"><span class="ico">👥</span> 用戶管理 <span class="badge" style="background:var(--yellow)">12</span></button>
+      <button class="nav-item" data-page="kyc"><span class="ico">🪪</span> KYC 審核 <span class="badge" style="background:var(--red)">8</span></button>
+      <button class="nav-item" data-page="agents"><span class="ico">🤝</span> 經銷商/供應商建立</button>
     </div>
 
     <div class="nav-section">
@@ -828,6 +832,356 @@
         </table>
       </div>
 
+      <!-- ========== 專區管理 ========== -->
+      <div class="page" id="page-zones">
+        <div class="page-h">
+          <div><h1>🗂️ 專區管理</h1><p>建立專區、設定發行價、配置分潤結構、啟用上架</p></div>
+          <button class="btn btn-primary" onclick="openZoneModal()">＋ 建立新專區</button>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><div class="lab">已上架專區</div><div class="val">6</div><div class="delta up">↑ 本月新增 2</div></div>
+          <div class="stat"><div class="lab">待上架</div><div class="val">2</div><div class="delta">草稿狀態</div></div>
+          <div class="stat"><div class="lab">總 NFT 數量</div><div class="val">1,240</div><div class="delta up">已鑄造</div></div>
+          <div class="stat"><div class="lab">總銷售額</div><div class="val">$284K</div><div class="delta up">ANYU</div></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="tbl">
+            <thead><tr><th>專區名稱</th><th>代碼</th><th>發行價(ANYU)</th><th>一級%</th><th>二級%</th><th>三級%</th><th>系統%</th><th>狀態</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>IP授權專區</strong><div style="font-size:10px;color:var(--muted)">ip-zone</div></td>
+                <td style="font-family:monospace">IPZONE</td>
+                <td style="font-family:monospace;color:var(--gold)">1,200</td>
+                <td style="color:var(--gold)">8%</td><td style="color:var(--blue)">4%</td><td style="color:var(--muted)">2%</td><td style="color:var(--muted)">5%</td>
+                <td><span class="pill green">上架中</span></td>
+                <td><button class="btn btn-sm" onclick="editZone('IPZONE')">編輯</button></td>
+              </tr>
+              <tr>
+                <td><strong>RWA 不動產</strong><div style="font-size:10px;color:var(--muted)">rwa-estate</div></td>
+                <td style="font-family:monospace">RWAE</td>
+                <td style="font-family:monospace;color:var(--gold)">3,500</td>
+                <td style="color:var(--gold)">6%</td><td style="color:var(--blue)">3%</td><td style="color:var(--muted)">1.5%</td><td style="color:var(--muted)">5%</td>
+                <td><span class="pill green">上架中</span></td>
+                <td><button class="btn btn-sm" onclick="editZone('RWAE')">編輯</button></td>
+              </tr>
+              <tr>
+                <td><strong>數位藝術</strong><div style="font-size:10px;color:var(--muted)">digital-art</div></td>
+                <td style="font-family:monospace">DART</td>
+                <td style="font-family:monospace;color:var(--gold)">800</td>
+                <td style="color:var(--gold)">10%</td><td style="color:var(--blue)">5%</td><td style="color:var(--muted)">2.5%</td><td style="color:var(--muted)">5%</td>
+                <td><span class="pill yellow">草稿</span></td>
+                <td><button class="btn btn-sm btn-primary" onclick="activateZone('DART')">上架</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 專區建立/編輯 Modal -->
+        <div class="modal-bg" id="zoneModal" style="display:none;position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center">
+          <div class="modal" style="width:560px;max-width:95vw">
+            <div class="modal-head"><h3 id="zoneModalTitle">＋ 建立新專區</h3><button class="close" onclick="closeZoneModal()">✕</button></div>
+            <div class="modal-body">
+              <div class="form-grid" style="margin-bottom:12px">
+                <div class="field"><label>專區名稱 <span style="color:var(--red)">*</span></label><input type="text" id="zoneName" placeholder="IP授權專區" /></div>
+                <div class="field"><label>英文代碼 <span style="color:var(--red)">*</span></label><input type="text" id="zoneCode" placeholder="IPZONE" style="text-transform:uppercase" /></div>
+                <div class="field col-span-2"><label>封面圖片 URL</label><input type="text" id="zoneImg" placeholder="https://..." /></div>
+                <div class="field"><label>發行價 (defaultPriceUsdt) <span style="color:var(--red)">*</span></label><div class="input-group"><input type="number" id="zonePrice" placeholder="1200" /><span class="suffix">ANYU</span></div></div>
+                <div class="field"><label>每人最大購買量</label><input type="number" id="zoneMaxPer" placeholder="5" /></div>
+              </div>
+              <div class="card" style="margin-bottom:12px">
+                <h3>📊 經銷商分潤配置（3 級）</h3>
+                <div class="form-grid cols-3">
+                  <div class="field"><label>一級分潤率</label><div class="input-group"><input type="number" id="zoneT1" placeholder="8" step="0.5" /><span class="suffix">%</span></div></div>
+                  <div class="field"><label>二級分潤率</label><div class="input-group"><input type="number" id="zoneT2" placeholder="4" step="0.5" /><span class="suffix">%</span></div></div>
+                  <div class="field"><label>三級分潤率</label><div class="input-group"><input type="number" id="zoneT3" placeholder="2" step="0.5" /><span class="suffix">%</span></div></div>
+                </div>
+              </div>
+              <div class="card" style="margin-bottom:16px">
+                <h3>🏢 系統分潤配置（供應商/服務商）</h3>
+                <div class="form-grid">
+                  <div class="field"><label>供應商分潤率</label><div class="input-group"><input type="number" id="zoneSup" placeholder="5" step="0.5" /><span class="suffix">%</span></div></div>
+                  <div class="field"><label>服務商分潤率</label><div class="input-group"><input type="number" id="zoneSvc" placeholder="2" step="0.5" /><span class="suffix">%</span></div></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:10px">
+                <button class="btn btn-success" style="flex:1" onclick="saveZone(false)">💾 儲存草稿</button>
+                <button class="btn btn-primary" style="flex:1" onclick="saveZone(true)">🚀 立即上架</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== 訂單管理 ========== -->
+      <div class="page" id="page-orders">
+        <div class="page-h">
+          <div><h1>📋 訂單管理</h1><p>查看所有訂單、確認付款、觸發批量鑄造</p></div>
+          <button class="btn btn-primary" onclick="batchMintSelected()">⛏ 批量鑄造選取訂單</button>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><div class="lab">待付款</div><div class="val" style="color:var(--yellow)">12</div></div>
+          <div class="stat"><div class="lab">等待鑄造</div><div class="val" style="color:var(--blue)">7</div></div>
+          <div class="stat"><div class="lab">鑄造中</div><div class="val" style="color:var(--accent)">3</div></div>
+          <div class="stat"><div class="lab">已完成</div><div class="val" style="color:var(--green)">284</div></div>
+        </div>
+        <div class="card" style="padding:14px;margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <select style="background:#241812;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;outline:none">
+            <option>所有狀態</option><option>待付款</option><option>已付款</option><option>等待鑄造</option><option>鑄造中</option><option>已鑄造</option><option>已取消</option>
+          </select>
+          <select style="background:#241812;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;outline:none">
+            <option>所有專區</option><option>IP授權專區</option><option>RWA 不動產</option>
+          </select>
+          <select style="background:#241812;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;outline:none">
+            <option>所有付款方式</option><option>ANYU 點數</option><option>USDT</option><option>USDC</option>
+          </select>
+          <input type="text" placeholder="搜尋訂單號 / Email" style="flex:1;min-width:160px;background:#241812;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;outline:none" />
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="tbl">
+            <thead><tr>
+              <th><input type="checkbox" id="selectAll" onchange="toggleAllOrders(this)" /></th>
+              <th>訂單號</th><th>用戶</th><th>專區</th><th>數量</th><th>金額</th><th>付款方式</th><th>推薦碼</th><th>狀態</th><th>操作</th>
+            </tr></thead>
+            <tbody id="ordersTableBody">
+              <tr>
+                <td><input type="checkbox" class="order-check" /></td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00241</td>
+                <td style="font-size:11px">ann@demo.com</td>
+                <td><span style="font-size:11px">IP授權專區</span></td>
+                <td>1</td>
+                <td style="color:var(--gold);font-family:monospace">1,200</td>
+                <td><span class="pill blue" style="font-size:10px">ANYU</span></td>
+                <td style="font-size:11px;color:var(--muted)">—</td>
+                <td><span class="pill yellow">待付款</span></td>
+                <td style="display:flex;gap:4px;flex-wrap:wrap">
+                  <button class="btn btn-sm btn-success" onclick="confirmPayment('ORD-00241')">✓ 確認付款</button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="order-check" /></td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00239</td>
+                <td style="font-size:11px">bob@demo.com</td>
+                <td><span style="font-size:11px">IP授權專區</span></td>
+                <td>2</td>
+                <td style="color:var(--gold);font-family:monospace">2,400</td>
+                <td><span class="pill blue" style="font-size:10px">ANYU</span></td>
+                <td style="font-size:11px;color:var(--gold)">REF-ANN01</td>
+                <td><span class="pill blue">等待鑄造</span></td>
+                <td style="display:flex;gap:4px;flex-wrap:wrap">
+                  <button class="btn btn-sm btn-primary" onclick="mintOrder('ORD-00239')">⛏ 鑄造</button>
+                </td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="order-check" /></td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00237</td>
+                <td style="font-size:11px">carol@demo.com</td>
+                <td><span style="font-size:11px">IP授權專區</span></td>
+                <td>1</td>
+                <td style="color:var(--gold);font-family:monospace">1,200</td>
+                <td><span class="pill" style="background:rgba(96,165,250,.15);color:#60a5fa;font-size:10px">USDT</span></td>
+                <td style="font-size:11px;color:var(--muted)">—</td>
+                <td><span class="pill" style="background:rgba(217,119,87,.2);color:var(--accent)">鑄造中</span></td>
+                <td><button class="btn btn-sm" onclick="viewMintStatus('ORD-00237')">📡 查看進度</button></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" class="order-check" /></td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00234</td>
+                <td style="font-size:11px">ann@demo.com</td>
+                <td><span style="font-size:11px">IP授權專區</span></td>
+                <td>1</td>
+                <td style="color:var(--gold);font-family:monospace">800</td>
+                <td><span class="pill blue" style="font-size:10px">ANYU</span></td>
+                <td style="font-size:11px;color:var(--gold)">REF-ANN01</td>
+                <td><span class="pill green">已鑄造</span></td>
+                <td><button class="btn btn-sm" onclick="viewOrder('ORD-00234')">詳情</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--muted)">
+          ⚡ ANYU 點數付款：系統自動扣款，確認後直接進入等待鑄造。分潤以點數即時入帳。
+        </div>
+      </div>
+
+      <!-- ========== 點數充值審核 ========== -->
+      <div class="page" id="page-recharge">
+        <div class="page-h"><div><h1>💳 點數充值審核</h1><p>審核用戶匯款/加密貨幣充值申請，通過後自動入帳</p></div></div>
+        <div class="stat-grid">
+          <div class="stat"><div class="lab">待審核</div><div class="val" style="color:var(--red)">4</div></div>
+          <div class="stat"><div class="lab">今日已核准</div><div class="val" style="color:var(--green)">11</div></div>
+          <div class="stat"><div class="lab">今日駁回</div><div class="val" style="color:var(--red)">2</div></div>
+          <div class="stat"><div class="lab">今日充值總額</div><div class="val">$12,400</div><div class="delta">ANYU</div></div>
+        </div>
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="tbl">
+            <thead><tr><th>申請時間</th><th>用戶</th><th>充值類型</th><th>金額</th><th>憑證</th><th>狀態</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-size:11px">05/19 09:42</td>
+                <td style="font-size:11px">ann@demo.com</td>
+                <td><span class="pill blue" style="font-size:10px">匯款</span></td>
+                <td style="color:var(--gold);font-family:monospace">5,000 ANYU</td>
+                <td style="font-size:11px">帳號後5碼：<strong>67890</strong><br/>時間：05/19 09:30</td>
+                <td><span class="pill yellow">待審核</span></td>
+                <td style="display:flex;gap:6px">
+                  <button class="btn btn-sm btn-success" onclick="approveRecharge(this,'ann@demo.com',5000)">✓ 核准入帳</button>
+                  <button class="btn btn-sm btn-danger" onclick="rejectRecharge(this)">✕ 駁回</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-size:11px">05/19 08:15</td>
+                <td style="font-size:11px">bob@demo.com</td>
+                <td><span class="pill" style="background:rgba(96,165,250,.15);color:#60a5fa;font-size:10px">USDT</span></td>
+                <td style="color:var(--gold);font-family:monospace">3,000 ANYU</td>
+                <td style="font-size:11px;font-family:monospace;color:#60a5fa">0x3f4d…a2b1<br/><span style="color:var(--muted)">Polygon 已確認</span></td>
+                <td><span class="pill yellow">待審核</span></td>
+                <td style="display:flex;gap:6px">
+                  <button class="btn btn-sm btn-success" onclick="approveRecharge(this,'bob@demo.com',3000)">✓ 核准入帳</button>
+                  <button class="btn btn-sm btn-danger" onclick="rejectRecharge(this)">✕ 駁回</button>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-size:11px">05/18 22:05</td>
+                <td style="font-size:11px">carol@demo.com</td>
+                <td><span class="pill" style="background:rgba(96,165,250,.15);color:#60a5fa;font-size:10px">USDC</span></td>
+                <td style="color:var(--gold);font-family:monospace">1,500 ANYU</td>
+                <td style="font-size:11px;font-family:monospace;color:#60a5fa">0x8c2e…f441<br/><span style="color:var(--muted)">Polygon 已確認</span></td>
+                <td><span class="pill yellow">待審核</span></td>
+                <td style="display:flex;gap:6px">
+                  <button class="btn btn-sm btn-success" onclick="approveRecharge(this,'carol@demo.com',1500)">✓ 核准入帳</button>
+                  <button class="btn btn-sm btn-danger" onclick="rejectRecharge(this)">✕ 駁回</button>
+                </td>
+              </tr>
+              <tr style="opacity:.6">
+                <td style="font-size:11px">05/18 14:20</td>
+                <td style="font-size:11px">dave@demo.com</td>
+                <td><span class="pill blue" style="font-size:10px">匯款</span></td>
+                <td style="font-family:monospace">2,000 ANYU</td>
+                <td style="font-size:11px">帳號後5碼：<strong>11111</strong></td>
+                <td><span class="pill green">已核准</span></td>
+                <td style="color:var(--muted);font-size:11px">已入帳</td>
+              </tr>
+              <tr style="opacity:.6">
+                <td style="font-size:11px">05/18 10:05</td>
+                <td style="font-size:11px">eve@demo.com</td>
+                <td><span class="pill blue" style="font-size:10px">匯款</span></td>
+                <td style="font-family:monospace">500 ANYU</td>
+                <td style="font-size:11px">帳號後5碼：<strong>99999</strong></td>
+                <td><span class="pill red">已駁回</span></td>
+                <td style="color:var(--muted);font-size:11px">帳號不符</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Reject reason modal -->
+        <div id="rejectModal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.7);align-items:center;justify-content:center">
+          <div style="background:#1a130e;border:1px solid var(--line);border-radius:12px;padding:24px;width:380px">
+            <h3 style="margin:0 0 14px">駁回原因</h3>
+            <textarea id="rejectReason" style="width:100%;background:#100a07;border:1px solid var(--line);border-radius:7px;padding:10px;color:var(--text);font-size:13px;resize:vertical;min-height:80px;outline:none" placeholder="請填寫駁回原因（將通知用戶）"></textarea>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <button class="btn btn-ghost" style="flex:1" onclick="document.getElementById('rejectModal').style.display='none'">取消</button>
+              <button class="btn btn-danger" style="flex:1" onclick="confirmReject()">確認駁回</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== 分潤查詢 ========== -->
+      <div class="page" id="page-commission">
+        <div class="page-h">
+          <div><h1>💎 分潤查詢</h1><p>查看全平台分潤結算、各級收入與財務報表匯出</p></div>
+          <button class="btn btn-success" onclick="exportCommReport()">📥 匯出 Excel 報表</button>
+        </div>
+        <div class="stat-grid">
+          <div class="stat"><div class="lab">本月分潤總額</div><div class="val" style="color:var(--gold)">48,240</div><div class="delta">ANYU 已結算</div></div>
+          <div class="stat"><div class="lab">一級分潤</div><div class="val">28,800</div><div class="delta up">60%</div></div>
+          <div class="stat"><div class="lab">二級分潤</div><div class="val">12,480</div><div class="delta up">26%</div></div>
+          <div class="stat"><div class="lab">三級分潤</div><div class="val">6,960</div><div class="delta up">14%</div></div>
+        </div>
+        <!-- 篩選 -->
+        <div class="card" style="padding:14px;margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <select style="background:#241812;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;outline:none">
+            <option>2026年5月</option><option>2026年4月</option><option>2026年3月</option>
+          </select>
+          <select style="background:#241812;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;outline:none">
+            <option>所有專區</option><option>IP授權專區</option><option>RWA 不動產</option>
+          </select>
+          <select style="background:#241812;border:1px solid var(--line);border-radius:7px;padding:7px 12px;color:var(--text);font-size:12px;outline:none">
+            <option>所有角色</option><option>一級經銷商</option><option>供應商</option><option>服務商</option>
+          </select>
+        </div>
+        <!-- 分潤明細表 -->
+        <div class="card" style="padding:0;overflow:hidden;margin-bottom:14px">
+          <table class="tbl">
+            <thead><tr><th>結算時間</th><th>訂單</th><th>受益方</th><th>角色</th><th>等級</th><th>專區</th><th>分潤率</th><th>金額(ANYU)</th><th>狀態</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-size:11px">05/18 14:32</td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00234</td>
+                <td style="font-size:11px">ann@demo.com</td>
+                <td><span class="pill green" style="font-size:10px">DEALER</span></td>
+                <td><span style="color:var(--gold);font-size:11px">一級</span></td>
+                <td style="font-size:11px">IP授權</td>
+                <td style="font-family:monospace">8%</td>
+                <td style="color:var(--green);font-family:monospace;font-weight:700">+320</td>
+                <td><span class="pill green">已入帳</span></td>
+              </tr>
+              <tr>
+                <td style="font-size:11px">05/18 14:32</td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00234</td>
+                <td style="font-size:11px">master@supplier.com</td>
+                <td><span class="pill yellow" style="font-size:10px">供應商</span></td>
+                <td><span style="color:var(--muted);font-size:11px">系統</span></td>
+                <td style="font-size:11px">IP授權</td>
+                <td style="font-family:monospace">5%</td>
+                <td style="color:var(--green);font-family:monospace;font-weight:700">+200</td>
+                <td><span class="pill green">已入帳</span></td>
+              </tr>
+              <tr>
+                <td style="font-size:11px">05/16 09:48</td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00220</td>
+                <td style="font-size:11px">ann@demo.com</td>
+                <td><span class="pill green" style="font-size:10px">DEALER</span></td>
+                <td><span style="color:var(--gold);font-size:11px">一級</span></td>
+                <td style="font-size:11px">IP授權</td>
+                <td style="font-family:monospace">8%</td>
+                <td style="color:var(--green);font-family:monospace;font-weight:700">+192</td>
+                <td><span class="pill green">已入帳</span></td>
+              </tr>
+              <tr>
+                <td style="font-size:11px">05/16 09:48</td>
+                <td style="font-family:monospace;font-size:11px">#ORD-00220</td>
+                <td style="font-size:11px">bob@demo.com</td>
+                <td><span class="pill green" style="font-size:10px">DEALER</span></td>
+                <td><span style="color:#60a5fa;font-size:11px">二級</span></td>
+                <td style="font-size:11px">IP授權</td>
+                <td style="font-family:monospace">4%</td>
+                <td style="color:var(--green);font-family:monospace;font-weight:700">+96</td>
+                <td><span class="pill green">已入帳</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- 系統設定：分潤規則 -->
+        <div class="card">
+          <h3>⚙️ 全域分潤規則設定</h3>
+          <div class="form-grid">
+            <div class="field"><label>預設一級分潤率</label><div class="input-group"><input type="number" value="8" step="0.5" /><span class="suffix">%</span></div></div>
+            <div class="field"><label>預設二級分潤率</label><div class="input-group"><input type="number" value="4" step="0.5" /><span class="suffix">%</span></div></div>
+            <div class="field"><label>預設三級分潤率</label><div class="input-group"><input type="number" value="2" step="0.5" /><span class="suffix">%</span></div></div>
+            <div class="field"><label>分潤入帳方式</label>
+              <select style="background:#100a07;border:1px solid var(--line);border-radius:7px;padding:9px 12px;color:var(--text);font-size:13px;outline:none">
+                <option>以點數即時入帳</option><option>月結統一結算</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:14px">
+            <button class="btn btn-primary">💾 儲存規則</button>
+            <button class="btn btn-success" onclick="exportCommReport()">📥 匯出本月報表 (Excel)</button>
+          </div>
+        </div>
+      </div>
+
       <!-- ========== AUDIT ========== -->
       <div class="page" id="page-audit">
         <div class="page-h"><div><h1>📜 稽核日誌</h1><p>所有管理員操作的完整紀錄</p></div></div>
@@ -898,23 +1252,27 @@
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script>
-const PAGES = ['dashboard','mint','series','listings','airdrop','users','kyc','agents','finance','withdraw','forum','announce','support','audit','settings'];
+const PAGES = ['dashboard','zones','mint','series','listings','airdrop','orders','recharge','finance','withdraw','commission','users','kyc','agents','forum','announce','support','audit','settings'];
 const TITLES = {
   dashboard:['儀表板','即時統計與系統健康'],
+  zones:['專區管理','建立專區、設定發行價與分潤結構'],
   mint:['NFT 鑄造（上鏈）','建立、批量、部署 — 直接上鏈'],
   series:['系列管理','100 個系列的編輯與管理'],
   listings:['掛單管理','監控所有公開掛單'],
   airdrop:['空投管理','建立並發放空投活動'],
-  users:['用戶管理','48,209 名註冊用戶'],
-  kyc:['KYC 審核','待審核身份驗證'],
-  agents:['代理管理','代理等級與佣金'],
+  orders:['訂單管理','查看所有訂單、確認付款、觸發鑄造'],
+  recharge:['點數充值審核','審核匯款/加密幣充值申請，通過自動入帳'],
   finance:['財務管理','平台收入與儲備'],
   withdraw:['提領審核','大額提領風險審核'],
+  commission:['分潤查詢','全平台分潤結算、各級收入與報表匯出'],
+  users:['用戶管理','48,209 名註冊用戶'],
+  kyc:['KYC 審核','待審核身份驗證'],
+  agents:['經銷商/供應商建立','建立合作夥伴帳號與分潤指派'],
   forum:['論壇管理','貼文審核與管理'],
   announce:['公告管理','系統公告發布'],
   support:['客服中心','客服票券處理'],
   audit:['稽核日誌','管理員操作紀錄'],
-  settings:['系統設定','手續費、限額、緊急停止']
+  settings:['系統設定','銀行帳號、手續費、緊急停止']
 };
 
 function setPage(p){
@@ -1610,6 +1968,163 @@ window.cleanTestMints = function(){
 /* ===== Init ===== */
 updateMintPreview();
 renderMintHistory();
+
+/* ===== 專區管理 ===== */
+function openZoneModal() {
+  const m = document.getElementById('zoneModal');
+  m.style.display = 'flex';
+  document.getElementById('zoneModalTitle').textContent = '＋ 建立新專區';
+  ['zoneName','zoneCode','zoneImg','zonePrice','zoneMaxPer','zoneT1','zoneT2','zoneT3','zoneSup','zoneSvc'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+function closeZoneModal() {
+  document.getElementById('zoneModal').style.display = 'none';
+}
+function editZone(code) {
+  const m = document.getElementById('zoneModal');
+  m.style.display = 'flex';
+  document.getElementById('zoneModalTitle').textContent = `✏️ 編輯專區：${code}`;
+  if (code === 'IPZONE') {
+    document.getElementById('zoneName').value = 'IP授權專區';
+    document.getElementById('zoneCode').value = 'IPZONE';
+    document.getElementById('zonePrice').value = '1200';
+    document.getElementById('zoneMaxPer').value = '5';
+    document.getElementById('zoneT1').value = '8';
+    document.getElementById('zoneT2').value = '4';
+    document.getElementById('zoneT3').value = '2';
+    document.getElementById('zoneSup').value = '5';
+    document.getElementById('zoneSvc').value = '2';
+  }
+}
+function saveZone(activate) {
+  const name = document.getElementById('zoneName').value.trim();
+  const code = document.getElementById('zoneCode').value.trim();
+  const price = document.getElementById('zonePrice').value;
+  if (!name || !code || !price) { toast('⚠️ 請填寫必填欄位', '專區名稱、代碼、發行價為必填', 'warn'); return; }
+  closeZoneModal();
+  const status = activate ? '✅ 已上架' : '草稿';
+  toast(`${activate ? '🚀 專區已上架' : '💾 草稿已儲存'}`, `${name} (${code}) ${status}`, 'success');
+  auditLog.unshift({t:Date.now(), admin:'admin@anydeee', act: activate ? '上架專區' : '建立草稿專區', detail:`${name} / ${code} / 發行價 ${price} ANYU`, ip:'10.0.0.42'});
+}
+function activateZone(code) {
+  toast('🚀 專區已上架', `${code} 現在已對用戶開放`, 'success');
+  auditLog.unshift({t:Date.now(), admin:'admin@anydeee', act:'上架專區', detail:code, ip:'10.0.0.42'});
+}
+
+/* ===== 訂單管理 ===== */
+function toggleAllOrders(cb) {
+  document.querySelectorAll('.order-check').forEach(c => c.checked = cb.checked);
+}
+function confirmPayment(orderId) {
+  toast('✓ 付款已確認', `訂單 #${orderId} 已進入等待鑄造佇列`, 'success');
+  auditLog.unshift({t:Date.now(), admin:'admin@anydeee', act:'確認付款', detail:`訂單 #${orderId}`, ip:'10.0.0.42'});
+}
+function mintOrder(orderId) {
+  showMintModal([
+    {label:'驗證訂單資料', ms:600},
+    {label:'呼叫 NFT Factory 合約', ms:1200},
+    {label:'等待鏈上確認（Polygon）', ms:1800},
+    {label:'NFT 轉入用戶錢包', ms:800},
+    {label:'觸發分潤結算', ms:400},
+  ], `⛏ 鑄造訂單 #${orderId}`);
+  auditLog.unshift({t:Date.now(), admin:'admin@anydeee', act:'觸發鑄造', detail:`訂單 #${orderId}`, ip:'10.0.0.42'});
+}
+function batchMintSelected() {
+  const checked = document.querySelectorAll('.order-check:checked');
+  if (!checked.length) { toast('⚠️ 請先選取訂單', '勾選要批量鑄造的訂單', 'warn'); return; }
+  showMintModal([
+    {label:`驗證 ${checked.length} 筆訂單`, ms:800},
+    {label:'批量呼叫合約', ms:1500},
+    {label:'鏈上批量確認', ms:2200},
+    {label:'NFT 逐一轉入錢包', ms:1000},
+    {label:'批量觸發分潤結算', ms:600},
+  ], `⛏ 批量鑄造 ${checked.length} 筆訂單`);
+}
+function viewMintStatus(orderId) {
+  showMintModal([
+    {label:'訂單已成立', ms:0},
+    {label:'付款已確認', ms:0},
+    {label:'進入鑄造佇列', ms:0},
+    {label:'鏈上鑄造中…', ms:2000},
+  ], `📡 鑄造進度 #${orderId}`);
+}
+function viewOrder(orderId) {
+  toast('📋 訂單詳情', `#${orderId} — 已鑄造完成`, 'success');
+}
+
+/* ===== 點數充值審核 ===== */
+let currentRejectRow = null;
+function approveRecharge(btn, email, amount) {
+  const row = btn.closest('tr');
+  row.cells[5].innerHTML = '<span class="pill green">已核准</span>';
+  row.cells[6].innerHTML = '<span style="color:var(--muted);font-size:11px">已入帳</span>';
+  row.style.opacity = '0.65';
+  toast('✓ 充值已核准', `${email} ＋${amount.toLocaleString()} ANYU 已入帳`, 'success');
+  auditLog.unshift({t:Date.now(), admin:'admin@anydeee', act:'核准充值', detail:`${email} +${amount} ANYU`, ip:'10.0.0.42'});
+  // Update badge count
+  const badge = document.querySelector('[data-page="recharge"] .badge');
+  if (badge) { const n = parseInt(badge.textContent) - 1; badge.textContent = Math.max(0,n); }
+}
+function rejectRecharge(btn) {
+  currentRejectRow = btn.closest('tr');
+  document.getElementById('rejectReason').value = '';
+  const modal = document.getElementById('rejectModal');
+  modal.style.display = 'flex';
+}
+function confirmReject() {
+  const reason = document.getElementById('rejectReason').value.trim() || '資料不符';
+  if (currentRejectRow) {
+    currentRejectRow.cells[5].innerHTML = '<span class="pill red">已駁回</span>';
+    currentRejectRow.cells[6].innerHTML = `<span style="color:var(--muted);font-size:11px">${reason}</span>`;
+    currentRejectRow.style.opacity = '0.65';
+    const email = currentRejectRow.cells[1].textContent;
+    toast('✕ 充值已駁回', `${email} — ${reason}`, 'warn');
+    auditLog.unshift({t:Date.now(), admin:'admin@anydeee', act:'駁回充值', detail:`${email} 原因: ${reason}`, ip:'10.0.0.42'});
+  }
+  document.getElementById('rejectModal').style.display = 'none';
+  currentRejectRow = null;
+}
+
+/* ===== 分潤報表匯出 ===== */
+function exportCommReport() {
+  toast('📥 報表匯出中', '分潤明細 Excel 檔案準備完成，即將下載', 'success');
+  // Simulate CSV download
+  const csv = ['結算時間,訂單,受益方,角色,等級,專區,分潤率,金額(ANYU)',
+    '2026/05/18 14:32,#ORD-00234,ann@demo.com,DEALER,一級,IP授權,8%,320',
+    '2026/05/18 14:32,#ORD-00234,master@supplier.com,供應商,系統,IP授權,5%,200',
+    '2026/05/16 09:48,#ORD-00220,ann@demo.com,DEALER,一級,IP授權,8%,192',
+    '2026/05/16 09:48,#ORD-00220,bob@demo.com,DEALER,二級,IP授權,4%,96',
+  ].join('\n');
+  const blob = new Blob(['﻿'+csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = '分潤報表_2026年5月.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a); URL.revokeObjectURL(url);
+  auditLog.unshift({t:Date.now(), admin:'admin@anydeee', act:'匯出分潤報表', detail:'2026年5月 CSV', ip:'10.0.0.42'});
+}
+
+/* ===== 系統設定：銀行帳號區塊 ===== */
+// Enhance settings page with bank account section (injected on page load)
+(function injectBankSettings() {
+  const settingsPage = document.getElementById('page-settings');
+  if (!settingsPage) return;
+  const bankCard = document.createElement('div');
+  bankCard.className = 'card';
+  bankCard.style.cssText = 'margin-top:14px';
+  bankCard.innerHTML = `
+    <h3>🏦 收款銀行帳號設定</h3>
+    <div class="form-grid" style="margin-bottom:12px">
+      <div class="field"><label>銀行名稱</label><input type="text" value="台新銀行 812" /></div>
+      <div class="field"><label>帳號</label><input type="text" value="1234-567-890123" style="font-family:monospace" /></div>
+      <div class="field col-span-2"><label>戶名</label><input type="text" value="Anydeee Pte. Ltd." /></div>
+      <div class="field"><label>USDT 收款地址 (Polygon)</label><input type="text" value="0x9aB3f…1C2D4e5F6g7H" style="font-family:monospace" /></div>
+      <div class="field"><label>USDC 收款地址 (Polygon)</label><input type="text" value="0x9aB3f…1C2D4e5F6g7H" style="font-family:monospace" /></div>
+    </div>
+    <button class="btn btn-primary">💾 儲存收款資訊</button>`;
+  settingsPage.querySelector('div[style]').after(bankCard);
+})();
 </script>
 </body>
 </html>

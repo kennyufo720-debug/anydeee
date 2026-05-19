@@ -576,6 +576,154 @@ footer {
 }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
+/* ── AUTH MODAL ──────────────────────────────────── */
+.auth-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(4,6,10,0.85);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s;
+}
+.auth-overlay.open { opacity: 1; pointer-events: all; }
+.auth-modal {
+  background: #0d1018;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: 20px;
+  padding: 40px;
+  width: 420px; max-width: calc(100vw - 32px);
+  position: relative;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(201,168,76,0.08);
+  transform: translateY(16px);
+  transition: transform 0.25s;
+}
+.auth-overlay.open .auth-modal { transform: translateY(0); }
+.auth-close {
+  position: absolute; top: 16px; right: 16px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--muted); font-size: 16px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.2s;
+}
+.auth-close:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+.auth-logo {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 28px;
+}
+.auth-logo-mark {
+  width: 36px; height: 36px; border-radius: 9px;
+  background: linear-gradient(135deg, #c9a84c, #8a6820);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 900; color: #1c1917;
+  box-shadow: 0 0 20px rgba(201,168,76,0.3);
+}
+.auth-title { font-size: 22px; font-weight: 700; color: #f8fafc; margin-bottom: 6px; }
+.auth-sub   { font-size: 13px; color: var(--muted); margin-bottom: 28px; }
+.auth-step  { display: none; }
+.auth-step.active { display: block; }
+.auth-field { margin-bottom: 16px; }
+.auth-field label {
+  display: block; font-size: 11px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+  margin-bottom: 8px; font-weight: 600;
+}
+.auth-field input {
+  width: 100%; padding: 12px 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; color: var(--text);
+  font-size: 14px; font-family: inherit;
+  outline: none; transition: border-color 0.2s;
+}
+.auth-field input:focus { border-color: rgba(201,168,76,0.5); }
+.auth-field input::placeholder { color: var(--muted); }
+.auth-otp-row {
+  display: flex; gap: 8px; margin-bottom: 16px;
+}
+.auth-otp-row input {
+  flex: 1; text-align: center; font-size: 22px; font-weight: 700;
+  font-family: monospace; padding: 12px 0;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; color: var(--text); outline: none;
+  transition: border-color 0.2s;
+}
+.auth-otp-row input:focus { border-color: rgba(201,168,76,0.5); }
+.auth-btn {
+  width: 100%; padding: 13px;
+  border-radius: 10px; border: none;
+  background: linear-gradient(135deg, #c9a84c 0%, #a07828 100%);
+  color: #1c1917; font-size: 14px; font-weight: 700;
+  cursor: pointer; margin-top: 8px;
+  transition: all 0.2s; font-family: inherit;
+}
+.auth-btn:hover { box-shadow: 0 4px 20px rgba(201,168,76,0.4); }
+.auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.auth-switch {
+  text-align: center; font-size: 13px;
+  color: var(--muted); margin-top: 20px;
+}
+.auth-switch a { color: var(--gold); cursor: pointer; }
+.auth-switch a:hover { text-decoration: underline; }
+.auth-resend {
+  text-align: center; font-size: 12px;
+  color: var(--muted); margin-top: 12px;
+}
+.auth-resend a { color: var(--gold); cursor: pointer; }
+.auth-terms {
+  display: flex; align-items: flex-start; gap: 10px;
+  margin-bottom: 16px; font-size: 12px; color: var(--muted); line-height: 1.5;
+}
+.auth-terms input[type=checkbox] { margin-top: 2px; flex-shrink: 0; accent-color: var(--gold); }
+.auth-error {
+  background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+  border-radius: 8px; padding: 10px 14px;
+  color: #fca5a5; font-size: 13px; margin-bottom: 14px;
+  display: none;
+}
+.auth-success {
+  text-align: center; padding: 20px 0;
+}
+.auth-success .check-circle {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(52,211,153,0.12); border: 2px solid rgba(52,211,153,0.4);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin: 0 auto 16px;
+}
+.auth-success p { color: var(--muted2); font-size: 14px; line-height: 1.6; }
+/* Nav user state */
+.nav-user {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer;
+}
+.nav-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, #c9a84c, #8a6820);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #1c1917;
+  border: 2px solid rgba(201,168,76,0.3);
+}
+.nav-user-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.nav-user-menu {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: #0d1018; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px; padding: 8px;
+  min-width: 160px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+  display: none;
+}
+.nav-user-wrap { position: relative; }
+.nav-user-wrap:hover .nav-user-menu { display: block; }
+.nav-user-menu a {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; border-radius: 8px;
+  font-size: 13px; color: var(--muted2);
+  transition: all 0.15s;
+}
+.nav-user-menu a:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+
 /* ── RESPONSIVE ──────────────────────────────────── */
 @media (max-width: 1024px) {
   .hero-visual { display: none; }
@@ -617,9 +765,9 @@ footer {
     <li><a href="#how">How It Works</a></li>
     <li><a href="#compliance">Compliance</a></li>
   </ul>
-  <div class="nav-right">
-    <button class="btn-ghost">Sign In</button>
-    <button class="btn-gold">Open Account</button>
+  <div class="nav-right" id="nav-right">
+    <button class="btn-ghost" onclick="openAuth('login')">登入</button>
+    <button class="btn-gold" onclick="openAuth('register')">開立帳戶</button>
   </div>
 </nav>
 
@@ -1280,6 +1428,102 @@ footer {
   </div>
 </footer>
 
+<!-- ── AUTH MODAL ── -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-modal">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+
+    <div class="auth-logo">
+      <div class="auth-logo-mark">A</div>
+      <span style="font-size:15px;font-weight:700;letter-spacing:0.1em;color:#f8fafc">ANYDEEE</span>
+    </div>
+
+    <!-- ── REGISTER MODE ── -->
+    <div id="auth-register">
+      <!-- Step 1: Email + Terms -->
+      <div class="auth-step active" id="reg-s1">
+        <div class="auth-title">建立帳戶</div>
+        <div class="auth-sub">輸入 Email，我們將寄送驗證碼</div>
+        <div class="auth-error" id="reg-err1"></div>
+        <div class="auth-field">
+          <label>電子信箱</label>
+          <input type="email" id="reg-email" placeholder="you@example.com" />
+        </div>
+        <div class="auth-terms">
+          <input type="checkbox" id="reg-terms" />
+          <span>我已閱讀並同意 <a href="#" style="color:var(--gold)">服務條款</a> 及 <a href="#" style="color:var(--gold)">隱私政策</a></span>
+        </div>
+        <button class="auth-btn" onclick="regStep1()">發送驗證碼</button>
+        <div class="auth-switch">已有帳號？<a onclick="switchMode('login')">立即登入</a></div>
+      </div>
+      <!-- Step 2: OTP -->
+      <div class="auth-step" id="reg-s2">
+        <div class="auth-title">輸入驗證碼</div>
+        <div class="auth-sub" id="reg-otp-sub">驗證碼已發送至您的信箱</div>
+        <div class="auth-error" id="reg-err2"></div>
+        <div class="auth-otp-row">
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+        </div>
+        <button class="auth-btn" onclick="regStep2()">完成註冊</button>
+        <div class="auth-resend">沒收到？<a onclick="resendOtp('reg')">重新發送</a> <span id="reg-countdown"></span></div>
+      </div>
+      <!-- Step 3: Success -->
+      <div class="auth-step" id="reg-s3">
+        <div class="auth-success">
+          <div class="check-circle">✓</div>
+          <div class="auth-title" style="text-align:center;margin-bottom:10px">註冊成功！</div>
+          <p>歡迎加入 Anydeee。您的帳戶已建立，正在跳轉到帳戶頁面…</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LOGIN MODE ── -->
+    <div id="auth-login" style="display:none">
+      <!-- Step 1: Email -->
+      <div class="auth-step active" id="log-s1">
+        <div class="auth-title">歡迎回來</div>
+        <div class="auth-sub">輸入 Email 以接收驗證碼</div>
+        <div class="auth-error" id="log-err1"></div>
+        <div class="auth-field">
+          <label>電子信箱</label>
+          <input type="email" id="log-email" placeholder="you@example.com" />
+        </div>
+        <button class="auth-btn" onclick="logStep1()">發送驗證碼</button>
+        <div class="auth-switch">還沒有帳號？<a onclick="switchMode('register')">立即註冊</a></div>
+      </div>
+      <!-- Step 2: OTP -->
+      <div class="auth-step" id="log-s2">
+        <div class="auth-title">輸入驗證碼</div>
+        <div class="auth-sub" id="log-otp-sub">驗證碼已發送至您的信箱</div>
+        <div class="auth-error" id="log-err2"></div>
+        <div class="auth-otp-row">
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+          <input type="text" maxlength="1" class="otp-digit" />
+        </div>
+        <button class="auth-btn" onclick="logStep2()">登入</button>
+        <div class="auth-resend">沒收到？<a onclick="resendOtp('log')">重新發送</a> <span id="log-countdown"></span></div>
+      </div>
+      <!-- Step 3: Success -->
+      <div class="auth-step" id="log-s3">
+        <div class="auth-success">
+          <div class="check-circle">✓</div>
+          <div class="auth-title" style="text-align:center;margin-bottom:10px">登入成功！</div>
+          <p>驗證完成，Token 已儲存。正在跳轉到帳戶頁面…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ── Scroll nav ──
 const nav = document.getElementById('nav');
@@ -1316,6 +1560,163 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
   });
 });
+
+// ── AUTH MODAL ──────────────────────────────────────
+let currentMode = 'login';
+let otpTimers = {};
+
+function openAuth(mode) {
+  currentMode = mode;
+  const overlay = document.getElementById('authOverlay');
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  switchMode(mode);
+}
+
+function closeAuth() {
+  document.getElementById('authOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('authOverlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeAuth();
+});
+
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('auth-register').style.display = mode === 'register' ? 'block' : 'none';
+  document.getElementById('auth-login').style.display    = mode === 'login'    ? 'block' : 'none';
+  // Reset steps
+  const prefix = mode === 'register' ? 'reg' : 'log';
+  document.querySelectorAll(`#auth-${mode} .auth-step`).forEach(s => s.classList.remove('active'));
+  document.getElementById(`${prefix}-s1`).classList.add('active');
+}
+
+// OTP digit auto-advance
+document.querySelectorAll('.auth-otp-row').forEach(row => {
+  const inputs = row.querySelectorAll('.otp-digit');
+  inputs.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      inp.value = inp.value.replace(/\D/g, '');
+      if (inp.value && i < inputs.length - 1) inputs[i+1].focus();
+    });
+    inp.addEventListener('keydown', e => {
+      if (e.key === 'Backspace' && !inp.value && i > 0) inputs[i-1].focus();
+    });
+  });
+});
+
+function getOtpValue(prefix) {
+  const row = document.querySelector(`#${prefix}-s2 .auth-otp-row`);
+  return [...row.querySelectorAll('.otp-digit')].map(i => i.value).join('');
+}
+
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+
+function startCountdown(prefix) {
+  let secs = 60;
+  const el = document.getElementById(`${prefix}-countdown`);
+  clearInterval(otpTimers[prefix]);
+  el.textContent = `(${secs}s)`;
+  otpTimers[prefix] = setInterval(() => {
+    secs--;
+    el.textContent = secs > 0 ? `(${secs}s)` : '';
+    if (secs <= 0) clearInterval(otpTimers[prefix]);
+  }, 1000);
+}
+
+// ── Register flow ──
+function regStep1() {
+  const email = document.getElementById('reg-email').value.trim();
+  const terms = document.getElementById('reg-terms').checked;
+  if (!email || !/\S+@\S+\.\S+/.test(email)) { showError('reg-err1', '請輸入有效的電子信箱'); return; }
+  if (!terms) { showError('reg-err1', '請閱讀並同意服務條款'); return; }
+  // Demo: mock OTP send
+  document.getElementById('reg-otp-sub').textContent = `驗證碼已發送至 ${email}`;
+  document.getElementById('reg-s1').classList.remove('active');
+  document.getElementById('reg-s2').classList.add('active');
+  startCountdown('reg');
+  document.querySelector('#reg-s2 .otp-digit').focus();
+}
+
+function regStep2() {
+  const otp = getOtpValue('reg');
+  if (otp.length < 6) { showError('reg-err2', '請輸入完整的 6 位驗證碼'); return; }
+  // Demo: accept any 6-digit OTP
+  const email = document.getElementById('reg-email').value.trim();
+  sessionStorage.setItem('anydeee_token', btoa(email + ':' + Date.now()));
+  sessionStorage.setItem('anydeee_email', email);
+  document.getElementById('reg-s2').classList.remove('active');
+  document.getElementById('reg-s3').classList.add('active');
+  updateNavForLoggedIn(email);
+  setTimeout(() => { closeAuth(); window.location.href = 'account.html'; }, 1800);
+}
+
+// ── Login flow ──
+function logStep1() {
+  const email = document.getElementById('log-email').value.trim();
+  if (!email || !/\S+@\S+\.\S+/.test(email)) { showError('log-err1', '請輸入有效的電子信箱'); return; }
+  document.getElementById('log-otp-sub').textContent = `驗證碼已發送至 ${email}`;
+  document.getElementById('log-s1').classList.remove('active');
+  document.getElementById('log-s2').classList.add('active');
+  startCountdown('log');
+  document.querySelector('#log-s2 .otp-digit').focus();
+}
+
+function logStep2() {
+  const otp = getOtpValue('log');
+  if (otp.length < 6) { showError('log-err2', '請輸入完整的 6 位驗證碼'); return; }
+  const email = document.getElementById('log-email').value.trim();
+  sessionStorage.setItem('anydeee_token', btoa(email + ':' + Date.now()));
+  sessionStorage.setItem('anydeee_email', email);
+  document.getElementById('log-s2').classList.remove('active');
+  document.getElementById('log-s3').classList.add('active');
+  updateNavForLoggedIn(email);
+  setTimeout(() => { closeAuth(); window.location.href = 'account.html'; }, 1800);
+}
+
+function resendOtp(prefix) {
+  if (document.getElementById(`${prefix}-countdown`).textContent) return;
+  startCountdown(prefix);
+  // mock resend
+}
+
+// ── Nav: logged-in state ──
+function updateNavForLoggedIn(email) {
+  const initial = (email[0] || 'U').toUpperCase();
+  const navRight = document.getElementById('nav-right');
+  navRight.innerHTML = `
+    <div class="nav-user-wrap">
+      <div class="nav-user">
+        <div class="nav-avatar">${initial}</div>
+        <span class="nav-user-name">${email.split('@')[0]}</span>
+        <span style="color:var(--muted);font-size:12px">▾</span>
+      </div>
+      <div class="nav-user-menu">
+        <a href="account.html">👤 我的帳戶</a>
+        <a href="account.html#orders">📋 我的訂單</a>
+        <a href="account.html#wallet">🎴 NFT 錢包</a>
+        <a href="account.html#anyu">💰 ANYU 平台幣</a>
+        <a href="#" onclick="logout();return false" style="color:#ef4444">🚪 登出</a>
+      </div>
+    </div>`;
+}
+
+function logout() {
+  sessionStorage.removeItem('anydeee_token');
+  sessionStorage.removeItem('anydeee_email');
+  location.reload();
+}
+
+// Check if already logged in on page load
+(function() {
+  const email = sessionStorage.getItem('anydeee_email');
+  if (email) updateNavForLoggedIn(email);
+})();
 </script>
 </body>
 </html>

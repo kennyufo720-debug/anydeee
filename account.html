@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Anydeee — 我的帳戶</title>
+<style>
+:root {
+  --gold:#c9a84c; --gold-lt:#e8cc7a; --gold-dim:rgba(201,168,76,0.12);
+  --bg:#080a0f; --bg2:#0d1018; --bg3:#111620;
+  --card:rgba(13,16,24,0.9); --border:rgba(255,255,255,0.07);
+  --border2:rgba(201,168,76,0.2); --text:#f0f4f8;
+  --muted:#64748b; --muted2:#94a3b8;
+  --green:#34d399; --red:#f87171; --amber:#f59e0b; --blue:#60a5fa;
+  --r:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans','Inter',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{cursor:pointer;font:inherit;border:none}
+input,select,textarea{font:inherit}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:60px;
+  display:flex;align-items:center;padding:0 40px;gap:16px;
+  background:rgba(8,10,15,0.92);border-bottom:1px solid var(--border);
+  backdrop-filter:blur(20px);
+}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo-mark{
+  width:28px;height:28px;border-radius:7px;
+  background:linear-gradient(135deg,#c9a84c,#8a6820);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:900;color:#1c1917;
+}
+.nav-brand{font-size:13px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase}
+.nav-back{margin-left:auto;font-size:13px;color:var(--muted2);display:flex;align-items:center;gap:6px;transition:color .2s}
+.nav-back:hover{color:var(--text)}
+.nav-user-pill{
+  display:flex;align-items:center;gap:8px;padding:5px 14px 5px 5px;
+  background:var(--bg2);border:1px solid var(--border);border-radius:99px;
+  font-size:13px;color:var(--muted2);
+}
+.nav-avatar{
+  width:26px;height:26px;border-radius:50%;
+  background:linear-gradient(135deg,#c9a84c,#8a6820);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#1c1917;
+}
+
+/* ── LAYOUT ── */
+.layout{display:flex;min-height:100vh;padding-top:60px}
+.sidebar{
+  width:240px;flex-shrink:0;
+  background:var(--bg2);border-right:1px solid var(--border);
+  position:sticky;top:60px;height:calc(100vh - 60px);
+  overflow-y:auto;padding:24px 16px;
+}
+.main{flex:1;padding:36px 40px;max-width:960px}
+
+/* ── SIDEBAR ── */
+.sidebar-section{margin-bottom:8px}
+.sidebar-label{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);padding:0 12px;margin-bottom:6px;margin-top:16px;display:block}
+.sidebar-item{
+  display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:9px;font-size:13px;color:var(--muted2);
+  background:transparent;width:100%;text-align:left;
+  transition:all .15s;border:none;cursor:pointer;
+}
+.sidebar-item:hover{background:var(--bg3);color:var(--text)}
+.sidebar-item.active{background:var(--gold-dim);color:var(--gold);font-weight:600;border:1px solid var(--border2)}
+.sidebar-item .ico{width:18px;text-align:center;font-size:15px}
+.sidebar-role{
+  margin-top:auto;padding:12px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--muted);text-align:center;
+}
+.role-badge{
+  display:inline-block;padding:3px 10px;border-radius:99px;
+  font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  background:var(--gold-dim);color:var(--gold);border:1px solid var(--border2);
+  margin-bottom:6px;
+}
+
+/* ── PAGE HEADER ── */
+.page-header{margin-bottom:28px}
+.page-title{font-size:22px;font-weight:700;color:#f8fafc;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--muted)}
+
+/* ── PAGE SYSTEM ── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── CARDS ── */
+.card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r);padding:24px;margin-bottom:16px;
+}
+.card-title{font-size:14px;font-weight:600;color:#f1f5f9;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border)}
+.card-row:last-child{border-bottom:none}
+.card-row .lab{font-size:12px;color:var(--muted)}
+.card-row .val{font-size:13px;font-weight:600;color:var(--text)}
+
+/* ── PROFILE ── */
+.profile-avatar-row{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+.profile-avatar-big{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,#c9a84c,#8a6820);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;font-weight:800;color:#1c1917;
+  border:3px solid rgba(201,168,76,0.3);
+  flex-shrink:0;
+}
+.profile-info .name{font-size:18px;font-weight:700;color:#f8fafc}
+.profile-info .email{font-size:13px;color:var(--muted);margin-top:4px}
+.profile-info .since{font-size:11px;color:var(--muted);margin-top:3px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.field input,.field select{
+  padding:10px 14px;background:var(--bg3);
+  border:1px solid var(--border);border-radius:9px;
+  color:var(--text);font-size:13px;outline:none;
+  transition:border-color .2s;
+}
+.field input:focus,.field select:focus{border-color:rgba(201,168,76,0.4)}
+.btn-save{
+  padding:10px 24px;border-radius:9px;font-size:13px;font-weight:600;
+  background:linear-gradient(135deg,#c9a84c,#a07828);color:#1c1917;
+  margin-top:16px;transition:all .2s;
+}
+.btn-save:hover{box-shadow:0 4px 16px rgba(201,168,76,0.3)}
+
+/* ── ANYU COIN ── */
+.anyu-balance-card{
+  background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(13,16,24,0.9));
+  border:1px solid var(--border2);border-radius:var(--r);padding:28px;
+  margin-bottom:16px;
+}
+.anyu-balance-label{font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.anyu-balance-value{font-size:40px;font-weight:800;font-family:monospace;color:#f8fafc;line-height:1}
+.anyu-balance-usd{font-size:14px;color:var(--muted2);margin-top:6px}
+.anyu-actions{display:flex;gap:10px;margin-top:20px}
+.btn-anyu{
+  flex:1;padding:11px 16px;border-radius:9px;font-size:13px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  transition:all .2s;cursor:pointer;border:none;font-family:inherit;
+}
+.btn-anyu-primary{background:linear-gradient(135deg,#c9a84c,#a07828);color:#1c1917}
+.btn-anyu-outline{background:transparent;border:1px solid var(--border2);color:var(--gold)}
+.btn-anyu-outline:hover{background:var(--gold-dim)}
+
+/* Recharge tabs */
+.recharge-tabs{display:flex;gap:4px;background:var(--bg3);border-radius:10px;padding:4px;margin-bottom:20px}
+.rtab{
+  flex:1;padding:8px;border-radius:8px;font-size:12px;font-weight:600;
+  background:transparent;color:var(--muted);cursor:pointer;border:none;
+  font-family:inherit;transition:all .2s;
+}
+.rtab.active{background:var(--bg2);color:var(--gold);border:1px solid var(--border2)}
+.rtab-pane{display:none}
+.rtab-pane.active{display:block}
+
+/* History table */
+.hist-table{width:100%;border-collapse:collapse}
+.hist-table th{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.hist-table td{padding:12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+.hist-table tr:last-child td{border-bottom:none}
+.hist-table tr:hover td{background:rgba(255,255,255,0.02)}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:99px;font-size:10px;font-weight:700;letter-spacing:0.05em}
+.badge-green{background:rgba(52,211,153,0.12);color:var(--green);border:1px solid rgba(52,211,153,0.25)}
+.badge-amber{background:rgba(245,158,11,0.12);color:var(--amber);border:1px solid rgba(245,158,11,0.25)}
+.badge-red{background:rgba(248,113,113,0.12);color:var(--red);border:1px solid rgba(248,113,113,0.25)}
+.badge-blue{background:rgba(96,165,250,0.12);color:var(--blue);border:1px solid rgba(96,165,250,0.25)}
+.badge-muted{background:rgba(100,116,139,0.12);color:var(--muted2);border:1px solid rgba(100,116,139,0.2)}
+.amount-pos{color:var(--green);font-weight:700;font-family:monospace}
+.amount-neg{color:var(--red);font-weight:700;font-family:monospace}
+
+/* ── ORDERS ── */
+.order-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);
+  padding:20px;margin-bottom:12px;transition:border-color .2s;
+}
+.order-card:hover{border-color:var(--border2)}
+.order-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.order-id{font-size:11px;color:var(--muted);font-family:monospace}
+.order-name{font-size:15px;font-weight:600;color:#f1f5f9;margin-top:2px}
+.order-zone{font-size:12px;color:var(--muted);margin-top:2px}
+.order-meta{display:flex;gap:24px}
+.order-meta-item .lab{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
+.order-meta-item .val{font-size:13px;font-weight:600;font-family:monospace}
+.order-actions{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.btn-sm{padding:7px 16px;border-radius:7px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:6px;transition:all .2s;font-family:inherit;border:none;cursor:pointer}
+.btn-pay{background:linear-gradient(135deg,#c9a84c,#a07828);color:#1c1917}
+.btn-cancel{background:transparent;border:1px solid var(--border);color:var(--muted2)}
+.btn-cancel:hover{border-color:var(--red);color:var(--red)}
+.btn-view{background:var(--bg3);border:1px solid var(--border);color:var(--muted2)}
+.btn-view:hover{color:var(--text)}
+
+/* Mint progress */
+.mint-progress{display:flex;align-items:center;gap:0;margin-top:12px}
+.mint-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
+.mint-step:not(:last-child)::after{
+  content:'';position:absolute;top:12px;left:50%;right:-50%;
+  height:2px;background:var(--border);z-index:0;
+}
+.mint-step.done:not(:last-child)::after{background:var(--green)}
+.mint-step.active:not(:last-child)::after{background:linear-gradient(90deg,var(--green),var(--border))}
+.mint-dot{
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;position:relative;z-index:1;
+  border:2px solid var(--border);background:var(--bg);color:var(--muted);
+}
+.mint-step.done .mint-dot{background:var(--green);border-color:var(--green);color:#fff}
+.mint-step.active .mint-dot{background:var(--amber);border-color:var(--amber);color:#fff;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.4)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
+.mint-label{font-size:9px;color:var(--muted);text-align:center;line-height:1.3;max-width:60px}
+
+/* ── NFT WALLET ── */
+.nft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px}
+.nft-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;transition:all .2s;cursor:pointer;
+}
+.nft-card:hover{border-color:var(--border2);transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.4)}
+.nft-image{
+  aspect-ratio:1;background:linear-gradient(135deg,#1a1228,#0d1a2e);
+  display:flex;align-items:center;justify-content:center;font-size:48px;
+}
+.nft-info{padding:10px 12px}
+.nft-name{font-size:12px;font-weight:600;color:#f1f5f9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nft-zone{font-size:10px;color:var(--muted);margin-top:2px}
+.nft-price{font-size:11px;color:var(--gold);font-family:monospace;margin-top:6px;font-weight:700}
+
+/* ── COMMISSION (DEALER) ── */
+.comm-stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.comm-stat{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:18px}
+.comm-stat .lab{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:6px}
+.comm-stat .val{font-size:22px;font-weight:700;font-family:monospace;color:var(--gold)}
+.comm-stat .sub{font-size:11px;color:var(--muted);margin-top:3px}
+.tier-badge{padding:2px 8px;border-radius:99px;font-size:10px;font-weight:700}
+.tier-1{background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3)}
+.tier-2{background:rgba(96,165,250,0.12);color:var(--blue);border:1px solid rgba(96,165,250,0.25)}
+.tier-3{background:rgba(100,116,139,0.12);color:var(--muted2);border:1px solid rgba(100,116,139,0.2)}
+
+/* ── RECHARGE MODAL ── */
+.modal-overlay{position:fixed;inset:0;z-index:500;background:rgba(4,6,10,.85);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:#0d1018;border:1px solid rgba(201,168,76,0.2);border-radius:16px;padding:32px;width:460px;max-width:calc(100vw - 32px);position:relative;box-shadow:0 24px 80px rgba(0,0,0,.6)}
+.modal-close{position:absolute;top:14px;right:14px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);color:var(--muted);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.modal-close:hover{background:rgba(255,255,255,.1);color:var(--text)}
+.modal-title{font-size:18px;font-weight:700;color:#f8fafc;margin-bottom:6px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:24px}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  nav{padding:0 16px}
+  .layout{flex-direction:column}
+  .sidebar{width:100%;position:static;height:auto;padding:12px 8px;display:flex;gap:4px;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .sidebar-label,.sidebar-role{display:none}
+  .sidebar-item{white-space:nowrap;flex-shrink:0;width:auto}
+  .main{padding:20px 16px}
+  .form-grid{grid-template-columns:1fr}
+  .comm-stat-grid{grid-template-columns:1fr 1fr}
+  .nft-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="assetum-home.html" class="nav-logo">
+    <div class="nav-logo-mark">A</div>
+    <span class="nav-brand">Anydeee</span>
+  </a>
+  <a href="assetum-home.html" class="nav-back">
+    ← 返回首頁
+  </a>
+  <div class="nav-user-pill" id="navUserPill">
+    <div class="nav-avatar" id="navAvatarLetter">?</div>
+    <span id="navUserEmail" style="font-size:13px;color:var(--muted2)">載入中…</span>
+  </div>
+</nav>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <span class="sidebar-label">帳戶管理</span>
+    <button class="sidebar-item active" data-page="profile" onclick="showPage('profile',this)">
+      <span class="ico">👤</span> 個人資料
+    </button>
+    <button class="sidebar-item" data-page="anyu" onclick="showPage('anyu',this)">
+      <span class="ico">💰</span> ANYU 平台幣
+    </button>
+    <button class="sidebar-item" data-page="txns" onclick="showPage('txns',this)">
+      <span class="ico">📊</span> 交易記錄
+    </button>
+    <button class="sidebar-item" data-page="orders" onclick="showPage('orders',this)">
+      <span class="ico">📋</span> 我的訂單
+    </button>
+    <button class="sidebar-item" data-page="wallet" onclick="showPage('wallet',this)">
+      <span class="ico">🎴</span> NFT 錢包
+    </button>
+    <span class="sidebar-label" id="dealerLabel" style="display:none">經銷商專區</span>
+    <button class="sidebar-item" data-page="commission" id="commissionBtn" style="display:none" onclick="showPage('commission',this)">
+      <span class="ico">💎</span> 分潤查詢
+    </button>
+    <div class="sidebar-role">
+      <div class="role-badge" id="roleBadge">USER</div>
+      <div id="roleDesc" style="font-size:10px;color:var(--muted)">一般用戶</div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- ── 個人資料 ── -->
+    <div class="page active" id="page-profile">
+      <div class="page-header">
+        <div class="page-title">個人資料</div>
+        <div class="page-sub">管理您的帳號基本資訊</div>
+      </div>
+      <div class="card">
+        <div class="profile-avatar-row">
+          <div class="profile-avatar-big" id="profileAvatar">U</div>
+          <div class="profile-info">
+            <div class="name" id="profileName">用戶</div>
+            <div class="email" id="profileEmail">—</div>
+            <div class="since">加入時間：2026/05/19</div>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field">
+            <label>顯示名稱</label>
+            <input type="text" id="fieldName" placeholder="您的名稱" />
+          </div>
+          <div class="field">
+            <label>電子信箱</label>
+            <input type="email" id="fieldEmail" placeholder="—" readonly style="opacity:.6" />
+          </div>
+          <div class="field">
+            <label>手機號碼</label>
+            <input type="text" placeholder="+886 ..." />
+          </div>
+          <div class="field">
+            <label>所在地區</label>
+            <select>
+              <option>台灣</option><option>香港</option><option>新加坡</option>
+              <option>日本</option><option>其他</option>
+            </select>
+          </div>
+          <div class="field" style="grid-column:span 2">
+            <label>推薦碼（邀請您的人）</label>
+            <input type="text" placeholder="選填" />
+          </div>
+        </div>
+        <button class="btn-save">儲存變更</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🔐 帳戶安全</div>
+        <div class="card-row">
+          <span class="lab">登入方式</span>
+          <span class="val">Email OTP 驗證</span>
+        </div>
+        <div class="card-row">
+          <span class="lab">最後登入</span>
+          <span class="val" id="lastLogin">—</span>
+        </div>
+        <div class="card-row">
+          <span class="lab">Token 狀態</span>
+          <span class="val"><span class="badge badge-green">有效</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ANYU 平台幣 ── -->
+    <div class="page" id="page-anyu">
+      <div class="page-header">
+        <div class="page-title">ANYU 平台幣</div>
+        <div class="page-sub">充值、查看餘額與交易歷史</div>
+      </div>
+
+      <div class="anyu-balance-card">
+        <div class="anyu-balance-label">可用 ANYU 餘額</div>
+        <div class="anyu-balance-value">12,480.00</div>
+        <div class="anyu-balance-usd">≈ US$1,248.00 <span style="color:var(--green);font-size:12px">+3.2% 今日</span></div>
+        <div class="anyu-actions">
+          <button class="btn-anyu btn-anyu-primary" onclick="openRecharge('bank')">🏦 匯款充值</button>
+          <button class="btn-anyu btn-anyu-outline" onclick="openRecharge('crypto')">💎 加密貨幣充值</button>
+        </div>
+      </div>
+
+      <div class="card" id="dealerIncomeCard" style="display:none">
+        <div class="card-title">💎 分潤收入總覽（經銷商）</div>
+        <div class="comm-stat-grid">
+          <div class="comm-stat">
+            <div class="lab">本月分潤</div>
+            <div class="val">3,240</div>
+            <div class="sub">ANYU ≈ US$324</div>
+          </div>
+          <div class="comm-stat">
+            <div class="lab">累積分潤</div>
+            <div class="val">48,600</div>
+            <div class="sub">自加入以來</div>
+          </div>
+          <div class="comm-stat">
+            <div class="lab">下線人數</div>
+            <div class="val">28</div>
+            <div class="sub">活躍下線</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📜 ANYU 歷史記錄</div>
+        <table class="hist-table">
+          <thead>
+            <tr>
+              <th>時間</th><th>類型</th><th>說明</th><th>金額</th><th>狀態</th>
+            </tr>
+          </thead>
+          <tbody id="anyuHistBody">
+            <tr>
+              <td>2026/05/18 14:32</td>
+              <td><span class="badge badge-green">分潤收入</span></td>
+              <td>訂單 #ORD-00234 一級分潤</td>
+              <td class="amount-pos">+320 ANYU</td>
+              <td><span class="badge badge-green">已入帳</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/17 10:15</td>
+              <td><span class="badge badge-blue">充值</span></td>
+              <td>匯款充值（台新銀行）</td>
+              <td class="amount-pos">+5,000 ANYU</td>
+              <td><span class="badge badge-green">已確認</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/15 09:48</td>
+              <td><span class="badge badge-amber">購買</span></td>
+              <td>購買 NFT #IP-Zone-0043</td>
+              <td class="amount-neg">-1,200 ANYU</td>
+              <td><span class="badge badge-green">完成</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/12 16:20</td>
+              <td><span class="badge badge-blue">充值</span></td>
+              <td>USDT 充值 via Polygon</td>
+              <td class="amount-pos">+3,000 ANYU</td>
+              <td><span class="badge badge-green">已確認</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/10 11:05</td>
+              <td><span class="badge badge-green">分潤收入</span></td>
+              <td>訂單 #ORD-00198 二級分潤</td>
+              <td class="amount-pos">+160 ANYU</td>
+              <td><span class="badge badge-green">已入帳</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── 交易記錄 ── -->
+    <div class="page" id="page-txns">
+      <div class="page-header">
+        <div class="page-title">交易記錄</div>
+        <div class="page-sub">所有鏈上與平台內交易</div>
+      </div>
+      <div class="card">
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+          <input type="text" placeholder="搜尋訂單號 / NFT / 類型" style="flex:1;padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;outline:none;min-width:200px" />
+          <select style="padding:9px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:9px;color:var(--text);font-size:13px;outline:none">
+            <option>所有類型</option><option>購買</option><option>充值</option><option>分潤</option><option>鑄造</option>
+          </select>
+        </div>
+        <table class="hist-table">
+          <thead>
+            <tr><th>時間</th><th>類型</th><th>說明</th><th>金額</th><th>Tx Hash</th><th>狀態</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>2026/05/18 14:32</td>
+              <td><span class="badge badge-green">分潤</span></td>
+              <td>訂單 #ORD-00234</td>
+              <td class="amount-pos">+320 ANYU</td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--blue)">0x3f…a2b1</span></td>
+              <td><span class="badge badge-green">完成</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/17 10:15</td>
+              <td><span class="badge badge-blue">充值</span></td>
+              <td>匯款充值</td>
+              <td class="amount-pos">+5,000 ANYU</td>
+              <td><span style="color:var(--muted);font-size:11px">平台內部</span></td>
+              <td><span class="badge badge-green">完成</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/15 09:48</td>
+              <td><span class="badge badge-amber">購買</span></td>
+              <td>IP-Zone NFT #43</td>
+              <td class="amount-neg">-1,200 ANYU</td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--blue)">0x8c…f441</span></td>
+              <td><span class="badge badge-green">完成</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/14 20:10</td>
+              <td><span class="badge badge-muted">鑄造</span></td>
+              <td>Mint NFT #IP-43</td>
+              <td class="amount-neg">— Gas</td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--blue)">0x2d…91c7</span></td>
+              <td><span class="badge badge-green">MINTED</span></td>
+            </tr>
+            <tr>
+              <td>2026/05/12 16:20</td>
+              <td><span class="badge badge-blue">充值</span></td>
+              <td>USDT Polygon</td>
+              <td class="amount-pos">+3,000 ANYU</td>
+              <td><span style="font-family:monospace;font-size:11px;color:var(--blue)">0x7a…c33e</span></td>
+              <td><span class="badge badge-green">完成</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── 我的訂單 ── -->
+    <div class="page" id="page-orders">
+      <div class="page-header">
+        <div class="page-title">我的訂單</div>
+        <div class="page-sub">查看訂單狀態、付款及鑄造進度</div>
+      </div>
+
+      <!-- Order: Awaiting payment -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#ORD-00241 · 2026/05/19 10:22</div>
+            <div class="order-name">IP授權 NFT — 角色 A 限量版 #0088</div>
+            <div class="order-zone">IP授權專區 · 數量：1</div>
+          </div>
+          <span class="badge badge-amber">待付款</span>
+        </div>
+        <div class="order-meta">
+          <div class="order-meta-item">
+            <div class="lab">訂單金額</div>
+            <div class="val" style="color:var(--gold)">1,200 ANYU</div>
+          </div>
+          <div class="order-meta-item">
+            <div class="lab">付款方式</div>
+            <div class="val">ANYU 點數</div>
+          </div>
+          <div class="order-meta-item">
+            <div class="lab">推薦碼</div>
+            <div class="val" style="font-size:12px;color:var(--muted)">—</div>
+          </div>
+        </div>
+        <div class="order-actions">
+          <button class="btn-sm btn-pay" onclick="showPayModal()">💳 提交付款資訊</button>
+          <button class="btn-sm btn-cancel">取消訂單</button>
+        </div>
+      </div>
+
+      <!-- Order: Minting -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#ORD-00234 · 2026/05/16 14:05</div>
+            <div class="order-name">IP授權 NFT — 角色 B 普通版 #0043</div>
+            <div class="order-zone">IP授權專區 · 數量：1</div>
+          </div>
+          <span class="badge badge-blue">鑄造中</span>
+        </div>
+        <div class="order-meta">
+          <div class="order-meta-item">
+            <div class="lab">訂單金額</div>
+            <div class="val" style="color:var(--gold)">800 ANYU</div>
+          </div>
+          <div class="order-meta-item">
+            <div class="lab">付款狀態</div>
+            <div class="val" style="color:var(--green)">已付款</div>
+          </div>
+          <div class="order-meta-item">
+            <div class="lab">推薦碼</div>
+            <div class="val" style="font-size:12px">REF-ANN01</div>
+          </div>
+        </div>
+        <!-- Mint progress -->
+        <div class="mint-progress">
+          <div class="mint-step done">
+            <div class="mint-dot">✓</div>
+            <div class="mint-label">訂單成立</div>
+          </div>
+          <div class="mint-step done">
+            <div class="mint-dot">✓</div>
+            <div class="mint-label">付款完成</div>
+          </div>
+          <div class="mint-step done">
+            <div class="mint-dot">✓</div>
+            <div class="mint-label">等待鑄造</div>
+          </div>
+          <div class="mint-step active">
+            <div class="mint-dot">⛏</div>
+            <div class="mint-label">鑄造中 (鏈殘鏈)</div>
+          </div>
+          <div class="mint-step">
+            <div class="mint-dot">5</div>
+            <div class="mint-label">MINTED</div>
+          </div>
+        </div>
+        <div class="order-actions">
+          <button class="btn-sm btn-view">🔍 查看訂單詳情</button>
+        </div>
+      </div>
+
+      <!-- Order: Completed -->
+      <div class="order-card">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#ORD-00198 · 2026/05/10 09:30</div>
+            <div class="order-name">IP授權 NFT — 角色 C 稀有版 #0011</div>
+            <div class="order-zone">IP授權專區 · 數量：2</div>
+          </div>
+          <span class="badge badge-green">已鑄造</span>
+        </div>
+        <div class="order-meta">
+          <div class="order-meta-item">
+            <div class="lab">訂單金額</div>
+            <div class="val" style="color:var(--gold)">3,600 ANYU</div>
+          </div>
+          <div class="order-meta-item">
+            <div class="lab">Tx Hash</div>
+            <div class="val" style="font-size:11px;color:var(--blue);font-family:monospace">0x8c…f441</div>
+          </div>
+          <div class="order-meta-item">
+            <div class="lab">分潤結算</div>
+            <div class="val" style="color:var(--green)">已計算</div>
+          </div>
+        </div>
+        <div class="order-actions">
+          <button class="btn-sm btn-view">🔍 查看訂單詳情</button>
+          <button class="btn-sm" style="background:var(--bg3);border:1px solid var(--border);color:var(--muted2)">🎴 查看 NFT</button>
+        </div>
+      </div>
+
+      <!-- Order: Cancelled -->
+      <div class="order-card" style="opacity:.7">
+        <div class="order-header">
+          <div>
+            <div class="order-id">#ORD-00188 · 2026/05/05 21:14</div>
+            <div class="order-name">IP授權 NFT — 角色 A 普通版 #0060</div>
+            <div class="order-zone">IP授權專區 · 數量：1</div>
+          </div>
+          <span class="badge badge-red">已取消</span>
+        </div>
+        <div class="order-meta">
+          <div class="order-meta-item">
+            <div class="lab">訂單金額</div>
+            <div class="val" style="color:var(--muted2)">1,200 ANYU</div>
+          </div>
+          <div class="order-meta-item">
+            <div class="lab">取消原因</div>
+            <div class="val" style="font-size:12px;color:var(--muted)">用戶主動取消</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── NFT 錢包 ── -->
+    <div class="page" id="page-wallet">
+      <div class="page-header">
+        <div class="page-title">NFT 錢包</div>
+        <div class="page-sub">您持有的所有 NFT 資產</div>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:13px;color:var(--muted);margin-bottom:4px">持有 NFT 總數</div>
+            <div style="font-size:28px;font-weight:800;font-family:monospace;color:var(--gold)">3</div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:13px;color:var(--muted);margin-bottom:4px">錢包地址</div>
+            <div style="font-size:12px;font-family:monospace;color:var(--blue)">0x3f4d…a2b1</div>
+          </div>
+        </div>
+      </div>
+      <div class="nft-grid">
+        <div class="nft-card">
+          <div class="nft-image">🐉</div>
+          <div class="nft-info">
+            <div class="nft-name">角色 C 稀有版 #0011</div>
+            <div class="nft-zone">IP授權專區</div>
+            <div class="nft-price">發行價 1,800 ANYU</div>
+          </div>
+        </div>
+        <div class="nft-card">
+          <div class="nft-image">🦋</div>
+          <div class="nft-info">
+            <div class="nft-name">角色 C 稀有版 #0012</div>
+            <div class="nft-zone">IP授權專區</div>
+            <div class="nft-price">發行價 1,800 ANYU</div>
+          </div>
+        </div>
+        <div class="nft-card" style="border-color:rgba(245,158,11,0.3)">
+          <div class="nft-image">⚡</div>
+          <div class="nft-info">
+            <div class="nft-name">角色 B 普通版 #0043</div>
+            <div class="nft-zone">IP授權專區</div>
+            <div class="nft-price" style="color:var(--amber)">鑄造中…</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 分潤查詢（DEALER 專區） ── -->
+    <div class="page" id="page-commission">
+      <div class="page-header">
+        <div class="page-title">分潤查詢</div>
+        <div class="page-sub">查看分潤配置、個人收入與下線結構</div>
+      </div>
+
+      <!-- 分潤概覽 -->
+      <div class="comm-stat-grid" style="margin-bottom:16px">
+        <div class="comm-stat">
+          <div class="lab">本月分潤收入</div>
+          <div class="val">3,240</div>
+          <div class="sub">ANYU · 以點數即時入帳</div>
+        </div>
+        <div class="comm-stat">
+          <div class="lab">累積總分潤</div>
+          <div class="val">48,600</div>
+          <div class="sub">自加入以來</div>
+        </div>
+        <div class="comm-stat">
+          <div class="lab">我的等級</div>
+          <div class="val" style="font-size:16px;margin-top:4px"><span class="tier-badge tier-1">一級經銷商</span></div>
+          <div class="sub">下線 28 人</div>
+        </div>
+      </div>
+
+      <!-- 分潤配置 -->
+      <div class="card">
+        <div class="card-title">⚙️ 分潤配置（專區：IP授權專區）</div>
+        <div class="card-row">
+          <span class="lab">一級分潤率（我的直接下線）</span>
+          <span class="val" style="color:var(--gold)">8%</span>
+        </div>
+        <div class="card-row">
+          <span class="lab">二級分潤率</span>
+          <span class="val" style="color:var(--blue)">4%</span>
+        </div>
+        <div class="card-row">
+          <span class="lab">三級分潤率</span>
+          <span class="val" style="color:var(--muted2)">2%</span>
+        </div>
+        <div class="card-row">
+          <span class="lab">系統分潤（供應商）</span>
+          <span class="val" style="color:var(--muted)">5%（固定）</span>
+        </div>
+      </div>
+
+      <!-- 個人分潤明細 -->
+      <div class="card">
+        <div class="card-title">📊 個人分潤收入明細</div>
+        <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
+          <select style="padding:7px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;outline:none">
+            <option>2026年5月</option><option>2026年4月</option><option>2026年3月</option>
+          </select>
+          <select style="padding:7px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;outline:none">
+            <option>所有專區</option><option>IP授權專區</option><option>RWA交易所</option>
+          </select>
+        </div>
+        <table class="hist-table">
+          <thead>
+            <tr><th>時間</th><th>訂單</th><th>來源</th><th>等級</th><th>分潤金額</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>05/18 14:32</td>
+              <td style="font-family:monospace;font-size:11px">#ORD-00234</td>
+              <td style="color:var(--muted);font-size:12px">ann_01（直接下線）</td>
+              <td><span class="tier-badge tier-1">一級</span></td>
+              <td class="amount-pos">+320 ANYU</td>
+            </tr>
+            <tr>
+              <td>05/15 09:48</td>
+              <td style="font-family:monospace;font-size:11px">#ORD-00220</td>
+              <td style="color:var(--muted);font-size:12px">bob_02（二級）</td>
+              <td><span class="tier-badge tier-2">二級</span></td>
+              <td class="amount-pos">+160 ANYU</td>
+            </tr>
+            <tr>
+              <td>05/12 11:20</td>
+              <td style="font-family:monospace;font-size:11px">#ORD-00210</td>
+              <td style="color:var(--muted);font-size:12px">carol_03（三級）</td>
+              <td><span class="tier-badge tier-3">三級</span></td>
+              <td class="amount-pos">+80 ANYU</td>
+            </tr>
+            <tr>
+              <td>05/10 16:55</td>
+              <td style="font-family:monospace;font-size:11px">#ORD-00198</td>
+              <td style="color:var(--muted);font-size:12px">ann_01（直接下線）</td>
+              <td><span class="tier-badge tier-1">一級</span></td>
+              <td class="amount-pos">+640 ANYU</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 日期區間趨勢 -->
+      <div class="card">
+        <div class="card-title">📈 分潤趨勢（近 7 日）</div>
+        <div style="display:flex;align-items:flex-end;gap:8px;height:80px;padding-top:8px">
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+            <div style="background:var(--gold-dim);border:1px solid var(--border2);border-radius:4px 4px 0 0;width:100%;height:40%"></div>
+            <span style="font-size:9px;color:var(--muted)">5/13</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+            <div style="background:var(--gold-dim);border:1px solid var(--border2);border-radius:4px 4px 0 0;width:100%;height:60%"></div>
+            <span style="font-size:9px;color:var(--muted)">5/14</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+            <div style="background:var(--gold-dim);border:1px solid var(--border2);border-radius:4px 4px 0 0;width:100%;height:30%"></div>
+            <span style="font-size:9px;color:var(--muted)">5/15</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+            <div style="background:var(--gold-dim);border:1px solid var(--border2);border-radius:4px 4px 0 0;width:100%;height:75%"></div>
+            <span style="font-size:9px;color:var(--muted)">5/16</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+            <div style="background:var(--gold-dim);border:1px solid var(--border2);border-radius:4px 4px 0 0;width:100%;height:50%"></div>
+            <span style="font-size:9px;color:var(--muted)">5/17</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+            <div style="background:rgba(201,168,76,0.3);border:1px solid var(--gold);border-radius:4px 4px 0 0;width:100%;height:90%"></div>
+            <span style="font-size:9px;color:var(--muted)">5/18</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;gap:4px">
+            <div style="background:var(--gold-dim);border:1px solid var(--border2);border-radius:4px 4px 0 0;width:100%;height:20%"></div>
+            <span style="font-size:9px;color:var(--muted)">5/19</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ── RECHARGE MODAL ── -->
+<div class="modal-overlay" id="rechargeModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeRecharge()">✕</button>
+    <div id="recharge-bank" style="display:none">
+      <div class="modal-title">🏦 匯款充值</div>
+      <div class="modal-sub">請填寫匯款資訊，管理員審核後自動入帳</div>
+      <div class="recharge-tabs">
+        <button class="rtab active" onclick="switchRtab(this,'r-bank-form')">填寫表單</button>
+        <button class="rtab" onclick="switchRtab(this,'r-bank-info')">銀行帳號資訊</button>
+      </div>
+      <div class="rtab-pane active" id="r-bank-form">
+        <div class="field" style="margin-bottom:12px">
+          <label>匯款金額（ANYU）</label>
+          <input type="number" placeholder="最少 500 ANYU" />
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label>匯款帳號後 5 碼</label>
+          <input type="text" placeholder="12345" maxlength="5" />
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <label>匯款時間</label>
+          <input type="datetime-local" />
+        </div>
+        <button class="btn-save" style="width:100%;text-align:center">提交申請</button>
+      </div>
+      <div class="rtab-pane" id="r-bank-info">
+        <div class="card-row"><span class="lab">銀行</span><span class="val">台新銀行 812</span></div>
+        <div class="card-row"><span class="lab">帳號</span><span class="val" style="font-family:monospace">1234-567-890123</span></div>
+        <div class="card-row"><span class="lab">戶名</span><span class="val">Anydeee Pte. Ltd.</span></div>
+        <div class="card-row"><span class="lab">備注</span><span class="val" style="font-size:12px;color:var(--muted)">請備注您的 Email</span></div>
+      </div>
+    </div>
+    <div id="recharge-crypto" style="display:none">
+      <div class="modal-title">💎 加密貨幣充值</div>
+      <div class="modal-sub">支援 USDT / USDC，轉帳後鏈上確認自動入帳</div>
+      <div class="recharge-tabs">
+        <button class="rtab active" onclick="switchRtab(this,'r-crypto-usdt')">USDT</button>
+        <button class="rtab" onclick="switchRtab(this,'r-crypto-usdc')">USDC</button>
+      </div>
+      <div class="rtab-pane active" id="r-crypto-usdt">
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px">USDT (Polygon) 充值地址</div>
+          <div style="font-size:12px;font-family:monospace;color:var(--blue);word-break:break-all;margin-bottom:10px">0x9aB3f…1C2D4e5F6g7H</div>
+          <div style="display:inline-block;background:#fff;padding:12px;border-radius:8px">
+            <div style="width:80px;height:80px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px">QR Code</div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:12px">
+          <label>充值金額（USDT）</label>
+          <input type="number" placeholder="最少 50 USDT" />
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <label>Tx Hash（轉帳後填入）</label>
+          <input type="text" placeholder="0x..." />
+        </div>
+        <button class="btn-save" style="width:100%;text-align:center">鏈上填表送出</button>
+      </div>
+      <div class="rtab-pane" id="r-crypto-usdc">
+        <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;margin-bottom:14px">
+          <div style="font-size:10px;color:var(--muted);margin-bottom:8px">USDC (Polygon) 充值地址</div>
+          <div style="font-size:12px;font-family:monospace;color:var(--blue);word-break:break-all;margin-bottom:10px">0x9aB3f…1C2D4e5F6g7H</div>
+          <div style="display:inline-block;background:#fff;padding:12px;border-radius:8px">
+            <div style="width:80px;height:80px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px">QR Code</div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:16px">
+          <label>充值金額（USDC）</label>
+          <input type="number" placeholder="最少 50 USDC" />
+        </div>
+        <button class="btn-save" style="width:100%;text-align:center">鏈上填表送出</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PAY MODAL ── -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('payModal').classList.remove('open')">✕</button>
+    <div class="modal-title">💳 提交付款資訊</div>
+    <div class="modal-sub">訂單 #ORD-00241 · 金額：1,200 ANYU</div>
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div class="card-row"><span class="lab">可用 ANYU</span><span class="val" style="color:var(--gold)">12,480</span></div>
+      <div class="card-row"><span class="lab">訂單金額</span><span class="val">1,200</span></div>
+      <div class="card-row" style="border-bottom:none"><span class="lab">付款後餘額</span><span class="val" style="color:var(--green)">11,280</span></div>
+    </div>
+    <button class="btn-save" style="width:100%;text-align:center" onclick="confirmPay()">確認以 ANYU 付款</button>
+    <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--muted)">付款後等待管理員確認鑄造</div>
+  </div>
+</div>
+
+<script>
+// ── Page system ──
+function showPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+// ── User state ──
+(function() {
+  const email = sessionStorage.getItem('anydeee_email') || 'demo@anydeee.com';
+  const initial = (email[0] || 'U').toUpperCase();
+  document.getElementById('navAvatarLetter').textContent = initial;
+  document.getElementById('navUserEmail').textContent = email;
+  document.getElementById('profileAvatar').textContent = initial;
+  document.getElementById('profileName').textContent = email.split('@')[0];
+  document.getElementById('profileEmail').textContent = email;
+  document.getElementById('fieldEmail').value = email;
+  document.getElementById('fieldName').value = email.split('@')[0];
+  document.getElementById('lastLogin').textContent = new Date().toLocaleString('zh-TW');
+
+  // Role detection (demo: check if email contains 'dealer')
+  const role = sessionStorage.getItem('anydeee_role') || (email.includes('dealer') ? 'DEALER' : 'USER');
+  document.getElementById('roleBadge').textContent = role;
+  if (role === 'DEALER' || role === 'SUPPLIER') {
+    document.getElementById('dealerLabel').style.display = 'block';
+    document.getElementById('commissionBtn').style.display = 'flex';
+    document.getElementById('dealerIncomeCard').style.display = 'block';
+    document.getElementById('roleDesc').textContent = role === 'DEALER' ? '一級經銷商' : '供應商/服務商';
+    // Show dealer income in ANYU history
+    const dealerRow = `<tr>
+      <td>2026/05/18 14:32</td>
+      <td><span class="badge badge-green">分潤收入</span></td>
+      <td>訂單 #ORD-00234 一級分潤</td>
+      <td class="amount-pos">+320 ANYU</td>
+      <td><span class="badge badge-green">已入帳</span></td>
+    </tr>`;
+    // already in table as first row
+  }
+})();
+
+// ── Recharge modal ──
+function openRecharge(type) {
+  document.getElementById('rechargeModal').classList.add('open');
+  document.getElementById('recharge-bank').style.display = type === 'bank' ? 'block' : 'none';
+  document.getElementById('recharge-crypto').style.display = type === 'crypto' ? 'block' : 'none';
+}
+function closeRecharge() {
+  document.getElementById('rechargeModal').classList.remove('open');
+}
+document.getElementById('rechargeModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeRecharge();
+});
+
+// ── Recharge tabs ──
+function switchRtab(btn, paneId) {
+  const parent = btn.closest('.modal') || btn.closest('.card');
+  btn.parentElement.querySelectorAll('.rtab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  // Find sibling panes
+  const allPanes = document.querySelectorAll('.rtab-pane');
+  allPanes.forEach(p => {
+    if (p.id && p.id === paneId) p.classList.add('active');
+    else if ([...btn.parentElement.nextElementSibling?.querySelectorAll?.('.rtab-pane') || []].includes(p)
+          || btn.closest('.modal')?.contains(p)) p.classList.remove('active');
+  });
+  document.getElementById(paneId)?.classList.add('active');
+}
+
+// ── Pay modal ──
+function showPayModal() {
+  document.getElementById('payModal').classList.add('open');
+}
+document.getElementById('payModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) document.getElementById('payModal').classList.remove('open');
+});
+function confirmPay() {
+  document.getElementById('payModal').classList.remove('open');
+  alert('付款資訊已提交！等待管理員確認後將開始鑄造。');
+}
+
+// Handle hash navigation from other pages
+if (window.location.hash) {
+  const hash = window.location.hash.replace('#','');
+  const map = { orders:'orders', wallet:'wallet', anyu:'anyu', commission:'commission' };
+  if (map[hash]) {
+    const btn = document.querySelector(`[data-page="${map[hash]}"]`);
+    if (btn) showPage(map[hash], btn);
+  }
+}
+</script>
+</body>
+</html>
