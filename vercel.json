@@ -30,10 +30,6 @@
     {
       "source": "/dex",
       "destination": "/rwa-dex.html"
-    },
-    {
-      "source": "/echo-tree-esg",
-      "destination": "/echo-tree-esg.html"
     }
   ]
 }
