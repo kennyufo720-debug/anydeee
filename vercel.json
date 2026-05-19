@@ -3,7 +3,7 @@
   "outputDirectory": ".",
   "framework": null,
   "rewrites": [
-    { "source": "/", "destination": "/assetum-home.html" },
+    { "source": "/", "destination": "/rwa-dex.html" },
     { "source": "/home", "destination": "/assetum-home.html" },
     { "source": "/account", "destination": "/account.html" },
     { "source": "/ip-zone", "destination": "/ip-zone.html" },
