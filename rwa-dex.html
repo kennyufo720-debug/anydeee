@@ -3,6 +3,16 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content="Anydeee 是 RWA 鏈上交易所展示平台，呈現實體資產代幣化、NFT 發行、資產交易與會員服務流程。" />
+<meta property="og:title" content="Anydeee — RWA 鏈上交易所" />
+<meta property="og:description" content="探索 RWA 資產發行、NFT 交易、質押與會員福利。" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://anydeee.vercel.app/" />
+<meta property="og:image" content="https://anydeee.vercel.app/ziyu-forest.jpeg" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="canonical" href="https://anydeee.vercel.app/" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="manifest" href="/site.webmanifest" />
 <title>Anydeee — RWA 鏈上交易所</title>
 <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
@@ -13,7 +23,7 @@
     --green:#22c55e; --red:#ef4444; --yellow:#f5b04a; --gold:#e89968;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;font-size:13px}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;font-size:13px;overflow-x:hidden}
   a{color:var(--accent);text-decoration:none}
   button{font-family:inherit;cursor:pointer;border:none;outline:none}
 
@@ -1204,6 +1214,21 @@
     .trade-grid{grid-template-columns:1fr;grid-template-rows:auto}
     .stats-row{grid-template-columns:repeat(2,1fr)}
     nav{display:none}
+  }
+  @media (max-width:560px){
+    header{align-items:flex-start;padding:10px 12px}
+    .logo{font-size:16px;min-width:0}
+    .right-nav{margin-left:auto;gap:4px;flex-wrap:wrap;justify-content:flex-end;max-width:calc(100vw - 92px)}
+    .icon-btn{width:30px;height:30px;font-size:13px}
+    .admin-entry-btn{padding:7px 9px}
+    .net-pill{padding:6px 8px;font-size:11px}
+    #guestNav{gap:4px}
+    #guestNav .btn-ghost,#guestNav .btn-primary{padding:8px 10px;font-size:12px;writing-mode:horizontal-tb}
+    .page{padding:12px 16px}
+    .hero-ad-row{gap:10px}
+    .ad-slot{min-width:0}
+    .stats-row{grid-template-columns:1fr 1fr;gap:10px}
+    table{max-width:100%}
   }
   /* ── Echo Tree 限量商城 ── */
   .etstore-hero{position:relative;overflow:hidden;padding:40px 24px 32px;text-align:center;background:linear-gradient(160deg,#0a1f0f 0%,#0d2b18 40%,#0a1a12 100%);border-bottom:1px solid rgba(34,197,94,.2)}
@@ -2990,7 +3015,7 @@
       </div>
       <div class="auth-field">
         <label>密碼</label>
-        <div class="af-wrap"><span class="ico">🔒</span><input type="password" id="loginPwd" placeholder="••••••••" id="loginPwdInput" /><span class="eye" onclick="togglePwd('loginPwdInput')">👁</span></div>
+        <div class="af-wrap"><span class="ico">🔒</span><input type="password" id="loginPwd" placeholder="••••••••" /><span class="eye" onclick="togglePwd('loginPwd')">👁</span></div>
       </div>
       <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:16px">
         <label style="display:flex;align-items:center;gap:5px;cursor:pointer;color:var(--muted)"><input type="checkbox" /> 記住我</label>
@@ -3533,8 +3558,7 @@ let _otpCode = null, _otpEmail = null;
 function _sendOTP(email){
   _otpCode  = Math.floor(100000 + Math.random() * 900000).toString();
   _otpEmail = email;
-  console.log(`%c[Anydeee OTP] ${email} → ${_otpCode}`, 'color:#c9a84c;font-size:14px;font-weight:bold');
-  toast('OTP 已發送', `驗證碼已發送至 ${email}（Demo：請看 Console F12）`, 'success');
+  toast('OTP 已發送', `Demo 驗證碼：${_otpCode}`, 'success');
 }
 function _verifyOTP(code){ return code === _otpCode; }
 
@@ -3547,7 +3571,7 @@ function _showOTPDialog(email, onOK){
   dlg.innerHTML = `<div style="position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center">
     <div style="background:#0d1018;border:1px solid rgba(201,168,76,.3);border-radius:16px;padding:32px;width:360px;max-width:92vw">
       <div style="font-size:18px;font-weight:700;color:#f8fafc;margin-bottom:4px">✉️ OTP 驗證</div>
-      <div style="font-size:13px;color:#64748b;margin-bottom:20px">已發送至 ${email}（Demo 請看 Console F12）</div>
+      <div style="font-size:13px;color:#64748b;margin-bottom:20px">已發送至 ${email}（Demo 驗證碼：${_otpCode}）</div>
       <input id="_otpIn" maxlength="6" placeholder="請輸入 6 位驗證碼"
         style="width:100%;padding:12px;background:#111620;border:1px solid rgba(255,255,255,.12);border-radius:10px;
                color:#f8fafc;font-size:22px;letter-spacing:.2em;text-align:center;outline:none;font-family:monospace;margin-bottom:14px"/>
@@ -3602,11 +3626,10 @@ function doLogin(){
 
   const users = _DB.getUsers();
 
-  // 若帳號不存在，自動建立（首次登入即註冊）
   if(!users[email]){
-    const name = email.split('@')[0].replace(/[^a-zA-Z0-9一-鿿]/g,'') || '會員';
-    users[email] = { name, email, password: pwd, kyc: false, fa2: false, avatar: name.charAt(0).toUpperCase(), vip:0, anyu:128400, role:'USER', createdAt: Date.now() };
-    _DB.saveUsers(users);
+    toast('帳號不存在','請先完成註冊再登入','error');
+    switchToRegister();
+    return;
   }
 
   const u = users[email];
@@ -3658,12 +3681,7 @@ function doLogout(){
   setTimeout(() => location.href = '/', 800);
 }
 function socialLogin(provider){
-  const names  = {google:'Google 用戶', apple:'Apple 用戶', line:'LINE 用戶'};
-  const emails = {google:'user@gmail.com', apple:'user@icloud.com', line:'user@line.me'};
-  const avatars = {google:'G', apple:'🍎', line:'L'};
-  _pendingLoginUser = { name: names[provider], email: emails[provider], avatar: avatars[provider]||'?' };
-  closeModal('loginModal'); closeModal('registerModal');
-  completeLogin(_pendingLoginUser);
+  toast('Demo 模式暫停社群登入','正式環境請串接 OAuth 後端驗證','error');
 }
 function doRegister(){
   const name  = document.getElementById('regName').value.trim();
@@ -8030,12 +8048,8 @@ renderLaunchPage();
 renderPredictions();
 
 /* ===== 後台管理 ADMIN ===== */
-/* 三級權限：super > manager > editor */
-const ADMIN_ROLES = {
-  'anydeee2026':  { role:'super',   label:'⭐ 超級管理員', color:'#facc15' },
-  'etstore888':   { role:'manager', label:'🏪 店長',       color:'#60a5fa' },
-  'etcontent888': { role:'editor',  label:'✏️ 內容編輯',  color:'#a78bfa' },
-};
+/* Public builds do not ship client-side admin credentials. */
+const ADMIN_ROLES = {};
 const ADMIN_STORE_KEY = 'anydeee_admin_store';
 const ADMIN_ANN_KEY   = 'anydeee_admin_ann';
 let adminAuthed = false;
@@ -8063,21 +8077,10 @@ let adminRole   = null; // 'super' | 'manager' | 'editor'
 })();
 
 function adminLogin(){
-  const v = document.getElementById('adminPwInput').value.trim();
-  const matched = ADMIN_ROLES[v];
-  if(matched){
-    adminAuthed = true;
-    adminRole   = matched.role;
-    document.getElementById('adminLock').style.display='none';
-    document.getElementById('adminPanel').style.display='block';
-    // show role badge
-    document.getElementById('adminRoleBadge').textContent = matched.label;
-    document.getElementById('adminRoleBadge').style.color = matched.color;
-    renderAdminPanel();
-  } else {
-    document.getElementById('adminPwErr').textContent='密碼錯誤，請重試';
-    document.getElementById('adminPwInput').value='';
-  }
+  adminAuthed = false;
+  adminRole = null;
+  document.getElementById('adminPwErr').textContent='公開 Demo 已停用前端後台登入，請改用受保護的後端管理系統。';
+  document.getElementById('adminPwInput').value='';
 }
 
 function adminLogout(){

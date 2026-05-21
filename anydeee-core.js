@@ -26,8 +26,7 @@ let _otp = null, _otpEmail = null;
 function ADB_sendOTP(email) {
   _otp = Math.floor(100000 + Math.random() * 900000).toString();
   _otpEmail = email;
-  console.log(`%c[Anydeee OTP] ${email} → ${_otp}`, 'color:#c9a84c;font-weight:bold');
-  ADB_toast(`✉️ OTP 已發送至 ${email}（Demo 模式：請看瀏覽器 Console F12）`, 'info', 5000);
+  ADB_toast(`OTP 已發送至 ${email}（Demo 驗證碼：${_otp}）`, 'info', 5000);
 }
 function ADB_verifyOTP(otp) { return otp === _otp; }
 
@@ -66,7 +65,7 @@ function ADB_showOTPModal(email, onSuccess) {
     <div style="position:fixed;inset:0;z-index:99998;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center">
       <div style="background:#0d1018;border:1px solid rgba(201,168,76,.3);border-radius:16px;padding:32px;width:360px;max-width:90vw">
         <div style="font-size:18px;font-weight:700;color:#f8fafc;margin-bottom:6px">✉️ 輸入 OTP 驗證碼</div>
-        <div style="font-size:13px;color:#64748b;margin-bottom:20px">已發送至 ${email}（Demo 請看 Console）</div>
+        <div style="font-size:13px;color:#64748b;margin-bottom:20px">已發送至 ${email}（Demo 驗證碼：${_otp}）</div>
         <input id="_anydOTPInput" type="text" maxlength="6" placeholder="6 位數驗證碼"
           style="width:100%;padding:12px 16px;background:#111620;border:1px solid rgba(255,255,255,.1);
                  border-radius:10px;color:#f8fafc;font-size:20px;letter-spacing:.2em;text-align:center;
