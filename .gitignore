@@ -8,3 +8,5 @@ __pycache__/
 queue/
 *.log
 soul.db
+.vercel
+.env*.local
