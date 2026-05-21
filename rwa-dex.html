@@ -3547,6 +3547,47 @@ const _DB = {
     _renderNotifDot();
   }
 };
+const AnydeeeAPI = {
+  async request(path, options = {}) {
+    const res = await fetch(path, {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      ...options
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || data.ok === false) {
+      const err = new Error(data.message || data.error || 'API request failed');
+      err.status = res.status;
+      err.code = data.error;
+      throw err;
+    }
+    return data;
+  },
+  register(payload) {
+    return this.request('/api/register', { method: 'POST', body: JSON.stringify(payload) });
+  },
+  login(payload) {
+    return this.request('/api/login', { method: 'POST', body: JSON.stringify(payload) });
+  },
+  me() {
+    return this.request('/api/me');
+  },
+  logout() {
+    return this.request('/api/logout', { method: 'POST', body: '{}' });
+  }
+};
+function apiErrorMessage(err){
+  const map = {
+    DB_NOT_CONFIGURED: '資料庫尚未設定，請先在 Vercel 加上 DATABASE_URL。',
+    AUTH_NOT_CONFIGURED: 'AUTH_SECRET 尚未設定，請先在 Vercel 加上 AUTH_SECRET。',
+    EMAIL_EXISTS: '此 Email 已註冊，請直接登入。',
+    INVALID_CREDENTIALS: 'Email 或密碼錯誤。',
+    WEAK_PASSWORD: '密碼至少需要 8 個字元。',
+    INVALID_EMAIL: 'Email 格式不正確。',
+    MISSING_FIELDS: '請填寫所有必填欄位。'
+  };
+  return map[err?.code] || err?.message || '請稍後再試';
+}
 function _renderNotifDot(){
   const unread = _DB.getNotifs().filter(n=>!n.read).length;
   const dot = document.getElementById('notifDot');
@@ -3592,11 +3633,11 @@ function _showOTPDialog(email, onOK){
 }
 
 /* 狀態（從 session 還原） */
-const _savedSess = _DB.getSess();
-let isLoggedIn     = !!_savedSess;
-let currentUser    = _savedSess ? { name:_savedSess.name, email:_savedSess.email, avatar:_savedSess.avatar } : null;
-let memberKYCStatus  = _savedSess?.kyc  || false;
-let member2FAEnabled = _savedSess?.fa2  || false;
+const _savedSess = null;
+let isLoggedIn     = false;
+let currentUser    = null;
+let memberKYCStatus  = false;
+let member2FAEnabled = false;
 let _kycStep = 1;
 let _pendingLoginUser = null;
 
@@ -3619,30 +3660,19 @@ const txHistory = [
 ];
 
 /* ─ 登入/登出 ─ */
-function doLogin(){
+async function doLogin(){
   const email = document.getElementById('loginEmail').value.trim().toLowerCase();
   const pwd   = document.getElementById('loginPwd').value;
   if(!email || !pwd){ toast('請填寫完整','請輸入電子郵件與密碼','error'); return; }
 
-  const users = _DB.getUsers();
-
-  if(!users[email]){
-    toast('帳號不存在','請先完成註冊再登入','error');
-    switchToRegister();
-    return;
-  }
-
-  const u = users[email];
-  if(u.password && u.password !== pwd){ toast('密碼錯誤','請確認密碼後再試','error'); return; }
-
-  _pendingLoginUser = { name: u.name, email, avatar: u.avatar||u.name.charAt(0).toUpperCase(), kyc:u.kyc, fa2:u.fa2 };
-  closeModal('loginModal');
-
-  // 送 OTP 驗證
-  _sendOTP(email);
-  _showOTPDialog(email, () => {
+  try {
+    const data = await AnydeeeAPI.login({ email, password: pwd });
+    _pendingLoginUser = data.user;
+    closeModal('loginModal');
     completeLogin(_pendingLoginUser);
-  });
+  } catch(err) {
+    toast('登入失敗', apiErrorMessage(err), 'error');
+  }
 }
 function verify2FA(){
   const row = document.getElementById('otpRowLogin');
@@ -3669,7 +3699,8 @@ function completeLogin(user){
   const users = _DB.getUsers();
   if(users[user.email]){ walletBalances.ANYU = users[user.email].anyu || 128400; renderWalletPage && renderWalletPage(); }
 }
-function doLogout(){
+async function doLogout(){
+  try { await AnydeeeAPI.logout(); } catch(e) {}
   _DB.clearSess();
   isLoggedIn = false; currentUser = null; kycVerified = false;
   memberKYCStatus = false; member2FAEnabled = false;
@@ -3683,7 +3714,7 @@ function doLogout(){
 function socialLogin(provider){
   toast('Demo 模式暫停社群登入','正式環境請串接 OAuth 後端驗證','error');
 }
-function doRegister(){
+async function doRegister(){
   const name  = document.getElementById('regName').value.trim();
   const email = document.getElementById('regEmail').value.trim().toLowerCase();
   const pwd   = document.getElementById('regPwd').value;
@@ -3694,17 +3725,15 @@ function doRegister(){
   if(!terms){ toast('請同意服務條款','','error'); return; }
   if(pwd.length<8){ toast('密碼太短','至少需要 8 個字元','error'); return; }
 
-  const users = _DB.getUsers();
-  if(users[email]){ toast('Email 已註冊','此 Email 已有帳號，請直接登入','error'); return; }
-
-  const newUser = { name, email, password: pwd, kyc:false, fa2:false, avatar: name.charAt(0).toUpperCase(), vip:0, anyu:128400, role:'USER', createdAt: Date.now() };
-  users[email] = newUser;
-  _DB.saveUsers(users);
-  _pendingLoginUser = { name, email, avatar: name.charAt(0).toUpperCase(), kyc:false, fa2:false };
-  closeModal('registerModal');
-  completeLogin(_pendingLoginUser);
-  _DB.addNotif('帳號建立成功！歡迎加入 Anydeee 生態系');
-  setTimeout(()=>toast('帳號已建立', '建議完成 KYC 驗證以解鎖所有功能','success'), 800);
+  try {
+    const data = await AnydeeeAPI.register({ name, email, password: pwd });
+    _pendingLoginUser = data.user;
+    closeModal('registerModal');
+    completeLogin(_pendingLoginUser);
+    setTimeout(()=>toast('帳號已建立', '建議完成 KYC 驗證以解鎖所有功能','success'), 800);
+  } catch(err) {
+    toast('註冊失敗', apiErrorMessage(err), 'error');
+  }
 }
 function switchToRegister(){ closeModal('loginModal'); setTimeout(()=>openModal('registerModal'),200); }
 function switchToLogin(){ closeModal('registerModal'); setTimeout(()=>openModal('loginModal'),200); }
@@ -8365,16 +8394,13 @@ function renderMemberPortal(){
 /* ===== PDF 流程補全 ===== */
 
 /* ── 頁面載入：自動還原登入狀態（等 DOM ready）── */
-function _restoreSession(){
+async function _restoreSession(){
   try {
-    const s = _DB.getSess();
-    if(!s) return;
-    if(Date.now() - (s.loginAt||0) > 7*24*60*60*1000){ _DB.clearSess(); return; }
-    _pendingLoginUser = { name:s.name, email:s.email, avatar:s.avatar, kyc:s.kyc, fa2:s.fa2 };
+    const data = await AnydeeeAPI.me();
+    _pendingLoginUser = data.user;
     completeLogin(_pendingLoginUser);
-    console.log('%c[Anydeee] Session 已還原：' + s.email, 'color:#c9a84c');
   } catch(e) {
-    console.warn('[Anydeee] Session 還原失敗:', e);
+    _DB.clearSess();
   }
 }
 
