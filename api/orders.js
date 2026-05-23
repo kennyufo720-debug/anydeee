@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 const { getSessionUser } = require('../server/auth');
 const { query } = require('../server/db');
-const { send, method, readJson, handleError } = require('../server/http');
+const { send, method, readJson, handleError, rateLimit } = require('../server/http');
 
 function orderRow(row) {
   return {
@@ -19,6 +19,7 @@ function orderRow(row) {
 
 module.exports = async function handler(req, res) {
   if (!method(req, res, ['GET', 'POST'])) return;
+  if (!rateLimit(req, res, 'orders', { limit: req.method === 'POST' ? 20 : 120, windowMs: 15 * 60 * 1000 })) return;
   try {
     const user = await getSessionUser(req);
     if (!user) return send(res, 401, { ok: false, error: 'UNAUTHENTICATED' });

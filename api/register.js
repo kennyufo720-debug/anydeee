@@ -1,6 +1,6 @@
 const { hasDatabase, query, userRow } = require('../server/db');
 const { requireSecret, hashPassword, createSession, SESSION_TTL_SECONDS } = require('../server/auth');
-const { send, method, readJson, sessionCookie, handleError } = require('../server/http');
+const { send, method, readJson, sessionCookie, handleError, rateLimit } = require('../server/http');
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -8,6 +8,7 @@ function validateEmail(email) {
 
 module.exports = async function handler(req, res) {
   if (!method(req, res, ['POST'])) return;
+  if (!rateLimit(req, res, 'register', { limit: 8, windowMs: 15 * 60 * 1000 })) return;
   try {
     const body = await readJson(req);
     const name = String(body.name || '').trim();

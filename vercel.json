@@ -37,6 +37,18 @@
       "destination": "/account.html"
     },
     {
+      "source": "/terms",
+      "destination": "/terms.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/privacy.html"
+    },
+    {
+      "source": "/risk",
+      "destination": "/risk.html"
+    },
+    {
       "source": "/ip-zone",
       "destination": "/ip-zone.html"
     },
