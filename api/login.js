@@ -1,9 +1,10 @@
 const { hasDatabase, query, userRow } = require('../server/db');
 const { requireSecret, verifyPassword, createSession, SESSION_TTL_SECONDS } = require('../server/auth');
-const { send, method, readJson, sessionCookie, handleError } = require('../server/http');
+const { send, method, readJson, sessionCookie, handleError, rateLimit } = require('../server/http');
 
 module.exports = async function handler(req, res) {
   if (!method(req, res, ['POST'])) return;
+  if (!rateLimit(req, res, 'login', { limit: 20, windowMs: 15 * 60 * 1000 })) return;
   try {
     const body = await readJson(req);
     const email = String(body.email || '').trim().toLowerCase();

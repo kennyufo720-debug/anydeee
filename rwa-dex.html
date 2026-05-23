@@ -1209,6 +1209,9 @@
   .up{color:var(--green)} .dn{color:var(--red)}
   .kyc-banner{background:rgba(250,204,21,.1);border-bottom:1px solid rgba(250,204,21,.3);padding:8px 20px;font-size:12px;color:var(--yellow);text-align:center}
   .kyc-banner button{background:var(--yellow);color:#000;padding:4px 10px;border-radius:4px;margin-left:8px;font-weight:600;font-size:11px}
+  .alpha-banner{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:#2a1308;border-bottom:1px solid rgba(245,176,74,.35);color:#ffd6a8;padding:9px 16px;font-size:12px;line-height:1.5;text-align:center}
+  .alpha-banner strong{color:#fff;font-size:12px}
+  .alpha-banner a{color:#fff;text-decoration:underline;text-underline-offset:2px}
 
   @media (max-width:1100px){
     .trade-grid{grid-template-columns:1fr;grid-template-rows:auto}
@@ -1386,6 +1389,11 @@
 </style>
 </head>
 <body>
+<div class="alpha-banner">
+  <strong>Alpha 測試版</strong>
+  <span>目前僅供註冊、登入與介面流程測試；資產、價格、KYC、充值、提領、交易皆為 Demo，不代表真實金融服務。</span>
+  <a href="/risk">風險揭露</a>
+</div>
 
 <header>
   <div class="logo"><span class="dot"></span> Anydeee</div>
@@ -2971,8 +2979,9 @@
       <a href="#">關於 Anydeee</a>
       <a href="#">合規牌照</a>
       <a href="#">資產儲備證明</a>
-      <a href="#">服務條款</a>
-      <a href="#">隱私政策</a>
+      <a href="/terms">服務條款</a>
+      <a href="/privacy">隱私政策</a>
+      <a href="/risk">風險揭露</a>
     </div>
   </div>
   <div class="footer-disclaimer">
@@ -3064,7 +3073,7 @@
       </div>
       <label style="display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--muted);margin-bottom:14px;cursor:pointer">
         <input type="checkbox" id="regTerms" style="margin-top:2px" />
-        <span>我已閱讀並同意 <a style="color:var(--accent)">服務條款</a> 及 <a style="color:var(--accent)">隱私政策</a></span>
+        <span>我已閱讀並同意 <a href="/terms" target="_blank" style="color:var(--accent)">服務條款</a> 及 <a href="/privacy" target="_blank" style="color:var(--accent)">隱私政策</a></span>
       </label>
       <button class="auth-btn" onclick="doRegister()">建立帳號</button>
       <div class="auth-footer">已有帳號？<a onclick="switchToLogin()">立即登入</a></div>
@@ -3576,6 +3585,11 @@ const AnydeeeAPI = {
     return this.request('/api/logout', { method: 'POST', body: '{}' });
   }
 };
+const ALPHA_REAL_FUNDS_ENABLED = false;
+function alphaBlock(feature='此功能'){
+  toast('Alpha Demo 模式', `${feature} 暫停真實操作，目前僅供介面流程測試。`, 'error');
+  return false;
+}
 function apiErrorMessage(err){
   const map = {
     DB_NOT_CONFIGURED: '資料庫尚未設定，請先在 Vercel 加上 DATABASE_URL。',
@@ -3786,6 +3800,7 @@ document.addEventListener('click',()=>{ const n=document.getElementById('memberN
 function openKYC(){
   document.getElementById('memberNav').classList.remove('open');
   if(!isLoggedIn){ openModal('loginModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('KYC 驗證');
   _kycStep = 1;
   renderKYCSteps();
   document.querySelectorAll('.kyc-panel').forEach(p=>p.classList.remove('active'));
@@ -3801,6 +3816,7 @@ function renderKYCSteps(){
   }).join('');
 }
 function kycNext(step){
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('KYC 驗證');
   if(step===1){
     const name = document.getElementById('kycName').value.trim();
     if(!name){ toast('請填寫真實姓名','','error'); return; }
@@ -3906,6 +3922,7 @@ function copyDepAddr(){ const a = document.getElementById('depAddr').textContent
 function setWdMax(){ document.getElementById('wdAmt').value = walletBalances.ANYU||0; }
 function doWithdraw(){
   if(!isLoggedIn){ openModal('loginModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('提領');
   const amt = parseFloat(document.getElementById('wdAmt').value);
   const addr = document.getElementById('wdAddr').value.trim();
   if(!amt||!addr){ toast('請填寫提領地址與數量','','error'); return; }
@@ -4220,6 +4237,7 @@ function updatePfEst(){
 }
 
 function confirmPfTrade(){
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('資產買賣');
   const s   = seriesCatalog.find(x=>x.sym===_pfTradeSym);
   const qty = parseInt(document.getElementById('pfTradeQty').value);
   if(!s||!qty||qty<=0){ toast('請輸入有效數量','','error'); return; }
@@ -4455,6 +4473,7 @@ document.getElementById('orderAmount').oninput = recalc;
 
 document.getElementById('submitOrder').onclick = ()=>{
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('RWA 交易');
   if(!kycVerified){ toast('需要完成 KYC','請先完成身份驗證再進行 RWA 交易','error'); return; }
   const price = parseFloat(document.getElementById('orderPrice').value);
   const amt = parseFloat(document.getElementById('orderAmount').value);
@@ -4663,6 +4682,7 @@ if(_kycBtnEl) _kycBtnEl.onclick = ()=>{
   }
 };
 function completeKYC(){
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('KYC 驗證');
   toast('KYC 驗證中','請等待 2 秒...','success');
   setTimeout(()=>{
     kycVerified = true;
@@ -4966,6 +4986,7 @@ function completeTask(ai, ti, type){
   const a = airdrops[ai];
   const task = a.tasks[ti];
   if(type==='kyc'){
+    if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('KYC 驗證');
     kycVerified = true;
     task.done = true;
     toast('KYC 已驗證','身份驗證完成！','success');
@@ -4983,6 +5004,7 @@ function completeTask(ai, ti, type){
 /* ─── 領取空投 ─── */
 function claimAirdrop(i, fromModal=false){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('空投領取');
   if(!kycVerified){ toast('需要完成 KYC','請先完成身份驗證','error'); return; }
   const a = airdrops[i];
   if(!a.tasks.every(t=>checkCondition(t))){ toast('條件未達成','請先完成所有領取條件','error'); return; }
@@ -5126,6 +5148,7 @@ function shareRef(platform){
 }
 function withdrawCommission(){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('佣金提領');
   const amt = parseFloat(document.getElementById('withdrawAmt').value);
   if(!amt || amt<=0){ toast('輸入無效','','error'); return; }
   toast('提領中', `${amt} ANYU 廣播至 Polygon...`,'success');
@@ -5292,6 +5315,7 @@ function recalcBuy(){
 }
 function confirmBuy(){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('充值');
   toast('充值處理中','信用卡支付頁開啟中...','success');
   setTimeout(()=>toast('充值成功', document.getElementById('finalGet').textContent+' 已存入錢包','success'), 2200);
 }
@@ -5432,6 +5456,7 @@ function setFutPct(p){
 }
 document.getElementById('futOpenBtn').onclick = ()=>{
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('合約交易');
   if(!futCurrent){ toast('請選擇交易對','','error'); return; }
   const price = parseFloat(document.getElementById('futPrice').value);
   const amt = parseFloat(document.getElementById('futAmt').value);
@@ -5663,6 +5688,7 @@ function updatePledgeEst(){
 
 function confirmPledgeBorrow(){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('質押借款');
   if(!kycVerified){ toast('需要完成 KYC','','error'); return; }
   const amt=parseFloat(document.getElementById('pledgeBorrowAmt').value)||0;
   const selectedVal=[...pledgeSelectedCats].reduce((s,c)=>s+pledgeAssetValue(c),0);
@@ -5688,6 +5714,7 @@ function confirmPledgeBorrow(){
 }
 
 function repayLoan(loanId){
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('質押還款');
   const loan=pledgeActiveLoanS.find(l=>l.id===loanId);
   if(!loan) return;
   const elapsed=(Date.now()-loan.borrowedAt)/(365*86400000);
@@ -5877,6 +5904,7 @@ function openEtstoreDetail(id){
 }
 
 function confirmEtBuy(){
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('商品購買');
   const p = etstoreProducts.find(x=>x.id===etstoreSelectedId);
   if(!p||p.stock<=0) return;
   if(walletBalances.ANYU < p.price){
@@ -6811,6 +6839,7 @@ function drawPriceHistory(base, current){
 /* ===== 立即購買 ===== */
 function buyNow(seriesId, edition, year, rarity, price){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('NFT 購買');
   if(!kycVerified){ toast('需要完成 KYC','','error'); return; }
   toast('交易廣播中', `正在購買 #${edition}...`,'success');
   setTimeout(()=>{
@@ -6858,6 +6887,7 @@ function recalcSell(){
 }
 function confirmListSell(){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('NFT 掛單');
   const p = parseFloat(document.getElementById('sellPrice').value);
   if(!p||p<=0){ toast('請輸入售價','','error'); return; }
   const dur = parseInt(document.getElementById('sellDuration').value);
@@ -6999,6 +7029,7 @@ function sweepRemoveItem(seriesId, edition){
 }
 
 function confirmSweep(){
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('一鍵掃單');
   const subtotal = sweepCart.reduce((s,x)=>s+x.price,0);
   const fee = subtotal*0.015;
   const royalty = subtotal*0.05;
@@ -7048,6 +7079,7 @@ function openOffer(seriesId, edition, year, rarity, currentPrice){
 }
 function confirmOffer(){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('NFT 出價');
   const p = parseFloat(document.getElementById('offerPrice').value);
   if(!p||p<=0){ toast('請輸入出價','','error'); return; }
   const s = seriesCatalog[pendingOfferItem.seriesId];
@@ -7956,6 +7988,7 @@ function applySync(state){
 const _origCompleteKYC = completeKYC;
 completeKYC = function(){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('KYC 驗證');
   Sync.update(s=>{
     s.kycStatus = 'pending';
     const exists = s.pendingKYC.find(k=>k.address===walletAddress);
@@ -7979,6 +8012,7 @@ completeKYC = function(){
 const _origWithdraw = withdrawCommission;
 withdrawCommission = function(){
   if(!walletConnected){ openModal('walletModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('佣金提領');
   const amt = parseFloat(document.getElementById('withdrawAmt').value);
   if(!amt || amt<=0){ toast('輸入無效','','error'); return; }
   Sync.update(s=>{
@@ -8407,6 +8441,7 @@ async function _restoreSession(){
 /* ── 流程三：瀏覽與購買（立即認購）加訂單邏輯 ── */
 function buyNFT(seriesId, seriesName, price){
   if(!isLoggedIn){ toast('請先登入','認購前需要先登入帳號','error'); openModal('loginModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('NFT 認購');
   if(!memberKYCStatus){ toast('需要 KYC','請先完成身份驗證','error'); openKYC(); return; }
 
   const orderId = 'ORD-' + Date.now().toString().slice(-8);
@@ -8437,6 +8472,7 @@ function buyNFT(seriesId, seriesName, price){
 /* ── 流程四：訂單付款（ANYU 點數付款）── */
 function payOrderAnyu(orderId){
   if(!isLoggedIn){ openModal('loginModal'); return; }
+  if(!ALPHA_REAL_FUNDS_ENABLED) return alphaBlock('訂單付款');
   const orders = _DB.getOrders();
   const idx = orders.findIndex(o => o.id === orderId);
   if(idx < 0){ toast('找不到訂單','','error'); return; }

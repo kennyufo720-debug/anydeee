@@ -79,4 +79,25 @@ function handleError(res, error) {
   return send(res, 500, { ok: false, error: 'INTERNAL_ERROR' });
 }
 
-module.exports = { send, method, readJson, cookie, sessionCookie, clearSessionCookie, handleError };
+const buckets = new Map();
+
+function clientIp(req) {
+  return String(req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'unknown').split(',')[0].trim();
+}
+
+function rateLimit(req, res, key, { limit, windowMs }) {
+  const now = Date.now();
+  const bucketKey = `${key}:${clientIp(req)}`;
+  const current = buckets.get(bucketKey);
+  if (!current || current.resetAt <= now) {
+    buckets.set(bucketKey, { count: 1, resetAt: now + windowMs });
+    return true;
+  }
+  current.count += 1;
+  if (current.count <= limit) return true;
+  const retryAfter = Math.ceil((current.resetAt - now) / 1000);
+  send(res, 429, { ok: false, error: 'RATE_LIMITED', retryAfter }, { 'Retry-After': String(retryAfter) });
+  return false;
+}
+
+module.exports = { send, method, readJson, cookie, sessionCookie, clearSessionCookie, handleError, rateLimit };
